@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>xialinHub</groupId>
@@ -5,8 +6,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>xialinHub</name>
-  <description>xl的个人项目</description>
+  <description>xl的个人项�?</description>
   <modules>
   	<module>xl_core</module>
+    <module>xl_ktv_store</module>
   </modules>
 </project>
