@@ -3,6 +3,7 @@
 	<name>xl_ktv_store</name>
 	<comment></comment>
 	<projects>
+		<project>xl_core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

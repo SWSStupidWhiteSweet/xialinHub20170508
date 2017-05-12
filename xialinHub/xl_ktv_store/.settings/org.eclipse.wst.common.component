@@ -3,7 +3,10 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
-        <property name="context-root" value="xl_ktv_store"/>
+        <dependent-module archiveName="xl_core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/xl_core/xl_core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/xl_ktv_store/target/classes"/>
+        <property name="context-root" value="xl_store"/>
     </wb-module>
 </project-modules>
