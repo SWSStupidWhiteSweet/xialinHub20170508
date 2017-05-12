@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation=" 
+          http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+          http://www.springframework.org/schema/mvc 
+          http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+          http://www.springframework.org/schema/tx 
+          http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+          http://www.springframework.org/schema/aop 
+          http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- Quartz集群 start... -->
+	<!-- job start... -->
+	<!-- 微信公众号获取AccessToken -->
+	<bean name="quartzWechatTokenJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzWechatTokenJob" />
+		<property name="durability" value="true" />
+	</bean>
+
+	<!-- 移动销售更进过期 -->
+	<!-- <bean id="overdueJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzCustomerOverdueJob" />
+		<property name="durability" value="true" />
+	</bean> -->
+
+	<!-- 报备状态维护 -->
+	<bean name="quartzCustomRecordJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzCustomRecordJob" />
+		<property name="durability" value="true" />
+	</bean>
+	
+	<!-- 用户行为数据清洗 -->
+	<bean name="quartzWechatUserBehaviorJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzWechatUserBehaviorJob" />
+		<property name="durability" value="true" />
+	</bean>
+	
+	<!-- 用户行为数据清洗 (日汇总) -->
+	<bean name="quartzWechatUserBehaviorDayTotalJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzWechatUserBehaviorDayTotalJob" />
+		<property name="durability" value="true" />
+	</bean>
+	
+	<!-- 微信模板消息发送 -->
+	<!-- <bean name="quartzSendTemplateMsgJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzSendTemplateMsgJob" />
+		<property name="durability" value="true" />
+	</bean> -->
+	
+	<!-- 设置楼盘排序 -->
+	<bean name="quartzSetBuildingProjectSortJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ruiyun.module.platform.quartz.QuartzSetBuildingProjectSortJob" />
+		<property name="durability" value="true" />
+	</bean>
+	<!-- job end... -->
+
+	<!-- cron start... -->
+	<!-- 微信公众号获取AccessToken定时器，每小时一次 -->
+	<bean id="wechatTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzWechatTokenJob" />
+		<property name="cronExpression" value="0 0 0/1 * * ?" />
+	</bean>
+
+	<!-- 移动销售更进过期定时器，每天凌晨0时执行一次 -->
+	<!-- <bean id="overdueJobTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overdueJob" />
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean> -->
+
+	<!-- 报备状态维护定时器，每天凌晨0时执行一次 -->
+	<bean id="customRecordJobTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzCustomRecordJob" />
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	
+	<!-- 用户行为数据清洗定时器，每30分钟一次 -->
+	<bean id="wechatUserBehaviorJobTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzWechatUserBehaviorJob" />
+		<property name="cronExpression" value="0 0/30 * * * ? *" />
+	</bean>
+	
+	<!-- 用户行为数据清洗定时器，每天凌晨3时执行一次 -->
+	<bean id="wechatUserBehaviorDayTotalJobTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzWechatUserBehaviorDayTotalJob" />
+		<property name="cronExpression" value="0 0 3 * * ?" />
+	</bean>
+	
+	<!-- 微信模板消息发送，每天21点执行一次 -->
+	<!-- <bean id="quartzSendTemplateMsgJobTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzSendTemplateMsgJob" />
+		<property name="cronExpression" value="0 0 21 * * ?" />
+	</bean> -->
+	
+	<!-- 设置楼盘排序定时器,每周一凌晨0时执行一次-->
+	<bean id="quartzSetBuildingProjectSortBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="quartzSetBuildingProjectSortJob" />
+		<property name="cronExpression" value="0 0 3 ? * 2" />
+	</bean>
+	
+	<!-- cron end... -->
+
+	<!-- 帮助job自动注入spring bean -->
+	<bean id="autowiredJobFactory" class="com.ruiyun.common.quartz.AutowiredJobFactory" />
+
+	<!-- 任务工厂 -->
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="configLocation" value="classpath:resource/quartz.properties" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jobFactory" ref="autowiredJobFactory" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="triggers">
+			<list>
+				<!--<ref bean="wechatTriggerFactoryBean" />
+				<ref bean="customRecordJobTriggerFactoryBean" /> 
+				<ref bean="wechatUserBehaviorJobTriggerFactoryBean" />
+				<ref bean="wechatUserBehaviorDayTotalJobTriggerFactoryBean" />
+				<ref bean="quartzSetBuildingProjectSortBean" />-->
+			</list>
+		</property>
+	</bean> 
+	<!-- Quartz集群 end... -->
+</beans>
+	
