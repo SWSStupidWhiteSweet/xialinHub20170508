@@ -1,6 +1,7 @@
 package xialinHub.com.module.login.service;
 
-import xialinHub.com.service.BaseService;
+import xialinHub.com.platform.service.BaseService;
+
 
 /*
  *作者:xialin

@@ -1,6 +1,7 @@
 package xialinHub.com.module.login.controller;
 
-import xialinHub.com.controller.BaseController;
+import xialinHub.com.platform.controller.BaseController;
+
 
 /*
  *作者:xialin
