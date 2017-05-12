@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘案场配置</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/module/building/buildingconfig/buildingconfig.css" />
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area" style="padding-top:30px;">
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="configCreateForm" class="form-horizontal" role="form">
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tobuyHours">认筹转认购时间：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="url" name="url" type="hidden" value="updateconfig">
+												<input id="buildingProjectId" name="buildingProjectId" type="hidden" value="${(buildingProjectInfo.buildingProjectId)!''}">
+												<input id="fingerprint" name="fingerprint" type="hidden" value="${(buildingConfig.fingerprint)!''}">
+												<input id="buildingConfigId" name="buildingConfigId" type="hidden" value="${(buildingConfig.buildingConfigId)!''}">
+												<input id="tobuyHours" name="tobuyHours" type="text" class="col-xs-10 col-sm-2" value="${(buildingConfig.tobuyHours)!''}">(单位：小时)
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tosignHours">认购转签约时间：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="tosignHours" name="tosignHours" type="text" class="col-xs-10 col-sm-2" value="${(buildingConfig.tosignHours)!''}">(单位：小时)
+											</div>
+										</div>
+									 </div>
+									 
+									  <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="recvSmsOperatorId">预约看房短信接收人：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="recvSmsOperatorId" name="recvSmsOperatorId" data-placeholder="选择接收人" url="../common/getallrecvsmsoperatorcombo"  selectval="${(buildingConfig.recvSmsOperatorId)!''}">
+												</select>
+											</div>
+										</div>
+									 </div>
+
+									 <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="agentIds">未选择联代方：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="agentIds" name="agentIds" data-placeholder="选择联代方" url="../common/getnotinagentscombo?agentIds=${(buildingConfig.agentIds)!''}&&status=2" child="operatorId">
+												</select>
+											</div>
+										</div>
+									 </div>
+									 
+									  <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="operatorId">联代方人员：</label>
+										<div class="col-sm-9">
+											<div class="clearfix" id="agentOperatorCombo">
+												<select id="operatorId" name="operatorId" data-placeholder="选择联代方人员" onchange="selectAgent();" url="../common/getallagentoperatorcombo">
+												</select>
+											</div>
+										</div>
+									 </div>
+									 
+									<div class="lab">已选择联代方:</div>
+									<div id="selAgentIds"  class="form-group" style="margin-bottom:50px;">
+										<#list buildingConfig.data as da>
+											<div class="agents1" id="agent${da.agentId!''}" name="${da.agentId!''}" value="${da.agentId!''}-${da.agentOperatorId!''}-${da.merchantName!''}" class="btn btn-white btn-default btn-round ">
+												${da.merchantName!''}<#if (da.operatorName)??>--</#if>${da.operatorName!''}
+												<i class="ace-icon fa fa-trash-o orange"   onclick="removeAgent(${da.agentId!''},'${da.merchantName!''}');"></i>
+											</div>
+										</#list>
+										<#if buildingConfig.agentName??>
+											<#list agentName as an>
+												<div class="agents1" id="agent${an.id!''}" name="${an.id!''}" value="${an.id!''}-''-${an.text!''}" class="btn btn-white btn-default btn-round ">
+													${an.text}
+													<i class="ace-icon fa fa-trash-o orange"   onclick="removeAgent(${an.id!''},'${an.text!''}');"></i>
+												</div>
+											</#list>
+										</#if>
+									</div>
+									<div class="clearfix form-actions" style="padding:10px;">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="buildingproject:configindex">
+												<button id="saveBtn" class="btn btn-info" type="button">
+													<i class="ace-icon fa fa-check bigger-110"></i>
+													保存
+												</button>
+											</@shiro.hasPermission>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildingconfig/buildingconfigindex.js"></script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>开发商回款管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								财务管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									订单回款详情
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+									<input id="orderInfoId" type="hidden" value="${orderInfoId}">
+									订单号：${orderInfoCode}&nbsp;&nbsp;&nbsp;
+									<label style="color: #2594dc;">
+									<i class="ace-icon fa fa-jpy"></i>
+									应收回款：${recvDistAmount}&nbsp;(元)&nbsp;&nbsp;&nbsp;
+									<i class="ace-icon fa fa-jpy"></i>
+									已回款：${realDistAmount}&nbsp;(元)&nbsp;&nbsp;&nbsp;
+									</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<button id="back" class="btn" type="reset">
+											<i class="ace-icon fa fa-undo bigger-110"></i>
+											返回
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/payment/orderrevdetail.js?${.now?long}"></script>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+</html>

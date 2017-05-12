@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>回款管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.img-div{
+				width: 200px;
+				height: 200px;
+			}
+			.required-star{
+				color: tomato;
+			}
+			.myfloat{
+				float: left;
+				position: absolute;
+				top: 10px;
+				left: 115px;
+			}
+		</style>
+	</head>
+	
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								回款管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if operateType == "add">
+									添加回款记录
+									<#else>
+									查看回款详情
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="paymentForm" class="form-horizontal" role="form">
+									<input type="hidden" id="operateType" value="${operateType}" />
+									
+									<!-- #section:elements.form -->
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tradeTime"> 回款时间： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<input class="date-picker col-xs-10 col-sm-2" name="tradeTime" id="tradeTime" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择回款日期" />
+												<span class="required-star">*</span>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${info.tradeTime?substring(0,10)}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="devAmount">回款金额：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+											<#if operateType == "add">
+												<input id="devAmount" name="devAmount" type="text" class="col-xs-10 col-sm-2" value="">
+												<span class="required-star">*</span>
+											<#else>
+											<label class="col-sm-3 control-label no-padding-right" >
+												${(info.recvAmount)!''}
+											</label>
+											</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="payWay">回款方式：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<select id="payWay" name="payWay" data-placeholder="选择回款方式"  url="../../common/getpaytypecombo">
+												</select>
+												<span class="required-star">*</span>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(info.payWay)!''}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="companyId">回款开发商： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<select id="companyId" name="companyId" data-placeholder="选择回款开发商"  url="../../common/getcompanycombo" child="projectInfoId">
+												</select>
+												<span class="required-star">*</span>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(info.companyName)!''}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="projectInfoId">回款项目： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<select id="projectInfoId" name="projectInfoId" data-placeholder="选择回款项目" url="../../common/getprojectcombobycompanyid">
+												</select>
+												<span class="required-star">*</span>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(info.projectInfoName)!''}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="remark"> 备注： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<input type="text" id="remark" name="remark" placeholder="请输入备注" class="col-xs-10 col-sm-5" value="" />
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(info.remark)!''}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									<br/>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="financeAttachment"> 附件信息： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if operateType == "add">
+												<input type="file" id="financeAttachment" name="financeAttachment" class="col-xs-10 col-sm-5">
+												<span class="required-star myfloat">*</span>
+												<div id = "showImage" style="margin:-30px 0 20px 130px;"></div>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												<img class="img-div" src="${basePath}${(info.financeAttachmentUrl)!''}">
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:devpayment:save">
+											<#if operateType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+	<script type="text/javascript" src="../../assets/module/finance/payment/paymentinfo.js?${.now?long}"></script>
+</html>

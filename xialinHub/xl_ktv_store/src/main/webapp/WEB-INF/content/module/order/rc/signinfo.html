@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>签约资料预审管理详情</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#assign basePath=request.getContextPath()> <script
+	src="${basePath}/assets/js/jquery.js"></script> <#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/> <#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/> <#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/> <script
+	src="${basePath}/assets/js/ace-extra.min.js"></script> <script
+	src="${basePath}/assets/js/jquery.colorbox-min.js"></script> <script
+	src="${basePath}/assets/js/ace.min.js"></script> <script
+	src="${basePath}/assets/js/bootstrap.min.js"></script> <script
+	src="${basePath}/assets/js/typeahead-bs2.min.js"></script>
+<link rel="stylesheet" href="${basePath}/assets/css/colorbox.css" />
+<link href="${basePath}/assets/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="${basePath}/assets/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/colorbox.css" />
+<!-- ace styles -->
+<link rel="stylesheet" href="${basePath}/assets/css/ace.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/ace-rtl.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/ace-skins.min.css" />
+<script type="text/javascript"
+	src="../../assets/module/order/rc/signinfo.js"></script>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							订单管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+								签约资料预审管理详情
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- PAGE CONTENT BEGINS -->
+							<!-- 基本信息   -->
+							<div class="tab-content no-border padding-5">
+								<div id="faq-tab-9" class="tab-pane fade in active">
+									<div class="space-9"></div>
+									<div id="faq-list-9"
+										class="panel-group accordion-style1 accordion-style2">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<a href="#faq-1-9" data-toggle="collapse"
+													class="accordion-toggle" aria-expanded="false"> <i
+													class="pull-right ace-icon fa fa-chevron-down"
+													data-icon-hide="ace-icon fa fa-chevron-down"
+													data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+													基本信息
+												</a>
+											</div>
+											<div class="panel-collapse collapse in" id="faq-1-9"
+												aria-expanded="false">
+												<div class="panel-body">
+
+													<div class="row">
+														<div class="col-xs-12">
+															<div class="form-group">
+
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">客户姓名:
+																</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.member_name)!''}"
+																		disabled="disabled">
+																</div>
+
+															</div>
+															<div class="form-group">
+
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">手机号码:
+																</label>
+																<div class="col-sm-4" style="width: 25px">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.member_tel)!''}"
+																		disabled="disabled">
+																</div>
+															</div>
+															<br> <br>
+															<!-- 一行一行的 -->
+															<div class="form-group">
+
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">身份证号:
+																</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.member_idcode)!''}"
+																		disabled="disabled">
+																</div>
+
+															</div>
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">认购项目:</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.project_info_name)!''}"
+																		disabled="disabled">
+																</div>
+															</div>
+															<br> <br>
+															<!-- 一行一行的 -->
+															<div class="form-group">
+
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">所属城市:</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.city_name)!''}"
+																		disabled="disabled">
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">认购房源:</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.house)!''}" disabled="disabled">
+																</div>
+															</div>
+															<br> <br>
+															<!-- 一行一行的 -->
+															<div class="form-group">
+
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">优惠告知书编号:
+																</label>
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.cheap_code)!''}"
+																		disabled="disabled">
+																</div>
+
+															</div>
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="form-field-1" style="text-align: right;">提交时间:</label>
+
+																<div class="col-sm-4">
+																	<input id="cusname" style="width: 200px;"
+																		name="cusname" type="text"
+																		value="${(mapresult.createtime)!''}"
+																		disabled="disabled">
+																</div>
+															</div>
+															<br> <br>
+
+														</div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 附件   -->
+							<div class="tab-content no-border padding-5">
+								<div id="faq-tab-1" class="tab-pane fade in active">
+									<div class="space-8"></div>
+									<div id="faq-list-1"
+										class="panel-group accordion-style1 accordion-style2">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<a href="#faq-1-6" data-toggle="collapse"
+													class="accordion-toggle" aria-expanded="false"> <i
+													class="pull-right ace-icon fa fa-chevron-down"
+													data-icon-hide="ace-icon fa fa-chevron-down"
+													data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp; 附件
+												</a>
+											</div>
+											<div class="panel-collapse collapse in" id="faq-1-6"
+												aria-expanded="false">
+												<div class="panel-body">
+													<div class="row-fluid">
+														<ul class="ace-thumbnails">
+															<li><a
+																href="${(orderAttachments.orderAttachmentUrl)!''}"
+																title="Photo Title" data-rel="colorbox"> <img
+																	alt="150x150"
+																	src="${(orderAttachments.orderAttachmentUrl)!''}" />
+															</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 资料审核   -->
+							<div class="tab-content no-border padding-5">
+								<div id="faq-tab-1" class="tab-pane fade in active">
+									<div class="space-8"></div>
+									<div id="faq-list-1"
+										class="panel-group accordion-style1 accordion-style2">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<a href="#faq-1-7" data-toggle="collapse"
+													class="accordion-toggle" aria-expanded="false"> <i
+													class="pull-right ace-icon fa fa-chevron-down"
+													data-icon-hide="ace-icon fa fa-chevron-down"
+													data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+													资料审核
+												</a>
+											</div>
+											<div class="panel-collapse collapse in" id="faq-1-7"
+												aria-expanded="false">
+												<div class="panel-body">
+													<div class="form-group" align="left">
+														<div class="col-sm-2" align="right">
+															<label class=" control-label no-padding-right"
+																for="form-field-1">备注: </label>
+														</div>
+														<div class="col-sm-4" align="left">
+															<#if isedit=="true"> <textarea rows="4" cols="50"
+																id="content"></textarea> </#if>
+															<#if isedit=="false"> <input id="cusname"
+																style="width: 200px;" name="cusname" type="text"
+																value="${(mapresult.remark)!''}" disabled="disabled">
+															</#if>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="clearfix form-actions">
+								<div class="col-md-offset-3 col-md-9">
+									<#if isedit=="true">
+									<button id="pass" class="btn btn-info" type="button">
+										<i class="ace-icon fa fa-check bigger-110"></i> 通过
+									</button>
+
+									&nbsp; &nbsp; &nbsp;
+									<button id="nopass" class="btn" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110"></i> 不通过
+									</button>
+									</#if>
+									&nbsp; &nbsp; &nbsp;
+									<button id="cancels" class="btn" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110"></i> 取消
+									</button>
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="id" value="${mapresult.sign_att_id}">
+</body>
+
+
+
+
+</html>

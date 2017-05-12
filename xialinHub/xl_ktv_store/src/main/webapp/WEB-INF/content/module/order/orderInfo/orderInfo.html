@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>添加订单</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/ace.css" id="main-ace-style" />
+		
+		<!-- <script src="${basePath}/assets/js/additional-methods.js"></script>
+		<script src="${basePath}/assets/js/bootbox.js"></script> -->
+		<script src="${basePath}/assets/js/fuelux/fuelux.wizard.js"></script>
+		
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								新房订单
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+									添加订单
+									<#else>
+									修改订单
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								
+								<div class="widget-body">
+										<div class="widget-main">
+											<!-- #section:plugins/fuelux.wizard -->
+											<div id="fuelux-wizard-container">
+												<div class="ulDiv">
+													<!-- #section:plugins/fuelux.wizard.steps -->
+													<ul class="steps">
+														<li data-step="1" class="active" id="step1">
+															<span class="step"><i class="ace-icon glyphicon glyphicon-home"></i></span>
+															<span class="title">到访信息</span>
+														</li>
+
+														<li data-step="2" id="step2">
+															<span class="step"><i class="ace-icon glyphicon glyphicon-home"></i></span>
+															<span class="title">套餐信息</span>
+														</li>
+
+														<li data-step="3" id="step3">
+															<span class="step"><i class="ace-icon glyphicon glyphicon-home"></i></span>
+															<span class="title">认筹信息</span>
+														</li>
+
+														<li data-step="4" id="step4">
+															<span class="step"><i class="ace-icon glyphicon glyphicon-home"></i></span>
+															<span class="title">认购信息</span>
+														</li>
+														
+														<li data-step="5" id="step5">
+															<span class="step"><i class="ace-icon glyphicon glyphicon-home"></i></span>
+															<span class="title">签约信息</span>
+														</li>
+													</ul>
+
+													<!-- /section:plugins/fuelux.wizard.steps -->
+												</div>
+
+												<hr />
+
+												<!-- #section:plugins/fuelux.wizard.container -->
+												<div class="step-content pos-rel">
+													<div class="step-pane active" data-step="1">
+														<iframe id="editOrderTab1" class="iframeClass"  src="" allowtransparency="true" scrolling="yes" frameborder="0"  style="border: none; height:100%;width: 100%;">
+
+        												</iframe>
+													</div>
+
+													<div class="step-pane" data-step="2">
+														<iframe id="editOrderTab2" class="iframeClass"  src="" scrolling="yes" frameborder="0"  style="border: none; height:100%;width: 100%;">
+
+        												</iframe>
+													</div>
+
+													<div class="step-pane" data-step="3">
+														<iframe id="editOrderTab3" class="iframeClass"  src="" scrolling="yes" frameborder="0"  style="border: none; height:100%;width: 100%;">
+
+        												</iframe>
+													</div>
+
+													<div class="step-pane" data-step="4">
+														<iframe id="editOrderTab4" class="iframeClass"  src="" scrolling="yes" frameborder="0"  style="border: none;height:100%; width: 100%;">
+
+        												</iframe>
+													</div>
+													
+													<div class="step-pane" data-step="5">
+														<iframe id="editOrderTab5" class="iframeClass"  src="" scrolling="yes" frameborder="0"  style="border: none;height:100%; width: 100%;">
+
+        												</iframe>
+													</div>
+												</div>
+
+												<!-- /section:plugins/fuelux.wizard.container -->
+											</div>
+
+											<hr />
+											<div class="wizard-actions" style="display:none">
+												<!-- #section:plugins/fuelux.wizard.buttons -->
+												<button class="btn btn-prev">
+													<i class="ace-icon fa fa-arrow-left"></i>
+													上一步
+												</button>
+
+												<button class="btn btn-success btn-next-pre" data-last="完成">
+													下一步
+													<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+												</button>
+
+												<!-- /section:plugins/fuelux.wizard.buttons -->
+											</div>
+
+											<!-- /section:plugins/fuelux.wizard -->
+										</div><!-- /.widget-main -->
+									</div><!-- /.widget-body -->
+									
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var orderInfoId = "${orderInfoId!''}";
+		var path = "${basePath}";
+		var actionType = "${actionType}";
+		var order = function() {};
+		function showPic(obj){
+			Common.colorbox_params.href = $(obj).attr("src");
+			Common.colorbox_params.title = $(obj).attr("title");
+			$.colorbox(Common.colorbox_params);
+		}
+		
+		function setDocumentHeight(number,childHeight){
+			$("#editOrderTab"+number).height(childHeight);
+		}
+	</script>
+	
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderInfo.js"></script>
+</html>

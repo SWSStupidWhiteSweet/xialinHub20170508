@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>签约信息</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/ace.css" id="main-ace-style" />
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<input type="hidden" id="pageStep" value="5" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div id="agglomerationForm" class="form-horizontal" role="form">
+									<input type="hidden" id="orderInfoId" name="orderInfoId" value="${(orderInfo.orderInfoId)!''}">
+									<input type="hidden" id="fingerprint" name="fingerprint" value="${(orderInfo.fingerprint)!''}">
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-1-5" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 客户签约信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-1-5" aria-expanded="false">
+														<div class="panel-body">
+															<!-- 开发商签约时间 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="realBuyTime">开发商签约时间： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<div class="row">
+																			<div class="col-xs-5">
+																				<div class="input-group input-group-sm">
+																					<input class="form-control" name="devSignTime" id="devSignTime" value="${(orderInfo.devSignTime[0..10])!''}" type="text" 
+																							data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择开发商签约时间" />
+																					<span class="input-group-addon">
+																						<i class="ace-icon fa fa-calendar"></i>
+																					</span>
+																				</div>
+																			</div>
+																			<div class="col-xs-1">
+																				<span><font color="red">&nbsp;&nbsp;*</font></span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<!-- 网签时间 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="realBuyTime">网签时间： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<div class="row">
+																			<div class="col-xs-5">
+																				<div class="input-group input-group-sm">
+																					<input class="form-control" name="onlineSignTime" id="onlineSignTime" value="${(orderInfo.onlineSignTime[0..10])!''}" type="text" 
+																							data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择网签时间" />
+																					<span class="input-group-addon">
+																						<i class="ace-icon fa fa-calendar"></i>
+																					</span>
+																				</div>
+																			</div>
+																			<div class="col-xs-1">
+																				<span><font color="red">&nbsp;&nbsp;*</font></span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															
+															<!--网签总价 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="customName"> 网签总价: </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<input type="text" id="onlineSignAmount" name="onlineSignAmount"  class="col-xs-10 col-sm-5" value="${((orderInfo.onlineSignAmount)?string('#.00'))!''}" />&nbsp;&nbsp;元
+																		<span><font color="red">&nbsp;&nbsp;*</font></span>
+																	</div>
+																</div>
+															</div>
+															
+															<!-- 备注 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">备注： </label>
+																<div class="col-sm-5">
+																	<div class="clearfix">
+																		<textarea id="remark" rows="5" class="autosize-transition form-control">${(orderInfo.remark)!''}</textarea>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												
+												<#include "orderAttAndLog.html" />
+												
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+														<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 2 || orderInfo.orderStatus==3 || (orderInfo.orderStatus==4 && orderInfo.auditStatus == 2)) >
+															<button id="saveBtn" class="btn btn-info" type="button">
+																<i class="ace-icon fa fa-check bigger-110"></i>
+																成交审核申请
+															</button>
+														<#else>
+															<button class="btn" type="button" disabled>
+																<i class="ace-icon fa fa-check bigger-110"></i>
+																成交审核申请
+															</button>
+														</#if>
+															&nbsp; &nbsp; &nbsp;
+															<button id="backBtn" class="btn" type="reset">
+																<i class="ace-icon fa fa-undo bigger-110"></i>
+																取消
+															</button>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$('textarea[class*=autosize]').autosize({append: "\n"});
+		var path = "${basePath}";
+		var actionType = "${actionType!''}";
+		
+		$(window).load(function(){
+			var documentHeight = $(document).height();
+			window.parent.setDocumentHeight(5,documentHeight+320);
+		});
+	</script>
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderOnlineSign.js"></script>
+</html>

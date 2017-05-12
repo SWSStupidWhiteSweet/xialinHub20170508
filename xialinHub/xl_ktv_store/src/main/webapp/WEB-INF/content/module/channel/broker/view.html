@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>渠道管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		
+		<style type="text/css">
+			.inputstyle{
+			    width: 100%;
+			    height: 100%;
+			    font-size: 30px;
+			    outline: medium none;
+			    position: absolute;
+			    filter:alpha(opacity=0);
+			    -moz-opacity:0;
+			    opacity:0; 
+			    left:0px;
+			    top: 0px;
+			    cursor:potinter;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								 经纪人管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									查看经纪人
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="brokerForm" class="form-horizontal" role="form">
+									
+									<!-- #section:elements.form -->
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerCompanyName">经纪公司：</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<input id="brokerCompanyName" name="brokerCompanyName" type="text" class="col-xs-10 col-sm-6" readonly="readonly"  value="${(broker.brokerCompanyName)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="storeId">门店：</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="storeId" name="storeId" data-placeholder="选择门店" disabled="disabled" url="../../common/getstorecombobycitybrokercompanyid?pValue=${broker.brokerCompanyId}" selectval="${(broker.storeId)!''}">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="provinceName"> 经纪人所属省：</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<input id="provinceName" name="provinceName" type="text" class="col-xs-10 col-sm-6" readonly="readonly"  value="${(broker.provinceName)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cityName"> 经纪人所属市：</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<input id="cityName" name="cityName" type="text" class="col-xs-10 col-sm-6" readonly="readonly"  value="${(broker.cityName)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerName">经纪人姓名：</label>
+										<div class="col-sm-4">
+											<div class="clearfix">
+												<input id="brokerName" name="brokerName" type="text" class="col-xs-10 col-sm-6" readonly="readonly" value="${(broker.brokerName)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerSex"> 性别：</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="brokerSex" name="brokerSex" disabled="disabled">
+													<option value="保密" <#if broker.brokerSex == "保密">selected="selected"</#if> >保密</option>
+													<option value="男" <#if broker.brokerSex == "男">selected="selected"</#if> >男</option>
+													<option value="女" <#if broker.brokerSex == "女">selected="selected"</#if> >女</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerTel">电话：</label>
+										<div class="col-sm-8">
+											<div class="clearfix">
+												<input id="brokerTel" name="brokerTel" type="text" class="col-xs-10 col-sm-6" readonly="readonly" value="${(broker.brokerTel)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="idcode">身份证号码：</label>
+										<div class="col-sm-8">
+											<div class="clearfix">
+												<input id="idcode" name="idcode" type="text" class="col-xs-10 col-sm-6" readonly="readonly" value="${(broker.idcode)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerPwd">登录密码：</label>
+										<div class="col-sm-8">
+											<div class="clearfix">
+												<input id="brokerPwd" name="brokerPwd" type="password" class="col-xs-10 col-sm-6" readonly="readonly" value="${(broker.brokerPwd)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="uploadFile">身份证照片：</label>
+										<div class="col-sm-8">
+											<div class="clearfix">
+												<img alt="身份证" title="身份证" width="300px" height="250px" src="${basePath}${(broker.idcodePhoto)!''}">
+											</div>
+										</div>
+									</div>
+									<input id="idcodePhoto" type="hidden" value=""/>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="status">状态：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="status" name="status" disabled="disabled">
+													<option value="1" <#if broker.status == 1>selected="selected"</#if> >启用</option>
+													<option value="0" <#if broker.status == 0>selected="selected"</#if> >禁用</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$("#backBtn").click(back);
+		function back() {
+			location.href = "index";
+		}
+		
+		Common.initSelect2("storeId", {
+			width : "200px"
+		});
+		
+	</script>
+
+</html>

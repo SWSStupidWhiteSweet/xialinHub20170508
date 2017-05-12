@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>退款流程审批</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+        <#include "/common/include_head_css.html"/>
+        <#include "/common/include_jquery_core.html"/>
+        <#include "/common/include_bootstrap_core.html"/>
+        <#include "/common/include_ace_core.html"/>
+        <#include "/common/include_jqgrid_core.html"/>
+        <#include "/common/include_plugin.html"/>
+        <#include "/common/include_photo_album.html"/>
+        <link rel="stylesheet" href="${basePath}/assets/module/project/css/project.css" />
+        <style type="text/css">
+            /*流程选择框样式*/
+            .cssClass{ text-align:center;
+                margin:0 auto;
+                border:1px solid #F00
+            }
+
+            /*图片样式*/
+            .msgDiv{
+                font-size: 15px;
+                height: 35px;
+                line-height: 35px;
+                background-color: #6fb3e0;
+                margin-top:0;
+                color: #f5f5f5;
+            }
+        </style>
+    </head>
+    <body class="no-skin">
+        <div class="main-container" id="main-container">
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="page-content-area">
+                        <div class="page-header">
+                            <#if openType=='audit'>
+                                <h1>
+                                    	结佣退款待审批
+                                    <small>
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                       	 退款流程-审批
+                                    </small>
+                                </h1>
+                            </#if>
+                            <#if openType=='view'>
+                                <h1>
+                                   	 结佣退款已审批
+                                    <small>
+                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                      	  退款流程-相关详情
+                                    </small>
+                                </h1>
+                            </#if>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form id="projectForm" class="form-horizontal" role="form">
+                                    <input type="hidden" id="projectInfoId" value="" />
+                                    <input type="hidden" id="orderInfoId" value="${(orderInfo.orderInfoId)!''}" />
+                                    <!--退款信息列表数据条数-->
+                                    <input type="hidden" id="refundInfoSize" value="${(refundInfoGriddatas?size)!'0'}">
+                                    <input type="hidden" id="orderRefundApplyIds" value="${orderRefundApplyId!''}"/>
+                                    <!--订单fingerprint-->
+                                    <input type="hidden" id="orderFingerprint" value="${(orderInfo.fingerprint)!''}"/>
+                                    <!--退款申请表refundfingerprint-->
+                                    <input type="hidden" id="refundfingerprint" value="${refundfingerprint!''}">
+                                    <div class="tab-content no-border padding-5">
+                                        <div id="faq-tab-1" class="tab-pane fade in active">
+                                            <div class="space-8"></div>
+                                            <div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+                                                <!-- 订单信息 -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-3" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 订单信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-3" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12 refundInfoGird">
+                                                                        <div class="table-responsive"><!--id="sample-table-2"-->
+                                                                            <table class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>订单号</th>
+                                                                                        <th>商户</th>
+                                                                                        <th>项目</th>
+                                                                                        <th>客户</th>
+                                                                                        <th>报备人</th>
+                                                                                        <th>所属门店</th>
+                                                                                        <th>认筹套餐</th>
+                                                                                        <th>已收认筹金额</th>
+                                                                                        <th>认筹日期</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>${(orderInfo.orderInfoCode)!''}</td>
+                                                                                        <td>${(orderInfo.merchantName)!''}</td>
+                                                                                        <td>${(orderInfo.projectInfoName)!''}</td>
+                                                                                        <td>${(orderInfo.customName)!''}</td>
+                                                                                        <td>${(orderInfo.brokerName)!''}</td>
+                                                                                        <td>${(orderInfo.storeName)!''}</td>
+                                                                                        <td>${(orderInfo.projectPackageName)!''}</td>
+                                                                                        <td>${(orderInfo.realAccAmount)!''}</td>
+                                                                                        <td>${(orderInfo.groupBuyTime)!''}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 佣金结算信息  -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-4" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 佣金结算信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-4" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th>项目名称</th>
+                                                                                    <th>所属城市</th>
+                                                                                    <th>佣金类型</th>
+                                                                                    <th>结佣对象</th>
+                                                                                    <th>结佣对象名称</th>
+                                                                                    <th>结佣金额</th>
+                                                                                    <th>佣金结算状态</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <#if orderBrokerageInfos?? && (orderBrokerageInfos?size > 0) >
+                                                                                    <#list orderBrokerageInfos as orderBrokerageInfo>
+                                                                                        <tr>
+                                                                                            <td>${(orderBrokerageInfo.projectInfoName)!''}</td>
+                                                                                            <td>${(orderBrokerageInfo.cityName)!''}</td>
+                                                                                            <td>${(orderBrokerageInfo.brokerageType)!''}</td>
+                                                                                            <td>${(orderBrokerageInfo.brokerageObject)!''}</td>
+                                                                                            <td>${(orderBrokerageInfo.brokerageObjectName)!''}</td>
+                                                                                            <td>${(orderBrokerageInfo.brokerageDistributionAmount)
+                                                                                                !''}</td>
+                                                                                            <td>${(orderBrokerageInfo.brokeragerStatusDetail)!''}</td>
+                                                                                        </tr>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 收款信息  -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-5" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 收款信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-5" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th>收款类型</th>
+                                                                                    <th>终端编号</th>
+                                                                                    <th>交易参考号</th>
+                                                                                    <th>开户行</th>
+                                                                                    <th>开户行支行</th>
+                                                                                    <th>账号</th>
+                                                                                    <th>银行卡类型</th>
+                                                                                    <th>金额</th>
+                                                                                    <th>交易时间</th>
+                                                                                    <th>收款用途</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <#if orderInfoFinanceEbGriddatas?? && (orderInfoFinanceEbGriddatas?size > 0) >
+                                                                                    <#list orderInfoFinanceEbGriddatas as orderInfoFinanceEbGriddata>
+                                                                                        <tr>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.ebAccountDetailTypeDescribe)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.posTerminalCode)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.tradeRefCode)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.payBankName)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.bankName)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.payAccountNumber)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.payAccountType)!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.distributionAmount)!''}</td>
+                                                                                            <td>${((orderInfoFinanceEbGriddata.tradeTime)?string
+                                                                                                ("yyyy-MM-dd"))!''}</td>
+                                                                                            <td>${(orderInfoFinanceEbGriddata.used)!''}</td>
+                                                                                        </tr>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 退款账户信息   -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-6" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 退款账户信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-6" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="table-responsive">
+                                                                            <table id="sample-table-2"  class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th>退款人</th>
+                                                                                    <th>申请人</th>
+                                                                                    <th>申请时间</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <#if OrderRefundExtends?? && (OrderRefundExtends?size > 0) >
+                                                                                    <#list OrderRefundExtends as OrderRefundExtend>
+                                                                                        <tr>
+                                                                                            <td>${OrderRefundExtend.payment}</td>
+                                                                                            <td>${(OrderRefundExtend.applyName)!''}</td>
+                                                                                            <td>${(OrderRefundExtend.createTime)!''}</td>
+                                                                                        </tr>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="table-responsive">
+                                                                            <table id="sample-table-3"
+                                                                                   class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th hidden>退款详情ID</th>
+                                                                                    <th hidden>退款详情指纹</th>
+                                                                                    <th>是否原卡原退</th>
+                                                                                    <th>退款方式</th>
+                                                                                    <th>银行卡号</th>
+                                                                                    <th>退款金额</th>
+                                                                                    <th>退款金额大写</th>
+                                                                                    <th>银行卡所属</th>
+                                                                                    <th>开户行支行</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <#if refundDetailView?? && (refundDetailView?size > 0) >
+                                                                                	<#list refundDetailView as refundDetail>
+                                                                                    <tr>
+                                                                                        <td hidden>${refundDetail.order_refund_detail_id}</td>
+                                                                                        <td hidden>
+                                                                                            <input type="hidden" value="${(refundDetail.fingerprint)!''}">
+                                                                                        </td>
+                                                                                        <td>${refundDetail.is_to_src}</td>
+                                                                                        <td>${(refundDetail.refund_type)!''}</td>
+                                                                                        <td>${(refundDetail.bank_account_number)!''}</td>
+                                                                                        <td>${(refundDetail.refund_amount)!''}</td>
+                                                                                        <td>${(refundDetail.refund_amount_chain)!''}</td>
+                                                                                        <td>${(refundDetail.bank_account_name)!''}</td>
+                                                                                        <td>${(refundDetail.bank_name)!''}</td>
+                                                                                    </tr>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--流程选择框-->
+                                                <div id="refundFlow" class="hide cssClass">
+                                                    <br/>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <h4 class="red">请选择要发起的流程:</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <select id="refundFlows" name="flowId" data-placeholder="请选择流程"
+                                                                            url="../../flow/initFlowOption?flowType=refund">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                </div>
+
+                                                <!-- 附件信息 -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-fj" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 附件信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-fj" aria-expanded="false">
+
+                                                        <div class="panel-body">
+                                                            <div id="houseContent" class="tab-pane">
+                                                                <ul class="ace-thumbnails" id="buildingHouseImg">
+                                                                    <#if (refundAttGriddatas)?? && (refundAttGriddatas?size gt 0)>
+                                                                        <#list refundAttGriddatas as att>
+                                                                            <li style="border: 1px solid #333;">
+                                                                                <a href="${basePath}${(att.order_attachment_url?replace('s_','l_'))!''}"
+                                                                                   title="${(att.order_attachment_type)!''}${att_index+1}"data-rel="colorbox">
+                                                                                    <img class="building_house_img" src="${basePath}${(att.order_attachment_url)!''}">
+                                                                                </a>
+                                                                                <div class="favourable msgDiv">
+                                                                                    <span class="lbl" id="">${(att.order_attachment_type)!''}${att_index+1}</span>
+                                                                                </div>
+                                                                            </li>
+                                                                        </#list>
+                                                                    </#if>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- 审批日志  -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-8" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 审批日志
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-8" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-striped table-bordered table-hover">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th>节点名称</th>
+                                                                                    <th>审批结果</th>
+                                                                                    <th>审批意见</th>
+                                                                                    <th>审批人</th>
+                                                                                    <th>审批时间</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <#if flowDetails?? && (flowDetails?size > 0) >
+                                                                                    <#list flowDetails as flowDetail>
+                                                                                        <tr>
+                                                                                            <td>${(flowDetail.flow_node_name)!''}</td>
+                                                                                            <td>${(flowDetail.exe_status)!''}</td>
+                                                                                            <td>${(flowDetail.remark)!''}</td>
+                                                                                            <td>${(flowDetail.operator_name)!''}</td>
+                                                                                            <td>${(flowDetail.exe_time)!''}</td>
+                                                                                        </tr>
+                                                                                    </#list>
+                                                                                </#if>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 审批意见  -->
+                                                <div class="panel panel-default" id="opinionDiv" >
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-9" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 审批意见
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-9" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <textarea rows="5" id="vacationRemark" name="remark" cols="150"
+                                                                                  style="width:80%;" maxlen="128"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <button id="passBtn" class="btn btn-info" type="button">
+                                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                                审核通过
+                                            </button>
+
+                                            &nbsp; &nbsp; &nbsp;
+                                            <button id="noPassBtn" class="btn btn-danger" type="button">
+                                                <i class="ace-icon fa fa-times bigger-110"></i>
+                                                 驳回
+                                            </button>
+
+                                            &nbsp; &nbsp; &nbsp;
+                                            <button id="backBtn" class="btn" type="reset">
+                                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                                返回
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        /*全局根路径变量*/
+        var refundAuditFlowPaths = "${basePath}"
+
+        var openType = '${openType!""}';
+
+        <#if !orderInfo??>
+        Common.alert("或数据有变化，请刷新列表后再试！",false,function () {
+            if(openType=='audit'){
+                window.location=refundAuditFlowPaths+"/flow/toflowwaitauditlist";
+            }else{
+                window.location=refundAuditFlowPaths+"/flow/toflowhaveauditlist";
+            }
+            Common.showMask();
+        });
+        </#if>
+
+        //初始化画廊
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(Common.colorbox_params);
+    </script>
+    <script type="text/javascript" src="../../assets/module/order/vacationOrRefund/refundAuditFlow.js"></script>
+
+</html>

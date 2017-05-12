@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>申请退房</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+        <#include "/common/include_head_css.html"/>
+        <#include "/common/include_jquery_core.html"/>
+        <#include "/common/include_bootstrap_core.html"/>
+        <#include "/common/include_ace_core.html"/>
+        <#include "/common/include_jqgrid_core.html"/>
+        <#include "/common/include_plugin.html"/>
+        <#include "/common/include_photo_album.html"/>
+        <link rel="stylesheet" href="${basePath}/assets/module/project/css/project.css" />
+        <style type="text/css">
+            .textLeft{
+                text-align: left !important;
+                margin: 0px;
+                padding-top: 5px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #999999;
+                padding-left:0;
+                padding-right: 0 !important;
+            }
+            .msgDiv{
+                font-size: 15px;
+                height: 35px;
+                line-height: 35px;
+                background-color: #6fb3e0;
+                margin-top:0;
+                color: #f5f5f5;
+            }
+            .cancleY{
+                display: inline-block;
+                cursor: pointer;
+                text-align: center;
+                width: 51%;
+                background: #EFEFEF no-repeat 0 0;
+                color: black;
+            }
+            .cancleN{
+                display: inline-block;
+                text-align: center;
+                width: 49%;
+                color: #f5f5f5;
+            }
+        </style>
+    </head>
+    <body class="no-skin">
+
+        <div class="main-container" id="main-container">
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="page-content-area">
+                        <div class="page-header">
+                            <h1>
+                                退房申请
+                                <small>
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                    申请退房
+                                </small>
+                            </h1>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form id="vacationForm" class="form-horizontal" role="form">
+                                    <input type="hidden" id="fingerprint" name="fingerprint" value="${(aboutInfo.fingerprint)!''}" />
+                                    <input type="hidden" id="orderInfoId" name="orderInfoId" value="${orderInfoId!''}" />
+                                    <div class="tab-content no-border padding-5">
+                                        <div id="faq-tab-1" class="tab-pane fade in active">
+                                            <div class="space-8"></div>
+                                            <div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+                                                <!-- 订单信息 -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-3" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 订单信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-3" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12 vacationOrderGird">
+                                                                                <table id="vacationOrderGrid-table"></table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 退房信息 -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-4" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 退房信息
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-4" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <!-- 认购房号 -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 认购房号: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text" name="houseNumber"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.houseNumber)!''}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 认购户型: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 认购户型: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text" name="houseType"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.houseType)!''}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 认购总价: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 认购总价: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text" name="houseAmount"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${((aboutInfo.houseAmount)?string(',###.00'))!'0.00'}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 网签总价: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 网签总价: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text"  name="onlineSignAmount"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${((aboutInfo.onlineSignAmount)?string(',###.00'))!'0.00'}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 认购房源: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 认购房源: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text" name="houseInfo"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.houseInfo)!''}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 建筑面积: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 建筑面积: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text"  name="floorArea"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.floorArea)!'0.00'}(平方米)" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 套内面积: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 套内面积: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text"  name="useArea"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.useArea)!'0.00'}(平方米)" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- 赠送面积: -->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right" > 赠送面积: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input readonly="readonly" type="text"  name="giveArea"
+                                                                                           class="col-xs-10 col-sm-5"
+                                                                                           value="${(aboutInfo.giveArea)!'0.00'}(平方米)" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--退房时间-->
+                                                                        <div class="form-group">
+                                                                            <label class="col-sm-2 control-label no-padding-right"> 退房时间: </label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="clearfix">
+                                                                                    <input class="date-picker col-xs-10 col-sm-5" name="vacationTime"
+                                                                                           id="vacationTime" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择退房时间"  title="退房时间"/>
+                                                                                    <label class="red"> &nbsp;&nbsp;&nbsp;*</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 退房附件  -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-7" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 退房申请附件
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-7" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label no-padding-right" for="uploadFile">
+                                                                    <!--文件上传 -->
+                                                                </label>
+                                                                <div class="col-sm-8">
+                                                                    <div class="clearfix">
+                                                                        <input type="hidden" id="orderAttachmentName" name="orderAttachmentName"/>
+                                                                        <input type="hidden" id="orderAttachmentUrl" name="orderAttachmentUrl"/>
+                                                                        <input type="file" id="uploadFile" name="uploadFile"
+                                                                               class="col-xs-10 col-sm-5"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- 附件展示区 -->
+                                                            <div class="form-group">
+                                                                <div id="houseContent" class="tab-pane">
+                                                                    <ul class="ace-thumbnails" id="attImg">
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- 备注  -->
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <a href="#faq-1-6" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+                                                            <i class="pull-right ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+                                                            &nbsp; 备注
+                                                        </a>
+                                                    </div>
+                                                    <div class="panel-collapse collapse in" id="faq-1-6" aria-expanded="false">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12">
+                                                                        <textarea rows="5" id="vacationRemark" name="remark" cols="150"
+                                                                                  style="width:80%;" maxlength="500"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <@shiro.hasPermission name="order:vacation:vacationapply">
+                                            <button id="saveBtn" class="btn btn-info" type="button">
+                                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                                提交审核
+                                            </button>
+                                            </@shiro.hasPermission>
+                                            &nbsp; &nbsp; &nbsp;
+                                            <button id="vacationBtnReset" class="btn" type="reset">
+                                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                                返回
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        /*全局根路径变量*/
+        var vacationPaths = "${basePath}";
+       <#if !aboutInfo??>
+            Common.alert("或数据有变化，请刷新列表后再试！",false,function () {
+                location.href = vacationPaths+"/financial/orderrefundapply/index?pageFlag=vacationPlag";
+                Common.showMask();
+            });
+       </#if>
+        //删除附件
+        function deleteFj(target){
+            Common.confirm("确定删除该附件吗?",function(){
+                Common.messageBox("提示","删除成功!",true);
+                $(target).parent().parent().remove();
+                refreshFjs();
+            })
+        }
+
+        //刷新附件
+        function refreshFjs(){
+            var fjjs ='';
+            var fjjnames = '';
+            $("input[name=img_url]").each(function(){
+                if(fjjs == ''){
+                    fjjs = $(this).val();
+                }else{
+                    fjjs += ';' + $(this).val();
+                }
+            });
+            $("input[name=img_name]").each(function(){
+                if(fjjnames == ''){
+                    fjjnames = $(this).val();
+                }else{
+                    fjjnames += ';' + $(this).val();
+                }
+            });
+            $("#orderAttachmentName").val(fjjnames);
+            $("#orderAttachmentUrl").val(fjjs);
+            //初始化画廊
+            $('.ace-thumbnails [data-rel="colorbox"]').colorbox(Common.colorbox_params);
+        }
+
+    </script>
+    <script type="text/javascript" src="../../assets/module/order/vacationOrRefund/vacationApply.js"></script>
+</html>

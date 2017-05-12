@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+	<head>
+		<title>开发商回款管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.btn-title{
+			    border: 3px solid #FFF;
+			    /* border-radius: 0; */
+			    margin-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content" style="padding-bottom:0px;padding-top:0px;">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								财务管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									开发商回款管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                	<@shiro.hasPermission name="finance:devpayment:getgriddata">
+                                    <li class="active">
+                                        <a data-toggle="tab" id="tab1" href="#home">
+                                            <i class="green icon-home bigger-110"></i>
+											回款分配管理
+                                        </a>
+                                    </li>
+                                    </@shiro.hasPermission>
+
+									<@shiro.hasPermission name="finance:devpayment:getordergriddata">
+                                    <li>
+                                        <a data-toggle="tab" id="tab2" href="#profile">
+											待回款订单列表
+                                            <!--<span class="badge badge-danger">4</span>-->
+                                        </a>
+                                    </li>
+                                    </@shiro.hasPermission>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane in active">
+                                        <!--条件查询-->
+                                        <div id="condition1" class="hide">
+											<div class="row">
+												<div class="col-xs-12">
+													<form class="form-horizontal" role="form">
+														<!-- #section:elements.form -->
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="province"> 回款方式 </label>
+															
+															<div class="col-sm-8">
+																<select id="payWay" name="payWay" style="width: 150px;" data-placeholder="选择回款方式"  url="../../common/getpaytypecombo">
+																		</select>
+															</div>
+														</div>
+														
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="province"> 状态  </label>
+									
+															<div class="col-sm-8">
+																<select id="status" name="status" style="width: 150px;" data-placeholder="选择回款状态"  url="../../common/getpaymentstatuscombo">
+																		</select>
+															</div>
+														</div>
+									
+														<div class="space-4"></div>
+									
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="buildingProject"> 回款开发商 </label>
+									
+															<div class="col-sm-8">
+																<select id="merchantId" name="merchantId" style="width: 150px;" data-placeholder="选择回款开发商"  url="../../common/getcompanycombo">
+																		</select>
+															</div>
+														</div>
+									
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 回款批次号 </label>
+									
+															<div class="col-sm-8">
+																<input type="text" id="devAccountDetailId" style="width: 150px;" placeholder="输入回款批次号">
+															</div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 回款时间 </label>
+									
+															<div class="col-sm-8">
+																<input class="date-picker" style="width: 150px;" name="tradeTime" id="tradeTime" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择回款日期"/>
+															</div>
+														</div>
+														
+													</form>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<button id="query1" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-search blue"></i> 搜索
+												</button>
+												<@shiro.hasPermission name="finance:devpayment:save">
+												<button id="add" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-plus green"></i> 添加
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:view">
+												<button id="view1" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-reorder red"></i> 查看
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:delete">
+												<button id="delete" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-trash-o orange"></i> 删除
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:savedistribution">
+												<button id="distribution" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-cogs blue"></i> 分配
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:todistributiondetail">
+												<button id="seeDistribution" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-reorder red"></i> 查看分配订单
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:excel">
+												<button id="excel" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+												</button>
+												</@shiro.hasPermission>
+											</div>
+											<div class="col-sm-12">
+											<label style="color: #2594dc;">
+											<i class="ace-icon fa fa-jpy"></i>
+											&nbsp;已回款总金额：<span id="aboutMoneyA1">${money.aboutMoneyA}</span>&nbsp;(元)&nbsp;&nbsp;
+											<i class="ace-icon fa fa-jpy"></i>
+											已分配回款：<span id="aboutMoneyB1">${money.aboutMoneyB}</span>&nbsp;(元)&nbsp;&nbsp;
+											<i class="ace-icon fa fa-jpy"></i>
+											待分配回款：<span id="countUnallocatedPayment1">${money.countUnallocatedPayment}</span>&nbsp;(元)
+											</label>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 paymentGrid">
+												<table id="grid-table-1"></table>
+												<div id="grid-pager-1"></div>
+											</div>
+										</div>
+									</div>
+									<div id="profile" class="tab-pane">
+										<div id="condition2" class="hide">
+											<div class="row">
+												<div class="col-xs-12">
+													<form class="form-horizontal" role="form">
+														<!-- #section:elements.form -->
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="province"> 客户姓名</label>
+															
+															<div class="col-sm-8">
+																<input type="text" id="customName" placeholder="输入客户姓名">
+															</div>
+														</div>
+														
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="province"> 订单号  </label>
+									
+															<div class="col-sm-8">
+																<input type="text" id="orderInfoCode" placeholder="输入订单号">
+															</div>
+														</div>
+									
+														<div class="space-4"></div>
+									
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="buildingProject"> 所属公司 </label>
+									
+															<div class="col-sm-8">
+																<select id="borkerCompanyId" name="borkerCompanyId" data-placeholder="选择所属公司"  url="../../common/getbrokercompanycombo">
+																		</select>
+															</div>
+														</div>
+									
+														<div class="space-4"></div>
+									
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 门店 </label>
+									
+															<div class="col-sm-8">
+																<select id="storeId" name="storeId" data-placeholder="选择门店"  url="../../common/getstorecombo">
+																		</select>
+															</div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 渠道 </label>
+									
+															<div class="col-sm-8">
+																<select id="channelType" name="channelType" data-placeholder="选择渠道"  url="../../common/getchanneltypecombo">
+																		</select>
+															</div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 报备人 </label>
+									
+															<div class="col-sm-8">
+																<input type="text" id="brokerName" placeholder="输入报备人">
+															</div>
+														</div>
+														
+														<div class="form-group">
+															<label class="col-sm-4 control-label no-padding-right" for="datePeriod"> 报备人电话 </label>
+									
+															<div class="col-sm-8">
+																<input type="text" id="brokerTel" placeholder="输入报备人电话">
+															</div>
+														</div>
+														
+													</form>
+												</div>
+											</div>
+										</div>
+										<!-- 以上div层必写 -->
+										<div class="row">
+											<div class="col-sm-12">
+												<button id="query2" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-search blue"></i> 搜索
+												</button>
+												<@shiro.hasPermission name="finance:devpayment:todistributionorderdetail">
+												<button id="view" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-reorder red"></i> 查看
+												</button>
+												</@shiro.hasPermission>
+												<@shiro.hasPermission name="finance:devpayment:orderexcel">
+												<button id="excelOrder" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+												</button>
+												</@shiro.hasPermission>
+											</div>
+											<div class="col-sm-12">
+											<label style="color: #2594dc;">
+											待回款笔数：<span id="stayBackTotal2">${moneyOrder.stayBackTotal}</span>&nbsp;(笔)&nbsp;&nbsp;&nbsp;
+											<i class="ace-icon fa fa-jpy"></i>
+											待回款总金额：<span id="stayBackCount2">${moneyOrder.stayBackCount}</span>&nbsp;(元)&nbsp;&nbsp;&nbsp;
+											<i class="ace-icon fa fa-jpy"></i>
+											已回款总金额：<span id="aboutMoneyA2">${money.aboutMoneyA}</span>&nbsp;(元)&nbsp;&nbsp;&nbsp;
+											<i class="ace-icon fa fa-jpy"></i>
+											待分配回款：<span id="countUnallocatedPayment2">${money.countUnallocatedPayment}</span>&nbsp;(元)
+											</label>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 orderGrid">
+												<table id="orderGrid"></table>
+												<div id="orderPager"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/payment/paymentindex.js?${.now?long}"></script>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	var tab="${tab!''}";
+	</script>
+</html>

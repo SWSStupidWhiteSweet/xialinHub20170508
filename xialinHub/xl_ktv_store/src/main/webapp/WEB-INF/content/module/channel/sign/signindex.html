@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>门店项目合作关系管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<#include "/common/include_head_css.html"/> 
+<#include "/common/include_jquery_core.html"/> 
+<#include "/common/include_bootstrap_core.html"/> 
+<#include "/common/include_ace_core.html"/> 
+<#include "/common/include_jqgrid_core.html"/> 
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>渠道管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								公司/项目合作
+							</small>
+						</h1>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<button id="signindex_options" class="btn btn-white btn-default btn-round">
+										 <span class="ace-icon fa fa-search blue"></span>&nbsp;搜索
+									</button>
+									<@shiro.hasPermission name="channel:sign:add">
+										<button id="signindex_add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i>添加
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:eidt">
+										<button id="signindex_edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i>修改
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:look">
+									<button id="signindex_info" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-reorder red"></i>查看
+									</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:del">
+										<button id="signindex_del" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-trash-o orange"></i>删除
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:auditpass">
+										<button id="signindex_auditpass" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-check green"></i>审核通过
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:auditnopass">
+										<button id="signindex_auditnopass" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-times red"></i>审核不通过
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:import">
+										<button id="signindex_import" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-upload blue"></i>导入
+										</button>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="channel:sign:export">
+										<button id="signindex_export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+									</@shiro.hasPermission> 
+									<@shiro.hasPermission name="channel:sign:download">
+										<button id="signindex_downloadDemo" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-download blue"></i>导入模板下载
+										</button>
+									</@shiro.hasPermission>
+									 <@shiro.hasPermission name="channel:sign:addBroker">
+										<button id="signindex_addBroker" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i>添加门店
+										</button>
+									</@shiro.hasPermission> 
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<table id="signindex_grid-table"></table>
+									<div id="signindex_grid-pager"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="signindex_condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="condition_auditStatus">审核状态：</label>
+						<select id="condition_auditStatus" class="col-xs-10 col-sm-7" data-placeholder="请选审核状态"  url="../../common/getbuildingprojectlogauditflag" > 
+						</select>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="condition_signName">签约名称：</label>
+						<div class="col-sm-9">
+							<input type="text" id="condition_signName" class="col-xs-10 col-sm-6"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="signindex_importDiv" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"
+								for="fileName"> 文件名称： </label>
+						<div class="col-sm-7">
+							<div class="clearfix">
+								<div id="queue_uploadDiv"></div>
+								<input type="text" id="fileName" readonly="readonly"
+									name="fileName" class="col-xs-10 col-sm-7">
+								<button id="uploadBtn" class="btn btn-white btn-default btn-round uploadFile"/>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('.date-picker').datepicker({
+		autoclose : true
+	});
+</script>
+<script type="text/javascript" src="../../assets/module/channel/sign/signindex.js"></script>
+</html>

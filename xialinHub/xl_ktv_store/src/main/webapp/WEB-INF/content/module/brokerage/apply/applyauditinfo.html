@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-header">
+						<h1>
+							结佣已申请管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								结佣申请审核
+							</small>
+						</h1>
+						<input type="hidden" id = "brokerageDistributionId" value="${(data?eval.brokerage_distribution_id)!''}"></input>
+						<input type="hidden" id = "orderInfoId" value="${(data?eval.order_info_id)!''}"></input>
+						<input type="hidden" id = "applyAmount" value="${(data?eval.brokerage_distribution_amount)!''}"></input>
+						<input type="hidden" id = "brokerageType" value="${(data?eval.brokerage_type)!''}"></input>
+					</div>
+					<div class="page-content-area">
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="applyAuditForm" class="form-horizontal" role="form">
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">订单号：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.order_info_code)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">电商项目名称：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.project_info_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">所属城市：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.city_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">佣金类型：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.brokerage_type)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">结佣对象：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.brokerage_object)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">结佣公司：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.broker_company_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">结佣门店：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.store_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">经纪人：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.broker_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">应结佣金：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="color:red;">
+												${(data?eval.settle_amount)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">禁止佣金：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="color:red;">
+												${(data?eval.forbid_amount)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">已结佣金：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="margin-top:5px;color:red;">
+												${(data?eval.real_amount)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">本次申请金额：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="margin-top:5px;color:red;">
+												${(data?eval.brokerage_distribution_amount)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">申请人：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="margin-top:5px;">
+												${(data?eval.operator_name)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">申请时间：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110" style="margin-top:5px;">
+												${(data?eval.create_time)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">申请人备注：</label>
+										<div class="col-sm-9" style="margin-top:5px;">
+											<span class="bigger-110">
+												${(data?eval.remark)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">备注：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="auditRemark" name="auditRemark" placeholder="备注" class="col-xs-10 col-sm-5">
+											</div>
+										</div>
+									</div>
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="agree" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												通过
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="noAgree" class="btn btn-danger" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												不通过
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="auditBackBtn" class="btn" type="button">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/brokerage/apply/applyauditinfo.js"></script>
+</html>

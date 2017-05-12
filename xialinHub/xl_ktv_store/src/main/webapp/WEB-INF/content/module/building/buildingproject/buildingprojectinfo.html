@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>info页面</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.small-map {
+				width: 398px;
+				margin-top:18px;
+				height: 210px;
+			}
+			.message-serch-content{
+				border:1px solid #C0C0C0;
+				width:300px;
+				height:auto;
+				z-index:100;
+				display:none;
+			}
+			.img-div{
+				width: 80px;
+				height: 80px;
+			}
+			.required-star{
+				color: tomato;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								<a href="../buildingproject/buildingprojectindex">楼盘管理</a>
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+										新增楼盘
+										<#elseif actionType == "modify">
+											<span style="color:green;">${buildingProject.buildingProjectName}</span>--修改楼盘
+											<#else>
+												<span style="color:green;">${buildingProject.buildingProjectName}</span>--楼盘详情
+									</#if>
+								</small>
+							</h1>
+						</div>
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="buildingProjectForm" class="form-horizontal" role="form">
+									<input type="hidden" id="actionType" value="${actionType}" />
+									<input type="hidden" id="buildingProjectId" value="${(buildingProject.buildingProjectId)!''}" />
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="buildingProjectName"> 楼盘名称 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="buildingProjectName" name="buildingProjectName" type="text" class="col-xs-10 col-sm-5" placeholder="请输入楼盘名称" value="${(buildingProject.buildingProjectName)!''}">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="companyId"> 开发商 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="companyId" name="companyId" readonly="readonly" data-placeholder="选择开发商"  url="../common/getallcompanycombo" selectval="${(buildingProject.companyId)!'1'}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="status"> 状态 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="status" name="status" readonly="readonly" data-placeholder="选择状态"  url="../common/getstatuscombo" selectval="${(buildingProject.status)!'1'}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="provinceId"> 所属省 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="provinceId" name="provinceId" data-placeholder="选择所属省" url="../common/getprovincecombo" child="cityId" selectval="${(buildingProject.provinceId)!''}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cityId"> 所属市 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="cityId" name="cityId" data-placeholder="选择所属市" url="../common/getcitycombo" child="districtId" selectval="${(buildingProject.cityId)!''}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="districtId"> 所属区 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="districtId" name="districtId" data-placeholder="选择所属区" url="../common/getdistrictcombo" child="plateId" selectval="${(buildingProject.districtId)!''}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="plateId"> 所属板块</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="plateId" name="plateId" data-placeholder="选择所属板块" url="../common/getplatecombo"  selectval="${(buildingProject.plateId)!''}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<!-- #section:elements.form -->
+
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="startDate">开盘时间 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input class="date-picker col-xs-10 col-sm-5" style="width: 380px;" name="startDate" id="startDate" <#if (((buildingProject.startDate)!'')!='1970-01-01')> value="${(buildingProject.startDate)!''}" </#if> type="text" data-date-format="yyyy-mm-dd"  placeholder="开盘时间"  title="开盘日期"/>
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<input class="ace" type="checkbox" id="startDateUndetermined" <#if (((buildingProject.startDate)!'')=='1970-01-01')>checked</#if> name="startDateUndetermined"  />
+														<span class="lbl">待定</span>
+														<span class="required-star">*</span>
+													</label>
+												</span>
+
+                                            </div>
+										</div>
+                                        <div class="col-sm-9"> </div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="joinDate">交房时间 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input class="date-picker col-xs-10 col-sm-5"  style="width: 380px;" name="joinDate" id="joinDate" <#if (((buildingProject.joinDate)!'')!='1970-01-01')>value="${(buildingProject.joinDate)!''}"</#if> type="text" data-date-format="yyyy-mm-dd" placeholder="交房时间" title="交房日期"/>
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<input class="ace" type="checkbox" id="jionDateUndetermined"   <#if (((buildingProject.joinDate)!'')=='1970-01-01')>checked</#if> name="jionDateUndetermined"  />
+														<span class="lbl">待定</span>
+														<span class="required-star">*</span>
+													</label>
+												</span>
+                                            </div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="address"> 楼盘地址 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="address" name="address" placeholder="请输入楼盘地址" class="col-xs-10 col-sm-5" value="${(buildingProject.address)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="longitude"> 经度</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="longitude" name="longitude" placeholder="请输入经度" readonly="" class="col-xs-10 col-sm-5" value="${((buildingProject.longitude)!0)?string('###.######')}" />
+												<span class="required-star">*</span>
+											</div>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="latitude"> 纬度</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="latitude" name="latitude" placeholder="请输入纬度" readonly="readonly" class="col-xs-10 col-sm-5"  value="${((buildingProject.latitude)!0)?string('###.######')}"  />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="latitude"> 地图选点： </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<div style="height: 20px;margin: 0; padding: 0;width: 400px;">
+													<input type="text" id="mapSearch" style="width: 380px;" placeholder="输入地名进行搜索"/>
+													<div id="searchResultPanel" class="message-serch-content"></div>
+												</div>
+												<div id="allmap" class="small-map"></div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="biref"> 楼盘简介</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<textarea type="" id="biref" name="biref" placeholder="请输入楼盘简介" class="col-xs-10 col-sm-5"  >${(buildingProject.biref)!''}</textarea>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="sky720url"> 空中720url</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="sky720url" name="sky720url" placeholder="请输入720url" class="col-xs-10 col-sm-5" value="${(buildingProject.sky720url)!''}" />
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="propertyCompany"> 物业公司名称</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="propertyCompany" name="propertyCompany" placeholder="请输入物业公司名称" class="col-xs-10 col-sm-5" value="${(buildingProject.propertyCompany)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="tel"> 售楼电话</label>
+
+									<div class="col-sm-9">
+										<div class="clearfix">
+											<input type="text" id="tel" name="tel" placeholder="请输入售楼电话" class="col-xs-10 col-sm-5" value="${(buildingProject.tel)!''}" />
+											<span class="required-star">*</span>
+										</div>
+									</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tel400"> 营销400电话</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="tel400" name="tel400" placeholder="请输入营销400电话" class="col-xs-10 col-sm-5" value="${(buildingProject.tel400)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="saleStatus"> 销售状态 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="saleStatus" name="saleStatus" data-placeholder="选择销售状态"  url="../common/getsalestatus" selectval="${(buildingProject.saleStatus)!''}">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tags"> 楼盘标签 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="tags" name="tags" multiple="multiple" data-placeholder="选择楼盘标签"  url="../common/getbuildingtagscombo" selectval=${(buildingProject.tags)!''}>
+												</select>
+											</div>
+										</div>
+									</div>
+									<!--<div class="form-group">-->
+										<!--<label class="col-sm-3 control-label no-padding-right" for="tel400"> 营销400电话</label>-->
+
+										<!--<div class="col-sm-9">-->
+											<!--<div class="clearfix">-->
+												<!--<input type="text" id="tel400" name="tel400" placeholder="请输入营销400电话" class="col-xs-10 col-sm-5" value="${(buildingProject.tel400)!''}" />-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="footprint"> 占地面积</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="footprint" name="footprint" onkeydown="jsVolumeRate()" onkeyup="jsVolumeRate()" placeholder="请输入占地面积" class="col-xs-10 col-sm-5" value="${(buildingProject.footprint)!''}" />
+
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<span class="lbl">平方米</span>
+														<span class="required-star">*</span>
+													</label>
+												</span>
+
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="floorArea"> 建筑面积</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="floorArea" onkeydown="jsVolumeRate()" name="floorArea" onkeyup="jsVolumeRate()" placeholder="请输入建筑面积" class="col-xs-10 col-sm-5" value="${(buildingProject.floorArea)!''}" />
+
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<span class="lbl">平方米</span>
+														<span class="required-star">*</span>
+													</label>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="volumeRatio"> 容积率</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="volumeRatio" readonly="readonly" name="volumeRatio" placeholder="容积率" class="col-xs-10 col-sm-5" value="${(buildingProject.volumeRatio)!''}" />
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"  for="greeningRatio"> 绿化率</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="greeningRatio" name="greeningRatio" placeholder="请输入绿化率" class="col-xs-10 col-sm-5" value="${(buildingProject.greeningRatio)!''}" />
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<span class="lbl">%</span>
+														<span class="required-star">*</span>
+													</label>
+												</span>
+
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="houseTotal"> 总户数</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="houseTotal" name="houseTotal" placeholder="请输入总户数" class="col-xs-10 col-sm-5" value="${(buildingProject.houseTotal)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="parkingTotalUg"> 地下停车位</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="parkingTotalUg" name="parkingTotalUg" placeholder="请输入地下停车位" class="col-xs-10 col-sm-5" value="${(buildingProject.parkingTotalUg)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="parkingTotalLg"> 地上停车位</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="parkingTotalLg" name="parkingTotalLg" placeholder="请输入地上停车位" class="col-xs-10 col-sm-5" value="${(buildingProject.parkingTotalLg)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="price"> 均价(元)</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="price" name="price" placeholder="请输入均价" class="col-xs-10 col-sm-5" <#if (((buildingProject.price)!-1)!= 0)>value="${(buildingProject.price)!''}"</#if> />
+
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<input class="ace" type="checkbox" id="priceUndetermined" <#if (((buildingProject.price)!-1)== 0)>checked</#if> name="priceUndetermined"  />
+														<span class="lbl">待定</span>
+														<span class="required-star" >*</span>
+													</label>
+												</span>
+
+                                            </div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="buildingInfoSort"> 排序</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="buildingInfoSort" name="buildingInfoSort" placeholder="请输入排序号" class="col-xs-10 col-sm-5" value="${(buildingProject.buildingInfoSort)!''}" />
+											</div>
+										</div>
+									</div>
+
+
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="buildingproject:create">
+											<#if actionType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="buildingProject:update">
+											<#if actionType == "modify">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=826e806b86676d155282de3d37188137"></script>
+	<script type="text/javascript">
+        var map = new BMap.Map("allmap"); // 将地址渲染到图层上
+        //var myIcon = new BMap.Icon("${basePath}/assert/img/baiduMark.png", new BMap.Size(40, 40));
+        map.enableScrollWheelZoom(); // 滚轮放大缩小
+        map.addEventListener("tilesloaded", function(){isSuccess = true;});
+
+        var isSuccess = false; // 地图是否加载成功标志
+
+        // 创建一个点地地图上
+        // 创建一个点地地图上
+        var longitude= $("#longitude").val();
+        var latitude=$("#latitude").val();
+        if(!Common.isEmpty(longitude) && longitude!=0 ){
+            var point = new BMap.Point(longitude, latitude);
+            map.centerAndZoom(point, 12);
+            var marker = new BMap.Marker(point);  // 创建标注
+            map.addOverlay(marker);               // 将标注添加到地图中
+            marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+            map.setCenter(point);
+        }else {
+            var point = new BMap.Point(116.331398, 39.897445);
+            map.centerAndZoom(point, 12);
+            var localCity = new BMap.LocalCity(); // 通过IP地址定位到当前城市
+            localCity.get(function(result) {
+                var cityName = result.name; // 城市名称
+                map.setCenter(cityName); // 将地图中心点设置在这个城市
+            });
+        }
+
+
+
+        // 为地图绑定click事件
+        map.addEventListener("click", getCoordinate);
+        /**
+         //搜索
+         $("#BMAP_Search_ByLocalName_SearchButton").click(function(){
+			var addr =	$("#BMAP_Search_ByLocalName_Text").val();
+			if(!addr)return;
+			var local = new BMap.LocalSearch(map, {
+				renderOptions:{map: map}
+			});
+			local.search(addr);
+		});
+         */
+            // 建立一个自动完成的对象
+        var ac = new BMap.Autocomplete({
+                "input" : "mapSearch",
+                "location" : map
+            });
+
+        // 鼠标放在下拉列表上的事件
+        ac.addEventListener("onhighlight", function(e) {
+            var str = "";
+            var _value = e.fromitem.value;
+            var value = "";
+
+            if (e.fromitem.index > -1) {
+                value = _value.province + _value.city + _value.district + _value.street + _value.business;
+            }
+
+            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+            value = "";
+            if (e.toitem.index > -1) {
+                _value = e.toitem.value;
+                value = _value.province + _value.city + _value.district + _value.street + _value.business;
+            }
+            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+            $("#searchResultPanel").html(str);
+        });
+
+        var myValue;
+        //鼠标点击下拉列表后的事件
+        ac.addEventListener("onconfirm", function(e) {
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            $("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+
+            setPlace();
+        });
+
+        function setPlace() {
+            map.clearOverlays();    //清除地图上所有覆盖物
+            function myFun(){
+                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, 18);
+                map.addOverlay(new BMap.Marker(pp));    //添加标注
+                $("#longitude").val(pp.lng);
+                $("#latitude").val(pp.lat);
+            }
+
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+
+            local.search(myValue);
+        }
+
+        function getCoordinate(e) {
+            map.clearOverlays();
+            var new_point = new BMap.Point(e.point.lng,e.point.lat);
+            var marker = new BMap.Marker(new_point);  // 创建标注
+            map.addOverlay(marker);
+            $("#longitude").val(e.point.lng);
+            $("#latitude").val(e.point.lat);
+        }
+	</script>
+	<script type="text/javascript">
+        $('.date-picker').datepicker({autoclose:true});
+	</script>
+	<script type="text/javascript" src="../assets/module/building/buildingproject/bulidingprojectinfo.js">${.now?long}</script>
+</html>

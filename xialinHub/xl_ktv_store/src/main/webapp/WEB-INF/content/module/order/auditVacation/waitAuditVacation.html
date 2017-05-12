@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+<div class="row">
+    <div class="col-sm-12">
+        <div id="waitCondition" class="hide">
+            <div class="row">
+                <div class="col-xs-12">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitTimeFlag">
+                                <select id="waitTimeFlag" name="timeFlag">
+                                    <option value="0">请选择</option>
+                                    <option value="1">创建日期</option>
+                                    <option value="2">到访日期</option>
+                                    <option value="3">认筹日期</option>
+                                    <option value="4">认购日期</option>
+                                    <option value="5">网签日期</option>
+                                </select>
+                            </label>
+                            <div class="col-sm-9" style="padding-top: 4px;">
+                                <input  type="text" readonly="readonly" style="width: 200px" name="startTime" id="waitStartTime"
+                                        placeholder="请选择查询起止日期" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitOrderInfoCode">订单号</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;"  type="text" name="orderInfoCode" id="waitOrderInfoCode" placeholder="订单号"
+                                       value="${(orderForQuery.orderInfoCode)!''}">
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="waitChannelType">渠道类型</label>
+                            <div class="col-sm-4">
+                                <select id="waitChannelType" name="channelType" readonly="readonly"
+                                        data-placeholder="选择渠道类型"
+                                        url="../../common/getchanneltypecombo" selectval="${(buildingProject.status)!''}">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitCustomName">客户姓名</label>
+                            <div class="col-sm-4">
+                                <input  style="width:200px;" type="text" name="customName" id="waitCustomName" placeholder="客户姓名" value="">
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="waitCustomTel">客户手机号</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="customTel" id="waitCustomTel" placeholder="客户手机号" value="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitProvince">省</label>
+                            <div class="col-sm-4">
+                                <select id="waitProvince" name="provinceId" data-placeholder="选择所属省"
+                                        url="../../common/getprovincecombo" child="waitCity">
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="waitCity">市</label>
+                            <div class="col-sm-4">
+                                <select id="waitCity" name="cityId" data-placeholder="选择所属市(请先选择所属省)"
+                                        url="../../common/getcitycombo"
+                                        child="waitBuildingProjectId"
+                                        cascade="cascade" >
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitBuildingProjectId">楼盘</label>
+                            <div class="col-sm-4">
+                                <select id="waitBuildingProjectId" name="buildingProjectId" readonly="readonly"
+                                        data-placeholder="选择楼盘(请先选择所属市)"
+                                        url="../../common/getbuildingprojectcombo"  cascade="cascade"
+                                        child="waitProjectInfoId">
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="waitProjectInfoId">项目</label>
+                            <div class="col-sm-4">
+                                <select id="waitProjectInfoId" name="projectInfoId" readonly="readonly"
+                                        data-placeholder="选择项目(请先选择所楼盘)"
+                                        url="../../common/getprojectinfocombo"  cascade="cascade" >
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitPackageType">项目类型</label>
+                            <div class="col-sm-4">
+                                <select id="waitPackageType" name="packageType" readonly="readonly"
+                                        data-placeholder="选择项目类型"
+                                        url="../../common/getpackagecombo" >
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="waitOrderStatus">项目状态</label>
+                            <div class="col-sm-4">
+                                <select id="waitOrderStatus" name="orderStatus" readonly="readonly"
+                                        data-placeholder="选择项目状态"
+                                        url="../../common/getisstartcombo">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="waitBrokerTel">报备人手机</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="brokerTel" id="waitBrokerTel" placeholder="报备人手机"
+                                       value="">
+                            </div>
+                            <label class="col-sm-2 control-label no-padding-right" for="waitBrokerName">报备人</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="brokerName" id="waitBrokerName" placeholder="报备人" value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <button id="searchWait" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-search blue"></i> 搜索
+        </button>
+
+        <@shiro.hasPermission name="order:auditvacation:auditVacation">
+        <button id="audit" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-check green"></i> 审批
+        </button>
+        </@shiro.hasPermission>
+
+        <@shiro.hasPermission name="order:auditvacation:waitexcel">
+        <button id="waitExcel" class="btn btn-white btn-default btn-round">
+			<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+		</button>
+        </@shiro.hasPermission>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-sm-12 waitAuditGird">
+                <table id="waitAuditGird-table"></table>
+                <div id="waitAuditGird-pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../assets/module/order/auditVacation/waitAuditVacation.js"></script>

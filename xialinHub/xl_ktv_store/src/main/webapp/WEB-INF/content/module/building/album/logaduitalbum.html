@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<!-- 以上div层必写 -->
+						<input type="hidden" value="${buildingProjectId}" id = "buildingProjectId"></input>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="tab-content no-border padding-5" style="padding:5px;">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												<!-- 开始遍相册类型 -->
+												<#list data.albums as album>
+													<!-- 不展示户型图和样板图的待审核信息 -->
+													<#if ((album.albumId) != 11) && ((album.albumId) != 12)>
+														<div class="col-xs-12" >
+															<div class="panel-heading">
+																<a href="#faq-1-${album_index}" data-toggle="collapse"
+																	class="accordion-toggle" aria-expanded="true"> <i
+																	class="pull-right ace-icon fa fa-chevron-left"
+																	data-icon-hide="ace-icon fa fa-chevron-down"
+																	data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+																	<i class="ace-icon fa fa-bookmark #6EAED1" style="margin-right: 10px;"></i>
+																	${album.albumName}
+																</a>
+															</div>
+															<div class="panel-collapse collapse in" id="faq-1-${album_index}" aria-expanded="false">
+																<div class="panel-body">
+																	<div class="form-group">
+																		<div class="row-fluid">
+																			<ul class="ace-thumbnails" >
+																				<!-- 遍历每个相册的图片审核记录 -->
+																				<#list data['piclog_'+ album.albumId] as pic>
+																					<li style="border:0px;">
+																						<a href="..${pic.albumPicUrl?replace('s_','l_')}" title="${album.albumName}-(描述:${(pic.albumPicDescript)!'无'})" data-rel="colorbox">
+																							<img title="${pic.albumPicName}" src="..${pic.albumPicUrl}" style="height: 200px;width: 200px;" />
+																						</a>
+																						<div class="tools tools-bottom" style="bottom: 0px;height:20px;background-color:#ECECEC;">
+																							<#if pic.auditFlag == 0>
+																							
+																								<div style="height:100%;width:50%;float:left;">
+																									<#if (pic.operateFlag)=='C'>新增图片审核</#if>
+																									<#if (pic.operateFlag)=='D'>删除图片审核</#if>
+																									<#if (pic.operateFlag)=='U'>修改图片审核</#if>
+																								</div>
+																								
+																								<div style="height:100%;width:25%;background:#6fb3e0;float:left;cursor: pointer;color:white;" 
+																									onclick="auditAgree(${pic.albumPicLogId})">通过</div>
+																									
+																								<div style="height:100%;width:25%;background:#d15b47;float:left;cursor: pointer;color:white;" 
+																									onclick="auditNoAgree(${pic.albumPicLogId})">不通过</div>
+																									
+																							<#elseif pic.auditFlag == 1>
+																							
+																								<div style="height:100%;width:100%;background:#6fb3e0;">
+																									已审核-通过
+																								</div>
+																								
+																							<#elseif pic.auditFlag == 2>
+																							
+																								<div style="height:100%;width:100%;background:#d15b47;color:white;">
+																									已审核-不通过
+																								</div>
+																								
+																							</#if>
+																						</div>
+																					</li>
+																				</#list>
+																			</ul>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</#if>
+												</#list>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/album/buildingalbuminfo.js"></script>
+</html>

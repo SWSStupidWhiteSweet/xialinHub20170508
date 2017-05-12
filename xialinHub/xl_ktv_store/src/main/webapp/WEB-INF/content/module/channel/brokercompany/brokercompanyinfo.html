@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>经纪公司管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.img-div{
+				width: 80px;
+				height: 80px;
+			}
+			.required-star{
+				color: tomato;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								经纪公司管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+									添加经纪公司
+									<#elseif actionType == "edit">
+									修改经纪公司
+									<#else>
+									查看经纪公司详情
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="form" class="form-horizontal" role="form">
+									<input type="hidden" id="actionType" value="${actionType}" />
+									<div class="tab-content no-border padding-5">
+									<div id="faq-tab-1" class="tab-pane fade in active">
+									<div class="space-8"></div>
+									<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+									<div class="panel panel-default">
+									<!-- #section:elements.form -->
+									<div class="panel-heading">
+										<a href="#faq-1-1" data-toggle="collapse"
+											class="accordion-toggle" aria-expanded="true"> <i
+											class="pull-right ace-icon fa fa-chevron-left"
+											data-icon-hide="ace-icon fa fa-chevron-down"
+											data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+											经纪公司信息
+										</a>
+									</div>
+									<input id="brokerCompanyId" type="hidden" value="${(data.brokerCompanyId)!''}">
+									<div class="form-group" style="margin-top: 20px;">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerCompanyName">经纪公司名称：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+											<#if actionType == "add">
+												<input id="brokerCompanyName" name="brokerCompanyName" type="text" class="col-xs-10 col-sm-4" value="">
+												<span class="required-star">*</span>
+											<#elseif actionType == "edit">
+												<input id="brokerCompanyName" name="brokerCompanyName" type="text" class="col-xs-10 col-sm-4" value="${(data.brokerCompanyName)!''}">
+											<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(data.brokerCompanyName)!''}
+												</label>
+											</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerCompanyType"> 经纪公司类型：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="brokerCompanyType" name="brokerCompanyType" url="../../common/getbrokercompanytypecombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="brokerCompanyType" name="brokerCompanyType" selectval="${(data.brokerCompanyType)!''}" url="../../common/getbrokercompanytypecombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.brokerCompanyType)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="taxpayerType">纳税人类型：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="taxpayerType" name="taxpayerType" url="../../common/gettaxpayertypecombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="taxpayerType" name="taxpayerType" selectval="${(data.taxpayerType)!''}" url="../../common/gettaxpayertypecombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.taxpayerType)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="province">所属省份： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="province" name="province" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="province" name="province" data-placeholder="选择所属省" selectval="${(data.provinceId)!''}" url="../../common/getprovincecombo" child="city">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.provinceName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="city">所属城市： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="city" name="city" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="city" name="city" data-placeholder="选择所属市" selectval="${(data.cityId)!''}" url="../../common/getcitycombo" cascade="cascade" >
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.cityName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankName"> 开户行： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="bankName" name="bankName" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="bankName" name="bankName" type="text" class="col-xs-10 col-sm-4" value="${(data.bankName)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.bankName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankAccountName"> 账户名称： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="bankAccountName" name="bankAccountName" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="bankAccountName" name="bankAccountName" type="text" class="col-xs-10 col-sm-4" value="${(data.bankAccountName)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.bankAccountName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankAccount"> 账号： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="bankAccount" name="bankAccount" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="bankAccount" name="bankAccount" type="text" class="col-xs-10 col-sm-4" value="${(data.bankAccount)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.bankAccount)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="director"> 公司负责人： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="director" name="director" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="director" name="director" type="text" class="col-xs-10 col-sm-4" value="${(data.director)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.director)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="directorTel"> 负责人电话： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="directorTel" name="directorTel" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="directorTel" name="directorTel" type="text" class="col-xs-10 col-sm-4" value="${(data.directorTel)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.directorTel)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="contractAttachmentId"> 合同呈批件： </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+												<input type="file" id="contractAttachmentId" name="contractAttachmentId" class="col-xs-10 col-sm-5">
+												<div id = "showImage" style="margin:-30px 0 20px 130px;"></div>
+												<input type="hidden" id="contractAttachment_srcFileName"/>
+							                    <input type="hidden" id="contractAttachment_diskPath"/>
+							                    <input type="hidden" id="contractAttachment_httpPath"/>
+												<#elseif actionType == "edit">
+							                    	<input type="file" id="contractAttachmentId" name="contractAttachmentId" class="col-xs-10 col-sm-5">
+							                    	<div id = "showImage" style="margin:-30px 0 20px 130px;">
+							                    		<div><img class="img-div" id="image" onclick="Common.ShowImage('../../${(atta.attachmentUrl)!''}')" src="../../${(atta.attachmentUrl)!''}">
+							                    			<h2 style="font-size:14px;margin:0px;"></h2 >
+							                    		</div>
+							                    	</div>
+								                    <input type="hidden" id="contractAttachment_srcFileName"/>
+								                    <input type="hidden" id="contractAttachment_diskPath"/>
+								                    <input type="hidden" id="contractAttachment_httpPath"/>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+													<img class="img-div" src="${basePath}${(atta.attachmentUrl)!''}" onclick="Common.ShowImage('${basePath}${(atta.attachmentUrl)!''}')">
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="status"> 状态： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="status" name="status" url="../../common/getstatuscombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="status" name="status" selectval="${(data.status)!''}" url="../../common/getstatuscombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													<#if data.status == 1>
+														启用
+													<#else>
+														禁用
+													</#if>
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="loginAccount"> 登录账号： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="loginAccount" name="loginAccount" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="loginAccount" name="loginAccount" type="text" class="col-xs-10 col-sm-4" value="${(data.loginAccount)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.loginAccount)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="loginPwd"> 登录密码： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="loginPwd" name="loginPwd" type="password" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="loginPwd" name="loginPwd" type="password" class="col-xs-10 col-sm-4" value="${(data.loginPwd)!''}">
+													<input id="oldPwd" name="oldPwd" type="hidden" class="col-xs-10 col-sm-2" value="${(data.loginPwd)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.loginPwd)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									</div>
+									<!-- <div class="panel panel-default">
+										<div class="panel-heading">
+										<a href="#faq-1-1" data-toggle="collapse"
+											class="accordion-toggle" aria-expanded="true"> <i
+											class="pull-right ace-icon fa fa-chevron-left"
+											data-icon-hide="ace-icon fa fa-chevron-down"
+											data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+											经纪公司修改历史
+										</a>
+										</div>
+										
+									</div> -->
+									</div>
+									</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:devpayment:save">
+											<#if actionType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											<#if actionType == "edit">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												修改
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+	<script type="text/javascript" src="../../assets/module/channel/brokercompany/brokercompanyinfo.js?${.now?long}"></script>
+</html>

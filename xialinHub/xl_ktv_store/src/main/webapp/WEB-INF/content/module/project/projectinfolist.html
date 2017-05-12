@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body class="no-skin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-sm-12">
+					<button id="infolist_options" class="btn btn-white btn-default btn-round">
+						<span class="ace-icon fa fa-search blue"></span>&nbsp;搜索
+					</button>
+					<@shiro.hasPermission name="project:info:add">
+					<button id="infolist_add" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-plus green"></i>添加
+					</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:info:edit">
+					<button id="infolist_modify" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-pencil blue"></i>修改
+					</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:info:look">
+					<button id="infolist_view" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-reorder red"></i> 查看
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:up">
+					<button id="infolist_upShelf"
+						class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-reply green"></i>上架申请
+					</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:info:down">
+					<button id="infolist_downShelf"
+						class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-share red"></i>下架申请
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:del">
+					<button id="infolist_delete" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-trash-o orange"></i>删除
+					</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:info:export">
+					<button id="infolist_export" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:config">
+					<button id="projectconfig_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>项目配置管理
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:package">
+					<button id="projectpackage_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>项目套餐管理
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:guess">
+					<button id="projectguess_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>项目测算管理
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:log">
+					<button id="projectlog_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>项目日志管理
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:detail">
+					<button id="projectdetail_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>POS流水管理
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:info:pos">
+					<button id="projectpos_infolist" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-list blue"></i>项目POS终端管理
+					</button>
+					</@shiro.hasPermission>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<table id="infolist_grid-table"></table>
+					<div id="infolist_grid-pager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="infolist_condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_province">所属省</label>
+						<select id="infolist_province" class="col-xs-10 col-sm-7" name="infolist_province" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="infolist_city">
+						</select>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_city">所属市</label>
+						<select id="infolist_city" class="col-xs-10 col-sm-7" name="infolist_city" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+						</select>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_isStart">上架状态</label>
+						<select id="infolist_isStart" class="col-xs-10 col-sm-7" name="infolist_isStart" data-placeholder="选择项目状态"  url="../../common/getisstartcombo">
+						</select>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_projectInfoName"> 项目名称 </label>
+						<div class="col-sm-9">
+							<input type="text" id="infolist_projectInfoName" placeholder="请输入项目名称" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_cooperationStart"> 合作开始时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="infolist_cooperationStart" class="col-xs-10 col-sm-7 date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择合作开始时间"/>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="infolist_cooperationEnd">合作结束时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="infolist_cooperationEnd" class="col-xs-10 col-sm-7 date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择合作结束时间"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('.date-picker').datepicker({
+		autoclose : true
+	});
+</script>
+<script type="text/javascript" src="../../assets/module/project/js/projectinfolist.js?${.now?long}"></script>
+</html>

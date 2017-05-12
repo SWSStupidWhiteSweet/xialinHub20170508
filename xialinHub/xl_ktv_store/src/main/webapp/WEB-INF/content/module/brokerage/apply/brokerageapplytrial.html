@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<title>结佣初审</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+							<h1>
+								结算管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									结佣初审
+								</small>
+							</h1>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>
+											搜索
+										</button>
+										<@shiro.hasPermission name="brokerage:auditbrokerageapply">
+										<button id="toAudit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-check green"></i> 审核
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="brokerage:toaudittrial">
+										<button id="toView" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-reorder red"></i>  查看
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="brokerage:exceltriallist">
+										<button id="exceltriallist" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 搜索区域内容 -->
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form" id="searchForm">
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="sellerText">所属省：</label>
+	
+							<div class="col-sm-9">
+								<select id="province" name="province" data-placeholder="选择所属省" url="../common/getprovincecombo" child="city" ></select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="sellerText">所属市：</label>
+	
+							<div class="col-sm-9">
+								<select id="city" name="city" data-placeholder="选择所属市" url="../common/getcitycombo" cascade="cascade"></select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="datePeriod">结佣申请编号：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="brokerageApplyCode" style="width: 70%;" placeholder="结佣申请编号">
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="datePeriod">负责人：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="director" style="width: 70%;" placeholder="负责人">
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="datePeriod">审核状态：</label>
+	
+							<div class="col-sm-9">
+								<select id="auditStatus" name="auditStatus" data-placeholder="审核状态" url="../common/getbuildingprojectlogauditflag"></select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="datePeriod">申请时间：</label>
+	
+							<div class="col-sm-9">
+								<input class="date-picker" style="width: 30%;" name="startDate" id="startDate" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="申请开始时间"/>
+								-
+								<input class="date-picker" style="width: 30%;" name="endDate" id="endDate" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="申请结束时间" />
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/brokerage/apply/brokerageapplytrial.js"></script>
+</html>

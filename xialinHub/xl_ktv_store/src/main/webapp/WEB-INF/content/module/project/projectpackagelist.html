@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body class="no-skin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-sm-12">
+				<input type="hidden" id="projectInfoId" value="${projectInfoId!''}">
+					<button id="packagelist_options" class="btn btn-white btn-default btn-round">
+						 <span class="ace-icon fa fa-search blue"></span>&nbsp;搜索
+					</button>
+					<@shiro.hasPermission name="project:package:add">
+						<button id="packagelist_add" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-plus green"></i>添加
+						</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:package:edit">
+						<button id="packagelist_modify" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-pencil blue"></i>修改
+						</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:package:look">
+					<button id="packagelist_view" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-reorder red"></i> 查看
+					</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:package:up">
+						<button id="packagelist_upShelf" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-reply green"></i>上架申请
+						</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:package:down">
+						<button id="packagelist_downShelf" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-share red"></i>下架申请
+						</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:package:recommend">
+						<button id="packagelist_recommend" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa  fa-location-arrow orange"></i>套餐推荐
+						</button>
+					</@shiro.hasPermission> 
+					<!-- <@shiro.hasPermission name="project:package:del">
+						<button id="packagelist_delete" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-trash-o orange"></i>删除
+						</button>
+					</@shiro.hasPermission>  -->
+					<@shiro.hasPermission name="project:package:export">
+						<button id="packagelist_export" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+						</button>
+					</@shiro.hasPermission>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<table id="packagelist_grid-table"></table>
+					<div id="packagelist_grid-pager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="packagelist_condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="packagelist_isStart"> 上架状态： </label>
+						<select id="packagelist_isStart" class="col-xs-10 col-sm-7" name="packagelist_isStart" data-placeholder="请选择上架状态"  url="../../common/getstandcombo"> 
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="packagelist_packageType"> 套餐类型： </label>
+						<select id="packagelist_packageType" class="col-xs-10 col-sm-7" name="packagelist_packageType" data-placeholder="请选择套餐类型"  url="../../common/getpackagecombo" > 
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="packagelist_projectPackageName">套餐名称</label>
+						<div class="col-sm-9">
+							<input type="text" id="packagelist_projectPackageName" placeholder="套餐名称" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="packagelist_startDate">开始时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="packagelist_startDate" class="col-xs-10 col-sm-7 date-picker" data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="packagelist_endDate"> 结束时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="packagelist_endDate" class="col-xs-10 col-sm-7 date-picker" data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('.date-picker').datepicker({
+		autoclose : true
+	});
+</script>
+<script type="text/javascript" src="../../assets/module/project/js/projectpackagelist.js"></script>
+</html>

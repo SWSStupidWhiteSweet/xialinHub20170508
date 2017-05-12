@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>结佣追回管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" style="height:85%;">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+						<h1>
+							结算管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								结佣追回管理
+							</small>
+						</h1>
+						<input type="hidden" value="${type!''}" id = "iframeId" ></input>
+					</div>
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								<@shiro.hasPermission name="brokerage:getbrokerrecoverwaitgrid">
+									<li>
+										<a data-toggle="tab" href="#brokerageRecoverWait" onclick="$('#brokerageRecoverWaitList').attr('src', $('#brokerageRecoverWaitList').attr('data-src'));">结佣待追回</a>
+									</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="brokerage:getbrokerrecovergrid">
+									<li id= "brokerageRecoverLi">
+										<a data-toggle="tab" href="#brokerageRecover" onclick="$('#brokerageRecoverList').attr('src', $('#brokerageRecoverList').attr('data-src'));">结佣已追回</a>
+									</li>
+								</@shiro.hasPermission>
+							</ul>
+
+							<div class="tab-content" style="height:710px;padding:0px 12px">
+								<@shiro.hasPermission name="brokerage:getbrokerrecoverwaitgrid">
+								<div id="brokerageRecoverWait" class="tab-pane fade" style="height:708px;">
+									<iframe id="brokerageRecoverWaitList" data-src="../brokerage/tobrokeragerecoverwaitlist" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="brokerage:getbrokerrecovergrid">
+								<div id="brokerageRecover" class="tab-pane fade" style="height:708px;">
+									<iframe id="brokerageRecoverList" data-src="../brokerage/tobrokeragerecoverlist" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		var iframeId = $("#iframeId").val();
+		if(iframeId=='brokerageRecoverList'){
+			$("#brokerageRecoverLi").addClass("active");
+			$("#brokerageRecoverList").attr("src",$("#brokerageRecoverList").attr("data-src"));
+			$("#brokerageRecover").addClass("in").addClass("active");
+		}else{
+			$(".nav-tabs").find("li:first").addClass("active");
+			$(".tab-content").find("iframe:first").attr("src",$(".tab-content").find("iframe:first").attr("data-src"));
+			$(".tab-content").find("div:first").addClass("in").addClass("active");
+		}
+	});
+</script>
+</html>

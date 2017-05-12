@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>到访确认</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#assign basePath=request.getContextPath()> <script
+	src="${basePath}/assets/js/jquery.js"></script> <#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/> <#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/> <#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/> <script
+	src="${basePath}/assets/js/ace-extra.min.js"></script> <script
+	src="${basePath}/assets/js/jquery.colorbox-min.js"></script> <script
+	src="${basePath}/assets/js/ace.min.js"></script> <script
+	src="${basePath}/assets/js/bootstrap.min.js"></script> <script
+	src="${basePath}/assets/js/typeahead-bs2.min.js"></script>
+<link rel="stylesheet" href="${basePath}/assets/css/colorbox.css" />
+<link href="${basePath}/assets/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet"
+	href="${basePath}/assets/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/colorbox.css" />
+<!-- ace styles -->
+<link rel="stylesheet" href="${basePath}/assets/css/ace.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/ace-rtl.min.css" />
+<link rel="stylesheet" href="${basePath}/assets/css/ace-skins.min.css" />
+<script type="text/javascript"
+	src="../../assets/module/order/rc/visitcustominfo.js"></script>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							订单管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+								到访确认
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- PAGE CONTENT BEGINS -->
+							<form id="merchantForm" class="form-horizontal">
+
+								<div class="form-group">
+
+									<label class="col-sm-3 control-label no-padding-right" for="">城市:
+									</label>
+
+									<div class="col-sm-9">
+
+										<input type="text" disabled=disabled id="ct"
+											value="${orderCustomRecordentity.cityName}"
+											class="col-xs-10 col-sm-3">
+
+									</div>
+								</div>
+
+								<!-- 一行一行的 -->
+								<div class="form-group" align="center">
+									<!-- 									<div class="col-sm-3"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="form-field-1">项目名称: </label>
+
+									<!-- 									</div> -->
+									<div class="col-sm-9" align="left">
+										<input type="text" disabled=disabled
+											value="${orderCustomRecordentity.projectInfoName}"
+											class="col-xs-10 col-sm-3">
+									</div>
+								</div>
+
+								<!-- 一行一行的 -->
+								<div class="form-group" align="center">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="customName">客户名称:</label>
+
+									<!-- 									</div> -->
+									<div class="col-sm-9" align="left">
+										<div class="clearfix">
+											<input type="text" id="customName" name="customName"
+												value="${orderCustomRecordentity.customName}"
+												class="col-xs-10 col-sm-3">
+										</div>
+									</div>
+								</div>
+
+								<!-- 一行一行的 -->
+								<div class="form-group" align="center">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="form-field-1">客户手机: </label>
+
+
+									<!-- 									</div> -->
+									<div class="col-sm-9" align="left">
+										<input type="text" disabled=disabled
+											value="${orderCustomRecordentity.customTel}"
+											class="col-xs-10 col-sm-3">
+									</div>
+								</div>
+
+								<!-- 签约图片 -->
+								<div class="form-group">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="stuts">联代方: </label>
+									<!-- 									</div> -->
+									<div class="col-sm-9">
+										<div class="clearfix ">
+											<select id="stuts" name="stuts" data-placeholder="选择联代方"
+												url="../../common/getchannelunion">
+											</select>
+										</div>
+									</div>
+								</div>
+
+
+
+								<!-- 内容 -->
+								<div class="form-group" align="left">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="form-field-1">报备时间: </label>
+									<!-- 									</div> -->
+									<div class="col-sm-9" align="left">
+										<input type="text" name="datepicker" disabled=disabled
+											value="${orderCustomRecordentity.recordTime}"
+											data-date-format="yyyy-mm-dd" class=" col-xs-10 col-sm-3">
+									</div>
+								</div>
+
+
+								<!-- 内容 -->
+								<div class="form-group">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="datepicker">到访时间: </label>
+									<!-- 									</div> -->
+									<div class="col-sm-9 ">
+										<div class="clearfix">
+											<input id="datepicker12" name="datepicker" type="text"
+												class="col-xs-10 col-sm-3">
+										</div>
+									</div>
+								</div>
+
+								<!-- 内容 -->
+								<div class="form-group" align="left">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="form-field-1">经纪公司: </label>
+									<div class="col-sm-9" align="left">
+										<input type="text" disabled=disabled
+											value="${orderCustomRecordentity.brokerCompanyName}"
+											class="col-xs-10 col-sm-3">
+									</div>
+								</div>
+
+								<!-- 内容 -->
+								<div class="form-group" align="left">
+									<!-- 									<div class="col-sm-3" align="center"> -->
+									<label class="col-sm-3 control-label no-padding-right"
+										for="form-field-1">经纪人: </label>
+									<!-- 									</div> -->
+									<div class="col-sm-9" align="left">
+										<input type="text" disabled=disabled
+											value="${orderCustomRecordentity.brokerName}"
+											class="col-xs-10 col-sm-3">
+									</div>
+								</div>
+								<div class="clearfix form-actions">
+									<div class="col-md-offset-3 col-md-9">
+										<button id="pass" class="btn btn-info" type="button">
+											<i class="ace-icon fa fa-check bigger-110"></i>确定
+										</button>
+
+										&nbsp; &nbsp; &nbsp;
+										<button id="cancels" class="btn" type="reset">
+											<i class="ace-icon fa fa-undo bigger-110"></i>
+											取&nbsp;&nbsp;&nbsp;&nbsp;消
+										</button>
+
+									</div>
+								</div>
+								<!-- 提交 -->
+								<!-- 								<div class="row" align="left"> -->
+								<!-- 									<div class="col-xs-12" align="center"> -->
+								<!-- 										<button id="pass">确定</button> -->
+
+								<!-- 										<button id="cancels">取消</button> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
+								<!-- 								<br> <br> -->
+							</form>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="id"
+		value="${orderCustomRecordentity.orderCustomRecordId}">
+</body>
+
+<script type="text/javascript">
+	/**
+	 * 初始化时间插件
+	 */
+	$('#datepicker12').datetimepicker({format : "YYYY-MM-DD HH:mm:ss",maxDate:new Date()})
+</script>
+
+
+</html>

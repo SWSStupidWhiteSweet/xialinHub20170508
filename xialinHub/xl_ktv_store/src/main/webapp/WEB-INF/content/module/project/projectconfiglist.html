@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body class="no-skin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-sm-12">
+					<input type="hidden" id="projectInfoId" value="${(projectBase.projectInfo.projectInfoId)!''}" />
+					<input type="hidden" id="actionType" value="${actionType}" />
+					<@shiro.hasPermission name="project:config:add">
+					<button id="configlist_addConfig" class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-plus green"></i>添加
+					</button>
+					</@shiro.hasPermission>
+					<@shiro.hasPermission name="project:config:edit">
+					<button id="configlist_modify"
+						class="btn btn-white btn-default btn-round">
+						<i class="ace-icon fa fa-pencil blue"></i>修改
+					</button>
+					</@shiro.hasPermission>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<table id="configlist_grid-table"></table>
+					<div id="configlist_grid-pager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>	
+<script type="text/javascript" src="../../assets/module/project/js/projectconfiglist.js"></script>
+</html>

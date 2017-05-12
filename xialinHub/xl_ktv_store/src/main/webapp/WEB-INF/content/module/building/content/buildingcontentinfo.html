@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content" style="overflow-x:hidden;">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								<#if type == "add">新增楼盘动态</#if>
+								<#if type == "edit">修改楼盘动态</#if>
+   								<input type="hidden" id="buildingProjectId" value="${buildingProjectId}"/>
+   								<input type="hidden" id="contentId" value="${(buildingContent.contentId)!''}"/>
+   								<input type="hidden" id="fingerprint" value="${(buildingContent.fingerprint)!''}"/>
+   								<input type="hidden" id="type" value="${type}"/>
+								<input type="hidden" id=contentImg value="${(buildingContent.contentImg)!''}"></input>
+							</h1>
+						</div>
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="buildingContentForm" class="form-horizontal" role="form">
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly">标题</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="title" name="title" class="col-xs-10 col-sm-5" placeholder="标题" value="${(buildingContent.title)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="confirmPwd">内容</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix" style="width:70%">
+												<!-- <textarea id="content" name="content" class="col-xs-10 col-sm-5" rows=5 placeholder="动态内容...">${(buildingContent.content)!''}</textarea> -->
+												<div class="wysiwyg-editor" id="editor1">${(buildingContent.content)!''}</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="areapicker">联系电话</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="tel" name="tel" class="col-xs-10 col-sm-5" placeholder="联系电话" value="${(buildingContent.tel)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="uploadFile">状态</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="status" name="status" data-placeholder="选择状态" url="../common/getstatuscombo" selectval="${(buildingContent.status)!''}"></select>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"> 封面图片 </label>
+										<div class="col-sm-9">
+											<button albumType="1" id="upload" class="btn btn-white btn-default btn-round uploadFile" style="margin: 30px;" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"></label>
+										<div class="form-group" id="upload_img">
+											<#if (buildingContent.contentImg)??>
+											<div class="col-sm-9 ace-thumbnails" style="margin-left:25%;padding-left:20px;">
+												<a href="..${buildingContent.contentImg?replace('s_','l_')}" data-rel="colorbox" style="margin-right: 10px;">
+													<img src="..${buildingContent.contentImg}" style="height: 200px;width: 200px;" />
+												</a>
+											</div>
+											</#if>
+										</div>
+									</div>
+														
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												重置
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="button">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/content/buildingcontentinfo.js"></script>
+</html>

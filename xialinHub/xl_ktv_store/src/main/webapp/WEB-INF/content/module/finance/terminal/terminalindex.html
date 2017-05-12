@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>POS终端管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								财务管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									POS终端管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										
+
+										<@shiro.hasPermission name="finance:terminal:getgridsearchdata">
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i> 搜索
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:create">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 添加
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:savetransfer">
+										<button id="transfer" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-cogs blue"></i> 调动
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:updatestatus">
+										<button id="updateStatus" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-exchange orange"></i> 启用/停用
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:gettransferdata">
+										<button id="lookTransfer" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-list blue"></i> 查看调动记录
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:getlookflowdata">
+										<button id="lookFlow" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-list blue"></i> 查看刷卡流水
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:terminal:export">
+										<button id="export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="posTerminalGrid"></table>
+										<div id="posTerminalGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<div class="space-4"></div>
+
+						<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="province">省</label>
+						<div class="col-sm-9">
+							<select id="province" name="province" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city">
+							</select>
+						</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city">市</label>
+							<div class="col-sm-9">
+								<select id="city" name="city" data-placeholder="选择所属市"  url="../../common/getcitycombo">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="posTypeString">pos机类型</label>
+							<div class="col-sm-9">
+								<select id="posTypeString" name="posTypeString" style="width: 120px;" data-placeholder="选择pos机类型"  url="../../common/getposcombo">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="status">使用状态</label>
+							<div class="col-sm-9">
+								<select id="status" name="status" style="width: 120px;">
+									<option value="-1">选择状态</option>
+									<option id="using" value="1">使用中</option>
+									<option id="unuse" value="0">未使用</option>
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="terminalNo">终端号</label>
+							<div class="col-sm-9">
+								<input type="text" id="terminalNo" style="width: 120px;"  placeholder="输入终端号" />
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="projectInfoName">项目名称</label>
+							<div class="col-sm-9">
+								<input type="text" id="projectInfoName" style="width: 120px;" placeholder="输入项目名称">
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/terminal/terminalindex.js?${.now?long}"></script>
+	
+	<script type="text/javascript">
+	
+		$('#search').click(function () {
+	        var dialog = $("#condition").removeClass('hide')
+	            .dialog(
+	                {
+	                    modal : true,
+	                    title : "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='ace-icon fa fa-search'></i> 请选择查询条件</h4></div>",
+	                    title_html : true,
+	                    width : "500px",
+	                    buttons : [ {
+	                        text : "取消",
+	                        "class" : "btn btn-xs",
+	                        click : function() {
+	                            $(this).dialog("close");
+	                        }
+	                    }, {
+	                        text : "查询",
+	                        "class" : "btn btn-primary btn-xs",
+	                        click : function() {
+	                            var params = {
+	                            		provinceId:$("#province").val(),
+	                            		cityId:$("#city").val(),
+	                    				posTypeString:$("#posTypeString").val()=="选择POS类型"?"":$("#posTypeString").val(),
+	                    				status:$("#status").val()=="-1"?"":$("#status").val(),
+	                    				terminalNo:$("#terminalNo").val(),
+	                    				projectInfoName:$("#projectInfoName").val()
+	                            };
+	                            /* $.ajax({
+	                    			type:"post",
+	                    			url:"errorrelatedposrecordsdatacount",
+	                    			datatype:"json",
+	                    			data:params,
+	                    			success:function(data){
+	                    				$("#group_count").text(data.group_count);
+	                    				$("#group_fee_count").text(data.group_fee_count);
+	                    				$("#eb_count").text(data.eb_count);
+	                    				$("#eb_amount_count").text(data.eb_amount_count);
+	                    				$("#eb_amount_fee_count").text(data.eb_amount_fee_count);
+	                    			}
+	                    		}); */
+	                            Common.jqGridReload("posTerminalGrid", params);
+	                            $(this).dialog("close");
+	                        }
+	                    }  ,{
+	                    	text : "重置",
+	                        "class" : "btn btn-primary btn-xs",
+	                        click : function() {
+	                        	$("#province").select2("val","");
+                            	$("#province").trigger("change");
+                            	$("#posTypeString").select2("val","");
+                            	$("#status").val("-1");
+                            	$("#terminalNo").val("");
+                            	$("#projectInfoName").val("");
+	                        }
+	                    }]
+	                });
+	    });
+	</script>
+</html>

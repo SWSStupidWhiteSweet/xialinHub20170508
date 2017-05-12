@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘项目审核</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-header">
+							<h1>
+								楼盘期数管理
+   								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if ((data.logInfo.operateFlag)!'')=='C'>楼盘期数新增审核</#if>
+									<#if ((data.logInfo.operateFlag)!'')=='U'>楼盘期数更新审核</#if>
+									<#if ((data.logInfo.operateFlag)!'')=='D'><span style="color:red;">楼盘期数删除审核</span></#if>
+								</small>
+							</h1>
+							<input type="hidden" id="buildingInfoLogId" value='${buildingInfoLogId}'></input>
+							<input type="hidden" id="buildingProjectId" value='${buildingProjectId}'></input>
+							<input type="hidden" id="historyTotal" value='${data.historyTotal}'></input>
+					</div>
+					<div class="page-content-area">
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="modifyPwdForm" class="form-horizontal" role="form">
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"></label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="text-warning bigger-110  col-sm-3">
+												楼盘期数正式数据
+											</span>
+											</#if>
+											<span class="text-warning bigger-110  col-sm-3">
+												楼盘期数日志数据
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘期数名称：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoName)!'') != ((data.info.buildingInfoName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.buildingInfoName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoName)!'') != ((data.info.buildingInfoName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.buildingInfoName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">期数简称：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoNa)!'') != ((data.info.buildingInfoNa)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.buildingInfoNa)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoNa)!'') != ((data.info.buildingInfoNa)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.buildingInfoNa)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">期数别名：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoAlias)!'') != ((data.info.buildingInfoAlias)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.buildingInfoAlias)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoAlias)!'') != ((data.info.buildingInfoAlias)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.buildingInfoAlias)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">分期简介：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.biref)!'') != ((data.info.biref)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.biref)!''}
+											</span> 
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.biref)!'') != ((data.info.biref)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.biref)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">销售状态：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.saleStatus)!'') != ((data.info.saleStatus)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.saleStatus)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.saleStatus)!'') != ((data.info.saleStatus)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.saleStatus)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">状态：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.status)!0) != ((data.info.status)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if ((data.info.status)!-1)==1>启用</#if>
+												<#if ((data.info.status)!-1)==0>禁用</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.status)!0) != ((data.info.status)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if ((data.logInfo.status)!-1)==1>启用</#if>
+												<#if ((data.logInfo.status)!-1)==0>禁用</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">分期均价：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoPrice)!0) != ((data.info.buildingInfoPrice)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if (data.info.buildingInfoPrice)??>${((data.info.buildingInfoPrice)==0)?string('待定',data.info.buildingInfoPrice)}</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.buildingInfoPrice)!0) != ((data.info.buildingInfoPrice)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if (data.logInfo.buildingInfoPrice)??>${((data.logInfo.buildingInfoPrice)==0)?string('待定',data.logInfo.buildingInfoPrice)}</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">公司名称：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.companyName)!'') != ((data.info.companyName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.companyName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.companyName)!'') != ((data.info.companyName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.companyName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">操作信息：</label>
+										<div class="col-sm-9">
+											<span class="text-warning bigger-110  col-sm-9" style="margin-top:5px;">
+												操作员（${(data.logInfo.operatorName)!''}）&nbsp;于&nbsp;${(data.logInfo.createTime)!''}&nbsp;对&nbsp;（${(data.logInfo.buildingInfoName)!''}）进行了
+												<#if ((data.logInfo.operateFlag)!'')=='C'>"楼盘期数新增"</#if>
+												<#if ((data.logInfo.operateFlag)!'')=='U'>"楼盘期数更新"</#if>
+												<#if ((data.logInfo.operateFlag)!'')=='D'>"楼盘期数删除"</#if>操作，标红的为变动信息；请审核。
+											</span>
+										</div>
+									</div>
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="agree" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												通过
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="noAgree" class="btn btn-danger" type="button">
+												<i class="ace-icon fa fa-times bigger-110"></i>
+												不通过
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="button">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildinginfo/infologaduit.js"></script>
+</html>

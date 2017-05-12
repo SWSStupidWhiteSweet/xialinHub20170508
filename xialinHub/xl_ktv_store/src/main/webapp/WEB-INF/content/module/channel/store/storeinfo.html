@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>经纪门店管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.small-map {
+				width: 398px;
+				margin-top:18px;
+				height: 210px;
+			}
+			.message-serch-content{
+				border:1px solid #C0C0C0;
+				width:300px;
+				height:auto;
+				z-index:100;
+				display:none;
+			}
+			.img-div{
+				width: 80px;
+				height: 80px;
+			}
+			.required-star{
+				color: tomato;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								经纪门店管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+									添加经纪门店
+									<#elseif actionType == "edit">
+									修改经纪门店
+									<#else>
+									查看经纪门店详情
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="form" class="form-horizontal" role="form">
+									<input type="hidden" id="actionType" value="${actionType}" />
+									<div class="tab-content no-border padding-5">
+									<div id="faq-tab-1" class="tab-pane fade in active">
+									<div class="space-8"></div>
+									<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+									<div class="panel panel-default">
+									<!-- #section:elements.form -->
+									<div class="panel-heading">
+										<a href="#faq-1-1" data-toggle="collapse"
+											class="accordion-toggle" aria-expanded="true"> <i
+											class="pull-right ace-icon fa fa-chevron-left"
+											data-icon-hide="ace-icon fa fa-chevron-down"
+											data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+											经纪门店信息
+										</a>
+									</div>
+									<input id="storeId" type="hidden" value="${(data.storeId)!''}">
+									
+									<div class="form-group" style="margin-top: 20px;">
+										<label class="col-sm-3 control-label no-padding-right" for="contractAttachmentId"> 门店头图： </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input type="file" id="contractAttachmentId" name="contractAttachmentId" class="col-xs-10 col-sm-5">
+													<div id = "showImage" style="margin:-30px 0 10px 130px"></div>
+													<input type="hidden" id="contractAttachment_srcFileName"/>
+								                    <input type="hidden" id="contractAttachment_diskPath"/>
+								                    <input type="hidden" id="contractAttachment_httpPath"/>
+												<#elseif actionType == "edit">
+							                    	<input type="file" id="contractAttachmentId" name="contractAttachmentId" class="col-xs-10 col-sm-5">
+							                    	<div id = "showImage" style="margin:-30px 0 10px 130px">
+							                    		<div><img id="image" class="img-div" onclick="Common.ShowImage('../../${(data.image)!''}')" src="../../${(data.image)!''}">
+							                    			<h2 style="font-size:14px;margin:0px;"></h2 >
+							                    		</div>
+							                    	</div>
+								                    <input type="hidden" id="contractAttachment_srcFileName"/>
+								                    <input type="hidden" id="contractAttachment_diskPath"/>
+								                    <input type="hidden" id="contractAttachment_httpPath"/>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+														<img src="${basePath}${(data.image)!''}" class="img-div" onclick="Common.ShowImage('${basePath}${(data.image)!''}')">
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="loginAccount"> 登录账号： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="loginAccount" name="loginAccount" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="loginAccount" name="loginAccount" type="text" class="col-xs-10 col-sm-4" value="${(data.loginAccount)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.loginAccount)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="loginPwd"> 登录密码： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="loginPwd" name="loginPwd" type="password" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="loginPwd" name="loginPwd" type="password" class="col-xs-10 col-sm-4" value="${(data.loginPwd)!''}">
+													<input id="oldPwd" name="oldPwd" type="hidden" class="col-xs-10 col-sm-2" value="${(data.loginPwd)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.loginPwd)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group" style="margin-top: 20px;">
+										<label class="col-sm-3 control-label no-padding-right" for="storeName">门店名称：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+											<#if actionType == "add">
+												<input id="storeName" name="storeName" type="text" class="col-xs-10 col-sm-4" value="">
+												<span class="required-star">*</span>
+											<#elseif actionType == "edit">
+												<input id="storeName" name="storeName" type="text" class="col-xs-10 col-sm-4" value="${(data.storeName)!''}">
+											<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(data.storeName)!''}
+												</label>
+											</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group" style="margin-top: 20px;">
+										<label class="col-sm-3 control-label no-padding-right" for="storeAddr">门店地址：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+											<#if actionType == "add">
+												<input id="storeAddr" name="storeAddr" type="text" class="col-xs-10 col-sm-4" value="">
+												<span class="required-star">*</span>
+											<#elseif actionType == "edit">
+												<input id="storeAddr" name="storeAddr" type="text" class="col-xs-10 col-sm-4" value="${(data.storeAddr)!''}">
+											<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(data.storeName)!''}
+												</label>
+											</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="province">所属省份： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="province" name="province" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="province" name="province" data-placeholder="选择所属省" selectval="${(data.provinceId)!''}" url="../../common/getprovincecombo" child="city">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.provinceName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="city">所属城市： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="city" name="city" data-placeholder="选择所属市"  url="../../common/getcitycombo" child="district" >
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="city" name="city" data-placeholder="选择所属市" selectval="${(data.cityId)!''}" url="../../common/getcitycombo" child="district" >
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.cityName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="district">所属区县： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="district" name="district" data-placeholder="选择所属区县"  url="../../common/getdistrictcombo" child="plate" >
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="district" name="district" data-placeholder="选择所属区县" selectval="${(data.districtId)!''}" url="../../common/getdistrictcombo" child="plate" >
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.districtName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="plate">所属板块： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="plate" name="plate" data-placeholder="选择所属板块"  url="../../common/getplatecombo" >
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="plate" name="plate" data-placeholder="选择所属板块" selectval="${(data.plateId)!''}" url="../../common/getplatecombo" >
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.plateName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="storeType"> 门店类型：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="storeType" name="storeType" data-placeholder="选择门店类型" url="../../common/getstoretypecombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="storeType" name="storeType" data-placeholder="选择门店类型" selectval="${(data.storeType)!''}" url="../../common/getstoretypecombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.storeType)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="brokerCompanyId">所属公司：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="brokerCompanyId" data-placeholder="选择所属公司" name="brokerCompanyId" url="../../common/getallbrokercompanycombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="brokerCompanyId" data-placeholder="选择所属公司" name="brokerCompanyId" selectval="${(data.brokerCompanyId)!''}" url="../../common/getallbrokercompanycombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.brokerCompanyName)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="director"> 门店负责人： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="director" name="director" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="director" name="director" type="text" class="col-xs-10 col-sm-4" value="${(data.director)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.director)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="directorTel"> 负责人电话： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="directorTel" name="directorTel" type="text" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="directorTel" name="directorTel" type="text" class="col-xs-10 col-sm-4" value="${(data.directorTel)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.directorTel)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="status"> 经营状态： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<select id="status" name="status" data-placeholder="选择经营状态" url="../../common/getstorestatuscombo">
+													</select>
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<select id="status" name="status" data-placeholder="选择经营状态" selectval="${(data.status)!''}" url="../../common/getstorestatuscombo">
+													</select>
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.status)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="longitude"> 经度： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="longitude" name="longitude" type="text" readonly="readonly" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="longitude" name="longitude" type="text" readonly="readonly" class="col-xs-10 col-sm-4" value="${(data.longitude)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.longitude)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="latitude"> 纬度： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+													<input id="latitude" name="latitude" type="text" readonly="readonly" class="col-xs-10 col-sm-4" value="">
+													<span class="required-star">*</span>
+												<#elseif actionType == "edit">
+													<input id="latitude" name="latitude" type="text" readonly="readonly" class="col-xs-10 col-sm-4" value="${(data.latitude)!''}">
+												<#else>
+													<label class="col-sm-3 control-label no-padding-right" >
+													${(data.latitude)!''}
+													</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="latitude"> 地图选点： </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<div style="height: 20px;margin: 0; padding: 0;width: 400px;">
+									            	<input type="text" id="mapSearch" placeholder="输入地名进行搜索"/>
+									            	<div id="searchResultPanel" class="message-serch-content"></div>
+									            </div>
+												<div id="allmap" class="small-map"></div>
+											</div>
+										</div>
+									</div>
+									
+									</div>
+									<!-- <div class="panel panel-default">
+										<div class="panel-heading">
+										<a href="#faq-1-1" data-toggle="collapse"
+											class="accordion-toggle" aria-expanded="true"> <i
+											class="pull-right ace-icon fa fa-chevron-left"
+											data-icon-hide="ace-icon fa fa-chevron-down"
+											data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+											经纪门店修改历史
+										</a>
+										</div>
+										
+									</div> -->
+									</div>
+									</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:devpayment:save">
+											<#if actionType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>	
+											<#if actionType == "edit">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												修改
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=826e806b86676d155282de3d37188137"></script>
+	<script type="text/javascript">
+		var map = new BMap.Map("allmap"); // 将地址渲染到图层上
+		//var myIcon = new BMap.Icon("${basePath}/assert/img/baiduMark.png", new BMap.Size(40, 40));
+		map.enableScrollWheelZoom(); // 滚轮放大缩小
+		map.addEventListener("tilesloaded", function(){isSuccess = true;});
+		
+		var isSuccess = false; // 地图是否加载成功标志
+		
+		// 创建一个点地地图上
+		var point = new BMap.Point(116.331398, 39.897445);
+		map.centerAndZoom(point, 12);
+		
+		var localCity = new BMap.LocalCity(); // 通过IP地址定位到当前城市
+		localCity.get(function(result) {
+			var cityName = result.name; // 城市名称
+			map.setCenter(cityName); // 将地图中心点设置在这个城市
+		});
+		
+		// 为地图绑定click事件
+		map.addEventListener("click", getCoordinate);
+		/**
+		//搜索
+		$("#BMAP_Search_ByLocalName_SearchButton").click(function(){
+			var addr =	$("#BMAP_Search_ByLocalName_Text").val();
+			if(!addr)return;
+			var local = new BMap.LocalSearch(map, {
+				renderOptions:{map: map}
+			});
+			local.search(addr);
+		});
+		*/
+		// 建立一个自动完成的对象
+		var ac = new BMap.Autocomplete({
+			"input" : "mapSearch",
+			"location" : map
+		});
+
+		// 鼠标放在下拉列表上的事件
+		ac.addEventListener("onhighlight", function(e) {  
+		  	var str = "";
+	  		var _value = e.fromitem.value;
+			var value = "";
+			
+			if (e.fromitem.index > -1) {
+				value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			}
+			
+			str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+			
+			value = "";
+			if (e.toitem.index > -1) {
+				_value = e.toitem.value;
+				value = _value.province + _value.city + _value.district + _value.street + _value.business;
+			}    
+			str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+			$("#searchResultPanel").html(str);
+		});
+
+		var myValue;
+	    //鼠标点击下拉列表后的事件
+		ac.addEventListener("onconfirm", function(e) {
+			var _value = e.item.value;
+			myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+			$("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+			
+			setPlace();
+		});
+		
+		function setPlace() {
+	  		map.clearOverlays();    //清除地图上所有覆盖物
+	  		function myFun(){
+				var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+				map.centerAndZoom(pp, 18);
+				map.addOverlay(new BMap.Marker(pp));    //添加标注
+				$("#longitude").val(pp.lng);
+				$("#latitude").val(pp.lat);
+	  		}
+	  		
+	  		var local = new BMap.LocalSearch(map, { //智能搜索
+	  		  onSearchComplete: myFun
+	  		});
+	  		
+	  		local.search(myValue);
+	  	}
+		
+		function getCoordinate(e) {
+			map.clearOverlays(); 
+			var new_point = new BMap.Point(e.point.lng,e.point.lat);
+			var marker = new BMap.Marker(new_point);  // 创建标注
+			map.addOverlay(marker);   
+			$("#longitude").val(e.point.lng);
+			$("#latitude").val(e.point.lat);
+		}
+	</script>
+	<script type="text/javascript" src="../../assets/module/channel/store/storeinfo.js?${.now?long}"></script>
+</html>

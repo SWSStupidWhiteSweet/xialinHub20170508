@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘项目管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>
+											搜索
+										</button>
+										<@shiro.hasPermission name="buildingproject:create">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 创建楼盘
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="buildingproject:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改楼盘
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="buildingproject:modify">
+										<button id="config" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon  fa fa-cogs blue"></i> 配置楼盘
+										</button>
+										</@shiro.hasPermission>
+
+										<@shiro.hasPermission name="buildingproject:delet">
+										<button id="lock" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-trash-o orange"></i> 删除楼盘
+										</button>
+										</@shiro.hasPermission>
+
+										<button id="details" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-reorder red"></i>  查看
+										</button>
+										<!--<@shiro.hasPermission name="buildingproject:agentsindex">-->
+										<!--<button id="buildingContent" class="btn btn-white btn-default btn-round">-->
+											<!--<i class="ace-icon fa fa-folder-open-o blue"></i>管理楼盘动态-->
+										<!--</button>-->
+										<!--</@shiro.hasPermission>-->
+										<!--<@shiro.hasPermission name="buildingproject:agentsindex">-->
+										<!--<button id="agentgroup" class="btn btn-white btn-default btn-round">-->
+											<!--<i class="ace-icon fa  fa-credit-card blue"></i>销售团队-->
+										<!--</button>-->
+										<!--</@shiro.hasPermission>-->
+										<@shiro.hasPermission name="buildingproject:export">
+										<button id="excel" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<div class="space-4"></div>
+
+						<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="provinceId">选择省</label>
+						<!--<label class="col-sm-3 control-label no-padding-right" for="sellerText">审核状态：</label>-->
+						<div class="col-sm-9">
+							<select  id="provinceId" name="provinceId" data-placeholder="选择所属省"  url="../common/getprovincecombo" child="cityId">
+							</select>
+						</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="cityId">选择市</label>
+							<!--<label class="col-sm-3 control-label no-padding-right" for="sellerText">审核状态：</label>-->
+							<div class="col-sm-9">
+								<select  id="cityId" name="cityId" data-placeholder="选择所属省"  url="../common/getcitycombo" >
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="saleStatus">销售状态</label>
+							<!--<label class="col-sm-3 control-label no-padding-right" for="sellerText">审核状态：</label>-->
+							<div class="col-sm-9">
+								<select  id="saleStatus" name="cityId" data-placeholder="选择销售状态"  url="../common/getsalestatus" >
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="status">状态</label>
+							<!--<label class="col-sm-3 control-label no-padding-right" for="sellerText">审核状态：</label>-->
+							<div class="col-sm-9">
+								<select  id="status" name="status" data-placeholder="选择状态"  url="../common/getstatuscombo" >
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="buildingProjectName">楼盘名称：</label>
+
+							<div class="col-sm-9">
+								<input type="text" id="buildingProjectName" style="width: 120px;" placeholder="楼盘名称">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildingproject/buildingprojectindex.js"></script>
+	<script type="text/javascript">
+	$(function($){
+        // 初始化下拉框
+        Common.initSelect2("provinceId", {
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            width: "150px"
+        });
+        Common.initSelect2("cityId", {
+
+            width: "150px"
+        });
+        Common.initSelect2("saleStatus", {
+            width: "150px"
+        });
+        Common.initSelect2("status", {
+            width: "150px"
+        });
+        $('#search').click(function () {
+            var dialog = $("#condition").removeClass('hide')
+                .dialog(
+                    {
+                        modal : true,
+                        title : "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='ace-icon fa fa-search'></i> 请选择查询条件</h4></div>",
+                        title_html : true,
+                        width : "500px",
+                        buttons : [ {
+                            text : "取消",
+                            "class" : "btn btn-xs",
+                            click : function() {
+                                $(this).dialog("close");
+                            }
+                        }, {
+                            text : "查询",
+                            "class" : "btn btn-primary btn-xs",
+                            click : function() {
+                                var params = {
+                                    provinceId:$('#provinceId').val(),
+                                    cityId :$('#cityId').val(),
+                                    buildingProjectName :$('#buildingProjectName').val(),
+                                    saleStatus : $('#saleStatus').val(),
+                                    status : $('#status').val()
+                                };
+                                Common.jqGridReload("grid-table", params);
+                                $(this).dialog("close");
+                            }
+                        },{
+                            text : "重置",
+                            "class" : "btn btn-primary btn-xs",
+                            click : function() {
+                                $('#provinceId').select2("val", "");
+                                $('#provinceId').trigger("change");
+                                $('#cityId').select2("val", "");
+                                $('#cityId').trigger("change");
+                                $('#saleStatus').select2("val", "");
+                                $('#saleStatus').trigger("change");
+                                $('#status').select2("val", "");
+                                $('#status').trigger("change");
+								$('#buildingProjectName').val("");
+                            }
+                        } ]
+                    });
+
+
+
+        });
+        /**
+         * 导出
+         */
+        $("#excel").click(function() {
+            var provinceId=$('#provinceId').val();
+            var cityId=$('#cityId').val();
+            var buildingProjectName=$('#buildingProjectName').val();
+            var saleStatus=$('#saleStatus').val();
+            var status=$('#status').val();
+            location.href="export?provinceId="+ provinceId+"&cityId "+ cityId+"&buildingProjectName="+encodeURI(encodeURI(buildingProjectName))+"&saleStatus="+saleStatus+"&status="+status+"";
+        });
+	});
+
+	$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+	</script>
+</html>

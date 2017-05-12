@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body class="no-skin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-sm-12">
+				<input type="hidden" id="projectInfoId" value="${(projectBase.projectInfo.projectInfoId)!''}" />
+						<@shiro.hasPermission name="project:config:look">
+						<button id="configloglist_look" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-reorder red"></i>查看
+						</button>
+						</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:config:auditpass">
+						<button id="configloglist_check_yes" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-check green"></i>审核通过
+						</button>
+					</@shiro.hasPermission> 
+					<@shiro.hasPermission name="project:config:auditnopass">
+						<button id="configloglist_check_not" class="btn btn-white btn-default btn-round">
+							<i class="ace-icon fa fa-times red"></i>审核不通过
+						</button>
+					</@shiro.hasPermission> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<table id="configloglist_grid-table"></table>
+					<div id="configloglist_grid-pager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../assets/module/project/js/projectconfigloglist.js"></script>
+<!-- <script type="text/javascript" src="../../assets/module/project/js/projectconfigadd.js"></script> -->
+</html>

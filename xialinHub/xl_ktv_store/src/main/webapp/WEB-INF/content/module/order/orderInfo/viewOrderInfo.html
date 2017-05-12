@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>订单详情</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/ace.css" id="main-ace-style" />
+		<link rel="stylesheet" href="${basePath}/assets/module/project/css/project.css" />
+		<style type="text/css">
+			.textLeft{
+				text-align: left !important;
+			}
+			.otherBuyerDiv{
+				padding-top:2px;
+			}
+			.textLeft{
+				text-align: left !important;
+				margin: 0px;
+			    padding-top: 5px;
+			    font-size: 14px;
+			    padding-left:0;
+			    padding-right: 0 !important;
+			}
+			.msgDiv{
+				font-size: 15px;
+			    height: 35px;
+			    line-height: 35px;
+			    background-color: #6fb3e0;
+			    margin-top:0;
+			    color: #f5f5f5;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								新房订单
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									订单详情
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-horizontal" role="form">
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												
+												<!-- 客户信息 -->
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-kehu" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 客户信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-kehu" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 客户姓名:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; ${(orderInfo.customName)!''}</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 客户手机号:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; ${((orderInfo.customTel)[0..2])!''}****${((orderInfo.customTel)[7..])!''}</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 客户性别:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp;
+																<#if (orderInfo.customSex)?? && orderInfo.customSex == 1>男
+																<#elseif (orderInfo.customSex)?? && orderInfo.customSex == 2>女
+																<#else>保密
+																</#if>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 省/市:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; ${(orderInfo.provinceName)!''}/${(orderInfo.cityName)!''}</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 楼盘:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; ${(projectInfo.buildingProjectName)!''}</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 项目名称:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; ${(projectInfo.projectInfoName)!''}</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 项目状态:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp;
+																<#if (projectInfo.isStart)?? && projectInfo.isStart == 1>已上架
+																<#else>未上架
+																</#if>
+															</div>
+															
+															
+														</div>
+													</div>
+												</div>
+												
+												<!-- 渠道信息 -->
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-qudao" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 渠道信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-qudao" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 渠道归属:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp; 
+																<#if (orderInfo.channelType)?? && orderInfo.channelType == 1>自然来访</#if>
+																<#if (orderInfo.channelType)?? && orderInfo.channelType == 2>中介</#if>
+																<#if (orderInfo.channelType)?? && orderInfo.channelType == 3>线上</#if>
+																</label>
+															</div>
+															
+															<#if (orderInfo.channelType)?? && orderInfo.channelType == 2>
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 报备人信息:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																&nbsp;&nbsp;${(orderInfo.brokerName)!''}/${(orderInfo.brokerTel)!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 所属公司门店:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${(orderInfo.brokerCompanyName)!''}/${(orderInfo.storeName)!''}
+																</label>
+															</div>
+															</#if>
+															
+														</div>
+													</div>
+												</div>
+												
+												<!-- 订单状态 -->
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-status" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 订单状态
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-status" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for="form-input-readonly"></label>
+																<div class="col-sm-10">
+																	 <input type="checkbox" disabled="disabled" checked>到访&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.groupBuyTime)?? >checked</#if> >认筹&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.realBuyTime)?? >checked</#if> >认购&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.onlineSignTime)?? >checked</#if> >签约&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.checkOutTime)?? >checked</#if> >退房&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.refundFlag)?? && (orderInfo.refundFlag != 1)>checked</#if> >退款
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												
+												<!-- 时间 -->
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-time" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 时间
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-time" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 到访时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${(orderInfo.realVisitTime)!''}
+																</label>
+															</div>
+															<#if (orderInfo.groupBuyTime)?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 认筹时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																&nbsp;&nbsp;${((orderInfo.groupBuyTime)[0..10])!''}
+																</label>
+															</div>
+															</#if>
+															<#if (orderInfo.realBuyTime)?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 认购时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((orderInfo.realBuyTime)[0..10])!''}
+																</label>
+															</div>
+															</#if>
+															<#if (orderInfo.onlineSignTime)?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 网签时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((orderInfo.onlineSignTime)[0..10])!''}
+																</label>
+															</div>
+															</#if>
+															<#if (orderInfo.devSignTime)?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 开发商签约时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((orderInfo.devSignTime)[0..10])!''}
+																</label>
+															</div>
+															</#if>
+															<#if (orderInfo.checkOutTime)?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 退房时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((orderInfo.checkOutTime)[0..10])!''}
+																</label>
+															</div>
+															</#if>
+															<#if refundApply?? >
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 退款申请时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((refundApply.createTime)?string("yyyy-MM-dd"))!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 退款时间:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${((refundApply.auditTime)?string("yyyy-MM-dd"))!''}
+																</label>
+															</div>
+															</#if>
+															
+														</div>
+													</div>
+												</div>
+												
+												<!-- 套餐信息 -->
+												<#if packageInfo??>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-package" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 套餐信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-package" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 套餐ID:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${(packageInfo.projectPackageId)!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 套餐名称:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																&nbsp;&nbsp;${(packageInfo.projectPackageName)!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 业务类型:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> &nbsp;&nbsp;
+																<#if (packageInfo.packageType)?? && packageInfo.packageType == 1>非电商</#if>
+																<#if (packageInfo.packageType)?? && packageInfo.packageType == 2>电商</#if>
+																<#if (packageInfo.packageType)?? && packageInfo.packageType == 3>非电商+电商</#if>
+																</label>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 认筹信息 -->
+												<#if (orderInfo.groupBuyTime)?? >
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-renchou" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 认筹信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-renchou" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 优惠告知书编号:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly"> 
+																&nbsp;&nbsp;${(orderInfo.cheapCode)!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 收款状态:</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">&nbsp;&nbsp;
+																<#if (orderInfo.ebStatus)?? && (orderInfo.ebStatus == 0 || orderInfo.ebStatus == 1)>未收</#if>
+																<#if (orderInfo.ebStatus)?? && orderInfo.ebStatus == 2 >收款中</#if>
+																<#if (orderInfo.ebStatus)?? && orderInfo.ebStatus == 3 >已收完</#if>
+																</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																应收:${(orderInfo.recvAccAmount)!''}
+																</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																已收:${(orderInfo.realAccAmount)!''}
+																</label>
+																<label class="col-sm-2 control-label no-padding-right textLeft" for="form-input-readonly">
+																未收:${(orderInfo.recvAccAmount - orderInfo.realAccAmount)!''}
+																</label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 刷卡流水:</label>
+															</div>
+															
+															<div class="form-group">
+																<div class="row" >
+																	<div class="col-xs-1"></div>
+																	<div class="col-xs-10">
+																		<div class="table-responsive">
+																			<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+																				<thead>
+																					<tr>
+																						<th width="10%" class="center">终端号</th>
+										                                                <th width="10%" class="center">交易参考号</th>
+										                                                <th width="15%" class="center">账号</th>
+										                                                <th width="10%" class="center">持卡人姓名</th>
+										                                                <th width="10%" class="center">银行名称</th>
+										                                                <th width="10%" class="center">开户行支行</th>
+										                                                <th width="10%" class="center">交易金额</th>
+										                                                <th width="15%" class="center">刷卡/交易时间</th>
+										                                                <th width="10%" class="center">类型</th>
+																					</tr>
+																				</thead>
+																					<#if feadList?? && (feadList?size gt 0)>
+																					<#list feadList as fead>
+																					<tr>
+										                                                <td class="center">${(fead.posTerminalCode )!''}</td>
+										                                                <td class="center">${(fead.tradeRefCode )!''}</td>
+										                                                <td class="center">${(fead.payAccountNumber )!''}</td>
+										                                                <td class="center">${(fead.payAccountName )!''}</td>
+										                                                <td class="center">${(fead.payBankName )!''}</td>
+										                                                <td class="center">${(fead.bankName )!''}</td>
+										                                                <td class="center">${(fead.ebAmount)!''}</td>
+										                                                <td class="center">${((fead.tradeTime)?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
+										                                                <td class="center">
+										                                                <#if (fead.ebAccountDetailType)?? && fead.ebAccountDetailType == 1>新POS刷卡</#if>
+										                                                <#if (fead.ebAccountDetailType)?? && fead.ebAccountDetailType == 2>老POS刷卡</#if>
+										                                                <#if (fead.ebAccountDetailType)?? && fead.ebAccountDetailType == 3>银行转账</#if>
+										                                                </td>
+										                                            </tr>
+										                                            </#list>
+																					</#if>
+																				<tbody>
+																					
+																				</tbody>
+																			</table>
+																		</div><!-- /.table-responsive -->
+																	</div><!-- /span -->
+																</div><!-- /row -->
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 认购信息 -->
+												<#if (orderInfo.realBuyTime)?? >
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-rengou" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 认购信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-rengou" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">其他购房人: </label>
+																<div class="col-sm-7">
+																	
+																	<div class="clearfix">
+																	<#if moreBuyers?? && (moreBuyers?size gt 0)>
+																		<#list moreBuyers as buyer>
+																			<div class="otherBuyerDiv" style="padding-top: 4px;" nameKey="otherBuyerDiv">
+													                            <label class="poly-form-alone-label">购房人:&nbsp;</label>
+													                            <label class="poly-form-alone-label">${(buyer.name)!''}&nbsp;&nbsp;</label>
+													                            <label class="poly-check-group-one">联系电话:&nbsp;</label>
+													                            <label class="poly-form-alone-label">${(buyer.mobile)!''}&nbsp;&nbsp;</label>
+													                            <label class="poly-check-group-one">关系:&nbsp;</label>
+												                                <label>
+													                                <#if (buyer.relation)?? && buyer.relation == 1> 夫妻</#if>
+													                                <#if (buyer.relation)?? && buyer.relation == 2> 父母</#if>
+													                                <#if (buyer.relation)?? && buyer.relation == 3> 子女</#if>
+													                                <#if (buyer.relation)?? && buyer.relation == 4> 亲戚</#if>
+													                                <#if (buyer.relation)?? && buyer.relation == 5> 朋友</#if>
+												                                </label>
+												                            </div>
+																		</#list>
+																	</#if>
+																	</div>
+																	
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 认购房源:</label>
+																<div class="col-sm-10">
+																	<div class="clearfix">
+																		<label class="col-sm-12 textLeft" >
+																			<span >楼栋:${(orderInfo.houseBuilding)!''} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span >单元:${(orderInfo.houseUnit)!''} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span >认购房号: ${(orderInfo.houseNumber)!''} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																		</label>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 认购户型:</label>
+																<div class="col-sm-10">
+																	<div class="clearfix">
+																		<label class="col-sm-12 textLeft" >
+																			<span id="houseIdSpan">ID:${(currentHouse.houseId)!''} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseNameSpan">户型:${(currentHouse.houseName)!''}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseInfoSpan">${(currentHouse.roomTotal)!''}室${(currentHouse.livingRoomTotal)!''}厅
+																			${(currentHouse.bathroomTotal)!''}卫${(currentHouse.kitchenTotal)!''}厨 </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseFloorAreaSpan">建筑面积: ${(currentHouse.floorArea)!''}平米</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseUseAreaSpan">套内面积: ${(currentHouse.useArea)!''}平米</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseGiveAreaSpan">赠送面积: ${(currentHouse.giveArea)!''}平米</span>
+																		</label>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 签约信息 -->
+												<#if (orderInfo.onlineSignTime)?? || (orderInfo.devSignTime)??>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-qianyueinfo" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 签约信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-qianyueinfo" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for="form-input-readonly"></label>
+																<div class="col-sm-10">
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.devSignTime)?? >checked</#if> >已和开发商签约&nbsp;&nbsp;&nbsp;
+																	 <input type="checkbox" disabled="disabled" 
+																	 <#if (orderInfo.onlineSignTime)?? >checked</#if> >已网签&nbsp;&nbsp;&nbsp;
+																	 <span>网签总价:&nbsp;${((orderInfo.onlineSignAmount)?string('#.00'))!''}</span>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 开发商回款 -->
+												<#if fddList?? && (fddList?size gt 0)>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-huikuan" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 开发商回款
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-huikuan" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">回款金额: </label>
+																<div class="col-sm-10">
+																	<div class="clearfix">
+																		<label class="col-sm-12 textLeft" >
+																			<span >应收回款金额:${(orderInfo.recvDistAmount)!'--'}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span >已收回款金额:${(orderInfo.realDistAmount)!'--'}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																		</label>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for=""> 回款明细: </label>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for=""> </label>
+																<div class="col-sm-10">
+																	<div class="row" style="">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table class="table table-striped table-bordered table-hover">
+																					<thead>
+													                                     <tr>
+													                                         <th width="15%" class="center">回款金额</th>
+													                                         <th width="20%" class="center">确认回款人</th>
+													                                         <th width="15%" class="center">回款日期</th>
+													                                         <th width="15%" class="center">回款确认时间</th>
+													                                         <th width="20%" class="center">备注</th>
+													                                     </tr>
+												                                    </thead>
+												                                    <tbody>
+												                                    	<#list fddList as fdd>
+												                                    		<tr>
+												                                    			<td class="center">${(fdd.distributionAmount)!''}</td>
+												                                    			<td class="center">${(fdd.operatorName)!''}</td>
+												                                    			<td class="center">${((fdd.createTime)[0..10])!''}</td>
+												                                    			<td class="center">${((fdd.tradeTime)[0..18])!''}</td>
+												                                    			<td class="center">${(fdd.remark)!''}</td>
+												                                    		</tr>
+												                                    	</#list>
+												                                    </tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 结佣信息-->		
+												<#if (orderInfo.channelType)?? && orderInfo.channelType == 2>		
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-jytiaojian" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 结佣信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-jytiaojian" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> 结佣条件: </label>
+																<div class="col-sm-7">
+																	<div class="row" style="">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table class="table table-striped table-bordered table-hover">
+																					<thead>
+													                                     <tr>
+													                                         <th width="80%" class="center">结佣条件</th>
+												                                             <th width="20%" class="center">情况</th>
+													                                     </tr>
+												                                    </thead>
+												                                    <tbody>
+												                                    	<tr>
+												                                            <td width="80%" class="center">报备客户有效</td>
+												                                            <td width="20%" class="center"><img src="${basePath}/assets/img/order/tick.png" /></td>
+												                                       	</tr>
+												                                       	<tr>
+												                                            <td width="80%" class="center">看房有效</td>
+												                                            <td width="20%" class="center"><img src="${basePath}/assets/img/order/tick.png" /></td>
+												                                       	</tr>
+												                                       	<tr>
+												                                            <td width="80%" class="center">无退款中/无已退款记录</td>
+												                                            <td width="20%" class="center">
+												                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 6 || orderInfo.orderStatus == 7 || orderInfo.orderStatus == 8)>
+												                                            		<img src="${basePath}/assets/img/order/close_small.png" />
+												                                            	</#if>
+												                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+												                                            			|| orderInfo.orderStatus == 4 || orderInfo.orderStatus == 5)>
+												                                            		<#if (orderInfo.vacationFlag)?? && (orderInfo.refundFlag)?? && orderInfo.refundFlag == 1 && orderInfo.vacationFlag == 1>
+												                                            			<img src="${basePath}/assets/img/order/tick.png" />
+												                                            		<#else>
+												                                            			<img src="${basePath}/assets/img/order/close_small.png" />
+												                                            		</#if>
+												                                            	</#if>
+												                                           </td>
+												                                        </tr>
+												                                        <tr>
+												                                             <td width="80%" class="center">客户附件齐全（到访附件/认筹附件/认购附件）</td>
+												                                             <td width="20%" class="center">
+												                                             <#if (isFjWhole)?? && isFjWhole == 1>
+												                                             	<img src="${basePath}/assets/img/order/tick.png" />
+												                                             <#else>
+												                                             	<img src="${basePath}/assets/img/order/close_small.png" />
+												                                             </#if>
+												                                             </td>
+												                                        </tr>
+												                                        <tr>
+												                                             <td width="80%" class="center">成交审核已通过</td>
+												                                             <td width="20%" class="center">
+												                                             <#if (orderInfo.auditStatus)?? && orderInfo.auditStatus == 1>
+												                                            	 <img src="${basePath}/assets/img/order/tick.png" />
+												                                             <#else>
+												                                             	<img src="${basePath}/assets/img/order/close_small.png" />
+												                                             </#if>
+												                                             </td>
+												                                        </tr>
+												                                        <#if (packageInfo.packageType)?? && (packageInfo.packageType == 2 || packageInfo.packageType == 3)>
+												                                        <tr>
+												                                             <td width="80%" class="center">电商费已结清，前佣可结。
+												                                             	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 5 || orderInfo.orderStatus == 6 || orderInfo.orderStatus == 7)>
+												                                             		(应结:${(orderInfo.settleFrontAmount)!''},禁止结佣:${(orderInfo.forbidFrontAmount)!''},已结:${(orderInfo.realFrontAmount)!''})
+												                                             	</#if>
+												                                             </td>
+												                                             <td width="20%" class="center">
+												                                             <#if (orderInfo.orderStatus)?? && orderInfo.orderStatus == 5>
+												                                              		<img src="${basePath}/assets/img/order/tick.png" />
+												                                             <#else>
+												                                             		<img src="${basePath}/assets/img/order/close_small.png" />
+												                                             </#if>
+												                                             </td>
+												                                        </tr>
+												                                        </#if>
+												                                        <#if (packageInfo.packageType)?? && (packageInfo.packageType == 1 || packageInfo.packageType == 3) >
+												                                        <tr>
+												                                            <td width="80%" class="center">开发商回款，后佣可结。
+												                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 5 || orderInfo.orderStatus == 7 || orderInfo.orderStatus == 8)>
+												                                            		(应结:${(orderInfo.settleBackAmount)!''},禁止结佣:${(orderInfo.forbidBackAmount)!''},已结:${(orderInfo.realBackAmount)!''})
+												                                            	</#if>
+												                                            </td>
+												                                            <td width="20%" class="center">
+												                                            <#if (orderInfo.orderStatus)?? && orderInfo.orderStatus == 5>
+												                                            	<img src="${basePath}/assets/img/order/tick.png" />
+												                                            <#else>
+												                                            	<img src="${basePath}/assets/img/order/close_small.png" />
+												                                            </#if>
+												                                            </td>
+												                                       	</tr>
+												                                        </#if>
+														                                            
+												                                    </tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																	
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<!-- 结佣记录 -->										
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-jieyong" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 结佣记录
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-jieyong" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"></label>
+																<div class="col-sm-7">
+																	<div class="row" style="" id="orderRecordTable">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+																					<thead>
+																						<tr>
+																							<th width="10%" class="center">佣金类型</th>
+												                                            <th width="10%" class="center">结佣金额</th>
+												                                            <th width="20%" class="center">申请时间</th>
+												                                            <th width="20%" class="center">结佣时间</th>
+												                                            <th width="10%" class="center">结佣状态</th>
+												                                            <th width="15%" class="center">结算对象</th>
+												                                            <th width="15%" class="center">佣金占比</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<#if (brokerList)?? && (brokerList?size gt 0)>
+																							<#list brokerList as broker>
+																								<tr>
+																									<td width="10%" class="center">
+																									<#if (broker.brokerageType)?? && broker.brokerageType == 1>
+																										前佣
+																									<#else>
+																										后佣
+																									</#if>
+													                                                </td>
+													                                                <td width="10%" class="center">
+													                                                	${(broker.brokerageDistributionAmount)!''}
+													                                                </td>
+													                                                <td width="20%" class="center">
+													                                                	${((broker.createTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+													                                                </td>
+													                                                <td width="20%" class="center">
+													                                                	${((broker.completeTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+													                                                </td>
+													                                                <td width="10%" class="center">
+													                                                <#if (broker.isComplete)?? && broker.isComplete == 1>
+													                                              		  已结算
+													                                                <#else>
+													                                                	未结算
+													                                                </#if>
+													                                                </td>
+													                                                <td width="15%" class="center">
+													                                                <#if (broker.brokerageObject)?? && broker.brokerageObject == 1>
+													                                              		  公司
+													                                                <#else>
+													                                                	门店
+													                                                </#if>
+													                                                </td>
+													                                                <td width="15%" class="center">
+													                                                <#if (broker.brokerageType)?? && broker.brokerageType == 1>
+													                                                	<#if (orderInfo.canFrontAmount)?? && (orderInfo.canFrontAmount)?string('#.00') == '0.00'>
+													                                                		0%
+													                                                	</#if>
+													                                                	<#if (orderInfo.canFrontAmount)?? && (orderInfo.canFrontAmount)?string('#.00') != '0.00'>
+													                                                		${((broker.brokerageDistributionAmount*100/orderInfo.canFrontAmount)?string('#.00'))!''}%
+													                                                	</#if>
+													                                                </#if>
+													                                                <#if (broker.brokerageType)?? && broker.brokerageType == 2>
+													                                                	<#if (orderInfo.canBackAmount)?? && (orderInfo.canBackAmount)?string('#.00') == '0.00'>
+													                                                		0%
+													                                                	</#if>
+													                                                	<#if (orderInfo.canBackAmount)?? && (orderInfo.canBackAmount)?string('#.00') != '0.00'>
+													                                                		${((broker.brokerageDistributionAmount*100/orderInfo.canBackAmount)?string('#.00'))!''}%
+													                                                	</#if>
+													                                                </#if>
+													                                                </td>
+																								</tr>
+																							</#list>
+																						</#if>
+																					</tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												</#if>
+
+												<!-- 退房信息-->
+												<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus==7 || orderInfo.orderStatus==8)>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-tuifang" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 退房信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-tuifang" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for=""> </label>
+																<div class="col-sm-10">
+																	<div class="row" style="">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table class="table table-striped table-bordered table-hover">
+																					<thead>
+													                                     <tr>
+													                                        <th width="10%" class="center">客户姓名</th>
+											                                                <th width="15%" class="center">客户电话</th>
+											                                                <th width="10%" class="center">户型</th>
+											                                                <th width="10%" class="center">房号</th>
+											                                                <th width="10%" class="center">建筑面积</th>
+											                                                <th width="10%" class="center">套内面积</th>
+											                                                <th width="10%" class="center">赠送面积</th>
+											                                                <th width="10%" class="center">认购总价</th>
+											                                                <th width="10%" class="center">网签总价</th>
+													                                     </tr>
+												                                    </thead>
+												                                    <tbody>
+											                                    		<tr>
+											                                    			<td width="10%" class="center">${(orderInfo.customName)!''}</td>
+											                                                <td width="15%" class="center">${(orderInfo.customTel)!''}</td>
+											                                                <td width="10%" class="center">${(currentHouse.houseName)!''}</td>
+											                                                <td width="10%" class="center">${(orderInfo.houseNumber)!''}</td>
+											                                                <td width="10%" class="center">${(currentHouse.floorArea)!''}</td>
+											                                                <td width="10%" class="center">${(currentHouse.useArea)!''}</td>
+											                                                <td width="10%" class="center">${(currentHouse.giveArea)!''}</td>
+											                                                <td width="10%" class="center">
+											                                                ${((orderInfo.houseAmount)?string(',###.00'))!''}
+											                                                </td>
+											                                                <td width="10%" class="center">
+											                                                ${((orderInfo.onlineSignAmount)?string(',###.00'))!''}
+											                                                </td>
+											                                    		</tr>
+												                                    </tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 退款信息-->
+												<#if ordList?? && (ordList?size gt 0)>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-tuikuan" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp;退款信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-tuikuan" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for="buildingProjectId"> </label>
+																<div class="col-sm-10">
+																	<div class="row" style="">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table class="table table-striped table-bordered table-hover">
+																					<thead>
+													                                     <tr>
+											                                                <th class="center">客户姓名</th>
+											                                                <th class="center">持卡人</th>
+											                                                <th class="center">账号</th>
+											                                                <th class="center">开户银行</th>
+											                                                <th class="center">退款金额</th>
+											                                                <th class="center">手续费</th>
+											                                                <th class="center">申请日期</th>
+											                                                <th class="center">审批日期</th>
+											                                                <th class="center">当前状态</th>
+											                                                <th class="center">退款类型</th>
+													                                     </tr>
+												                                    </thead>
+												                                    <tbody>
+												                                    	<#list ordList as ord>
+											                                    		<tr>
+											                                                <td class="center">${(orderInfo.customName)!''}</td>
+											                                                <td class="center">${(ord.bankAccountName)!''}</td>
+											                                                <td class="center">${(ord.bankAccountNumber)!''}</td>
+											                                                <td class="center">${(ord.bankName)!''}</td>
+											                                                <td class="center">
+											                                                ${(ord.refundAmount)!''}
+											                                                </td>
+											                                                <td class="center">
+											                                                ${(ord.feeRatio)!''}
+											                                                </td>
+											                                                <td class="center">
+											                                                ${((ord.createTime)?string("yyyy-MM-dd"))!''}
+											                                                </td>
+											                                                <td class="center">
+											                                                  ${((ord.auditTime)?string("yyyy-MM-dd"))!''}
+											                                                </td>
+											                                                <td class="center">
+											                                                <#if (ord.status)?? && ord.status == 3>已退款</#if>
+											                                                <#if (ord.status)?? && (ord.status == 1 || ord.status == 2)>退款中</#if>
+											                                                </td>
+											                                                <td class="center">
+											                                                <#if (ord.isToSrc)?? && ord.isToSrc == 1>原卡原退</#if>
+											                                                <#if (ord.isToSrc)?? && ord.isToSrc == 0>非原卡原退</#if>
+											                                                </td>
+											                                            </tr>
+											                                            </#list>
+												                                    </tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 附件信息 -->
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-fj" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 附件信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-fj" aria-expanded="false">
+														
+														<div class="panel-body">
+															<div id="houseContent" class="tab-pane">
+																<ul class="ace-thumbnails" id="buildingHouseImg">
+																	<#if (attList)?? && (attList?size gt 0)>
+												                    		<#list attList as att>
+																			<li style="border: 1px solid #333;">
+																				<a href="..${(att.orderAttachmentUrl?replace('s_','l_'))!''}" title="${(att.orderAttachmentType)!''}" data-rel="colorbox">
+																					<img id="" class="building_house_img" src="${basePath}${(att.orderAttachmentUrl)!''}">
+																				</a>
+																				<div class="favourable msgDiv">
+																					<span class="lbl" id="">${(att.orderAttachmentType)!''}</span>
+																				</div>
+																			</li>
+																		</#list>
+																	</#if>			 
+																</ul>
+															</div>
+														</div>
+														
+													</div>
+												</div>
+												
+												<!-- 备注 -->
+												<#if (orderInfo.remark)??>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-remark" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 备注
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-remark" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for=""></label>
+																<div class="col-sm-5">
+																	<div class="clearfix">
+																		<span>${(orderInfo.remark)!''}</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												</#if>
+												
+												<!-- 订单日志 -->										
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#log" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 订单日志
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="log" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> </label>
+																<div class="col-sm-7">
+																	<div class="row" style="" id="orderRecordTable">
+																		<div class="col-xs-10">
+																			<div class="table-responsive">
+																				<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+																					<thead>
+																						<tr>
+																							<th width="40%" class="center">操作内容</th>
+												                                            <th width="25%" class="center">操作时间</th>
+												                                            <th width="10%" class="center">操作人</th>
+												                                            <th width="25%" class="center">操作终端</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<#if (hisList)?? && (hisList?size gt 0)>
+																							<#list hisList as his>
+																								<tr>
+													                                                <td width="40%" class="center">${(his.descript)!''}</td>
+													                                                <td width="10%" class="center">
+													                                                	${((his.modifyTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+													                                                </td>
+													                                                <td width="20%" class="center">${(his.modifyOperatorName)!''}</td>
+													                                                <td width="20%" class="center">
+													                                                	云后台
+													                                                </td>
+													                                            </tr>
+																							</#list>
+																						</#if>
+																																
+																					</tbody>
+																				</table>
+																			</div><!-- /.table-responsive -->
+																		</div><!-- /span -->
+																	</div><!-- /row -->
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+														<button id="backBtn" class="btn" type="reset" onclick="back()">
+															<i class="ace-icon fa fa-undo bigger-110"></i>
+															返回
+														</button>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								
+								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function back(){
+			var url = "${basePath}/orderinfo/orderinfoindex";
+			location.href = url;
+		}
+		
+		//初始化画廊
+		$('.ace-thumbnails [data-rel="colorbox"]').colorbox(Common.colorbox_params);
+	</script>
+</html>

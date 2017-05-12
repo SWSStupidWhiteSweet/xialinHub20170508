@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>银行转账</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/ace.css" id="main-ace-style" />
+		<link rel="stylesheet" href="${basePath}/assets/module/project/css/project.css" />
+		<style type="text/css">
+			.textLeft{
+				text-align: left !important;
+			}
+			.otherBuyerDiv{
+				padding-top:2px;
+			}
+			.msgDiv{
+				font-size: 15px;
+			    height: 35px;
+			    line-height: 35px;
+			    background-color: #6fb3e0;
+			    margin-top:0;
+			    color: #f5f5f5;
+			}
+			.cancleY{
+				    display: inline-block;
+				    cursor: pointer;
+				    text-align: center;
+				    width: 49%;
+				    background: #EFEFEF no-repeat 0 0;
+			}
+			.cancleN{
+				    display: inline-block;
+				    cursor: pointer;
+				    text-align: center;
+				    width: 49%;
+				    color: #f5f5f5;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								新房订单
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									成交审核
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-horizontal" role="form">
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+								
+								<!-- 客户信息 -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<a href="#faq-kehu" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+											<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+											&nbsp; 客户信息
+										</a>
+									</div>
+									<div class="panel-collapse collapse in" id="faq-kehu" aria-expanded="false">
+										<div class="panel-body">
+											<div class="form-group">
+												<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 报备客户姓名:</label>
+												<label class="col-sm-10 control-label no-padding-right textLeft" for="form-input-readonly">
+													&nbsp;&nbsp; ${(orderInfo.customName)!''}
+													&nbsp;&nbsp; 客户电话:&nbsp;&nbsp; ${(orderInfo.customTel)!''}
+													&nbsp;&nbsp;
+													<!-- <a href="javascript:void(0)" onclick="viewCustomerInfo(this, '${(orderInfo.customInfoId)!''}');">客户详情</a>
+													 -->
+												</label>
+												
+											</div>
+											
+											<div class="form-group">
+												<#if (orderInfo.isOtherBuyer)?? && orderInfo.isOtherBuyer == 1>
+													<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 购房人姓名:</label>
+													<label class="col-sm-10 control-label no-padding-right textLeft" for="form-input-readonly">
+														&nbsp;&nbsp; ${(orderInfo.customName)!''}
+														&nbsp;&nbsp; 购房人电话: &nbsp;&nbsp; ${(orderInfo.customTel)!''}
+														&nbsp;&nbsp; 与报备客户的关系: &nbsp;&nbsp; 本人
+													</label>
+												</#if>
+												<#if (orderInfo.isOtherBuyer)?? && orderInfo.isOtherBuyer == 2>
+													<#if moreBuyers?? && (moreBuyers?size gt 0)>
+													<#list moreBuyers as buyer>
+														<label class="col-sm-2 control-label no-padding-right" for="form-input-readonly"> 购房人姓名:</label>
+														<label class="col-sm-10 control-label no-padding-right textLeft" for="form-input-readonly">
+															&nbsp;&nbsp; ${(buyer.name)!''}
+															&nbsp;&nbsp; 购房人电话: &nbsp;&nbsp; ${(buyer.mobile)!''}
+															&nbsp;&nbsp; 与报备客户的关系: &nbsp;&nbsp; 
+																		<#if (buyer.relation)?? && buyer.relation == 1> 夫妻</#if>
+										                                <#if (buyer.relation)?? && buyer.relation == 2> 父母</#if>
+										                                <#if (buyer.relation)?? && buyer.relation == 3> 子女</#if>
+										                                <#if (buyer.relation)?? && buyer.relation == 4> 亲戚</#if>
+										                                <#if (buyer.relation)?? && buyer.relation == 5> 朋友</#if>
+														</label>
+													</#list>
+													</#if>
+												</#if>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+								<!-- 订单信息 -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<a href="#faq-order" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+											<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+											&nbsp; 订单信息
+										</a>
+									</div>
+									<div class="panel-collapse collapse in" id="faq-order" aria-expanded="false">
+										<div class="panel-body">
+											
+											<div class="form-group">
+												<div class="row" >
+													<div class="col-xs-1"></div>
+													<div class="col-xs-10">
+														<div class="table-responsive">
+															<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+																<thead>
+																	<tr>
+						                                                <th class="center">订单号</th>
+						                                                <th class="center">城市</th>
+						                                                <th class="center">商户</th>
+						                                                <th class="center">项目名称</th>
+						                                                <th class="center">项目类型</th>
+						                                                <th class="center">客户信息</th>
+						                                                <th class="center">渠道来源</th>
+						                                                <th class="center">报备人</th>
+						                                                <th class="center">公司/门店</th>
+						                                                <th class="center">产品套餐</th>
+						                                                <th class="center">认购价格</th>
+						                                                <th class="center">网签价格</th>
+																	</tr>
+																</thead>
+																	<tr>
+						                                                <td class="center">${(orderInfo.orderInfoCode)!'' }</td>
+						                                                <td class="center">${(orderInfo.cityName)!'' }</td>
+						                                                <td class="center">${(company.companyName)!'' }</td>
+						                                                <td class="center">${(projectInfo.projectInfoName)!'' }</td>
+						                                                <td class="center">
+						                                                	<#if (packageInfo.packageType)?? && packageInfo.packageType == 1>非电商</#if>
+																			<#if (packageInfo.packageType)?? && packageInfo.packageType == 2>电商</#if>
+																			<#if (packageInfo.packageType)?? && packageInfo.packageType == 3>非电商+电商</#if>
+						                                                </td>
+						                                                <td class="center">
+						                                                	${(orderInfo.customName)!'' }</br>
+						                                                	${(orderInfo.customTel)!'' }
+						                                                </td>
+						                                                <td class="center">
+						                                                	<#if (orderInfo.channelType)?? && orderInfo.channelType == 1>自然来访</#if>
+																			<#if (orderInfo.channelType)?? && orderInfo.channelType == 2>中介</#if>
+																			<#if (orderInfo.channelType)?? && orderInfo.channelType == 3>线上</#if>
+						                                                </td>
+						                                                <td class="center">
+						                                                	${(orderInfo.brokerName)!'' }</br>
+						                                                	${(orderInfo.brokerTel)!'' }
+						                                                </td>
+						                                                <td class="center">
+						                                                	${(orderInfo.brokerCompanyName)!'' }</br>
+						                                                	${(orderInfo.storeName)!'' }
+						                                                </td>
+						                                                <td class="center">
+						                                                	${(packageInfo.projectPackageName)!'' }
+						                                                </td>
+						                                                <td class="center">${(orderInfo.houseAmount)!'' }</td>
+						                                                <td class="center">${(orderInfo.onlineSignAmount)!'' }</td>
+						                                            </tr>
+																<tbody>
+																	
+																</tbody>
+															</table>
+														</div><!-- /.table-responsive -->
+													</div><!-- /span -->
+												</div><!-- /row -->
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+								<!-- 附件信息 -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<a href="#faq-fj" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+											<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+											&nbsp; 附件信息
+										</a>
+									</div>
+									<div class="panel-collapse collapse in" id="faq-fj" aria-expanded="false">
+										
+										<div class="panel-body">
+											<div id="houseContent" class="tab-pane">
+												<ul class="ace-thumbnails" id="buildingHouseImg">
+													<#if (attList)?? && (attList?size gt 0)>
+								                    		<#list attList as att>
+															<li style="border: 1px solid #333;">
+																<a href="..${(att.orderAttachmentUrl?replace('s_','l_'))!''}" title="${(att.orderAttachmentType)!''}" data-rel="colorbox">
+																	<img id="" class="building_house_img" src="${basePath}${(att.orderAttachmentUrl)!''}">
+																</a>
+																<div class="favourable msgDiv">
+																	<span class="lbl" id="">${(att.orderAttachmentType)!''}</span>
+																</div>
+															</li>
+														</#list>
+													</#if>			 
+												</ul>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								
+								<!-- 审核意见 -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<a href="#faq-auditOpinion" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+											<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+											&nbsp; 审核意见
+										</a>
+									</div>
+									<div class="panel-collapse collapse in" id="faq-auditOpinion" aria-expanded="false">
+										<div class="panel-body">
+											<div class="form-group">
+												<label class="col-sm-2 control-label no-padding-right" for=""></label>
+												<div class="col-sm-5">
+													<div class="clearfix">
+														<textarea id="auditOpinion" rows="5" class="autosize-transition form-control"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+									<input type="hidden" value="${(orderInfo.orderInfoId)!''}" id="orderInfoId" />
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="pass" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												审核通过
+											</button>
+											<button id="notPass" class="btn btn-danger" type="button">
+												<i class="glyphicon glyphicon-remove bigger-110"></i>
+												审核不通过
+											</button>
+											<button id="backBtn" class="btn" type="reset" onclick="goBack();">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$('textarea[class*=autosize]').autosize({append: "\n"});
+		
+		var path = "${basePath}";
+		function goBack(){
+			var url = "${basePath}/orderreview/orderreviewindex";
+			location.href = url;//返回上一页并刷新
+		}
+		//初始化画廊
+		$('.ace-thumbnails [data-rel="colorbox"]').colorbox(Common.colorbox_params);
+	</script>
+	<script type="text/javascript" src="../assets/module/order/orderReview/reviewAudit.js"></script>
+</html>

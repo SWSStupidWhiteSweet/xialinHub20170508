@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>认筹信息</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/order/order.css" id="main-ace-style" />
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<input type="hidden" id="pageStep" value="3" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div id="agglomerationForm" class="form-horizontal" role="form">
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												<input type="hidden" id="orderInfoId" value="${(orderGathering.orderInfo.orderInfoId)!''}"/>
+												<input type="hidden" id="fingerprint" value="${(orderGathering.orderInfo.fingerprint)!''}"/>
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-1-5" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 客户认筹信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-1-5" aria-expanded="false">
+														<div class="panel-body">
+															<!-- 认筹时间 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="groupBuyTime">认筹时间： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<div class="row">
+																			<div class="col-xs-5">
+																				<div class="input-group input-group-sm">
+																					<input class="form-control" name="groupBuyTime" id="groupBuyTime" value="${(orderGathering.orderInfo.groupBuyTime[0..10])!''}" type="text" 
+																							data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择认筹日期" />
+																					<span class="input-group-addon">
+																						<i class="ace-icon fa fa-calendar"></i>
+																					</span>
+																				</div>
+																			</div>
+																			<div class="col-xs-1">
+																				<span><font color="red">&nbsp;&nbsp;*</font></span>
+																			</div>
+																			
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<!-- 优惠告知书编号 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="cheapCode">优惠告知书编号： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<input type="text" id="cheapCode" name="cheapCode"  class="col-xs-10 col-sm-4" value="${(orderGathering.orderInfo.cheapCode)!''}" />
+																		<span><font color="red">&nbsp;&nbsp;*</font></span>
+																		&nbsp;&nbsp;
+																		<button id="searchCheapCode" class="btn btn-info btnMy" type="button">
+																			搜索
+																		</button>
+																	</div>
+																	
+																</div>
+															</div>
+															<!-- 会员信息 -->
+															<div class="row">
+																<div class="col-xs-1"></div>
+																<div class="col-xs-10">
+																	<div class="poly-form-alone">
+											                            <span style="color: red;height: auto;" id="search-msg"></span>
+											                        </div></br>
+																	<div class="table-responsive" style="display:none" id="memberDiv">
+																		<table id="member-info-table" class="table table-striped table-bordered table-hover">
+																			<thead>
+																				<tr>
+																					<th class="center" width="10%">客户姓名</th>
+									                                                <th class="center" width="15%">客户手机号</th>
+									                                                <th class="center" width="25%">身份证号</th>
+									                                                <th class="center" width="15%">提交时间</th>
+									                                                <!-- <th class="center" width="15%">操作</th> -->
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr>
+									                                                <td class="center">${(orderGathering.memberInfo.memberName)!'' }</td>
+									                                                <td class="center">${(orderGathering.memberInfo.memberTel)!'' }</td>
+									                                                <td class="center">${(orderGathering.memberInfo.memberIdcode)!'' }</td>
+									                                                <td class="center">
+									                                                	${((orderGathering.memberInfo.createTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+									                                                </td>
+									                                                    <!-- memberInfo != null
+									                                                	<td class="center">
+									                                                    	<a href="javascript:void(0);" id="member-sign-att" data-addtab="member-sign-att-info" 
+									                                                    	onclick="viewMemberInfo(this,msa.signAttId);" class="blpc-addtab-btn blpc_btn_s">查看详情</a>
+									                                                	</td>
+									                                                	-->
+									                                            </tr>
+																			</tbody>
+																		</table>
+																	</div><!-- /.table-responsive -->
+																</div><!-- /span -->
+																
+																<div class="col-xs-1"></div>
+															</div><!-- /row -->
+															
+															<!-- 收款信息 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="cheapCode">收款状态 ： </label>
+																<label class="col-sm-9 control-label no-padding-right" style="text-align: left" for=""> 
+																	<span><#if (orderGathering.orderInfo.ebStatus)??>
+																						<#if orderGathering.orderInfo.ebStatus == 0 || orderGathering.orderInfo.ebStatus == 1>未收
+																					  	<#elseif orderGathering.orderInfo.ebStatus == 2>收款中
+																					  	<#elseif orderGathering.orderInfo.ebStatus == 3>已收完
+																					  	<#else>未知状态
+																					 	</#if>
+																					 </#if>
+																		</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																		<span>应收 &nbsp;: &nbsp;
+																			<#if (orderGathering.orderInfo.recvAccAmount)?? && orderGathering.orderInfo.recvAccAmount == 0>0.00
+																			<#elseif (orderGathering.orderInfo.recvAccAmount)?? && (orderGathering.orderInfo.recvAccAmount gt 0) 
+																				&& (orderGathering.orderInfo.recvAccAmount lt 1) > ${(orderGathering.orderInfo.recvAccAmount)!''}
+																			<#else>${(orderGathering.orderInfo.recvAccAmount?string(',###.00'))!''}
+																			</#if>
+																		</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																		<span>已收 &nbsp;: &nbsp;
+																			<#if (orderGathering.orderInfo.realAccAmount)?? && orderGathering.orderInfo.realAccAmount == 0>0.00
+																			<#elseif (orderGathering.orderInfo.realAccAmount)?? && (orderGathering.orderInfo.realAccAmount gt 0) 
+																				&& (orderGathering.orderInfo.realAccAmount lt 1) >${(orderGathering.orderInfo.realAccAmount)!''}
+																			<#else>${(orderGathering.orderInfo.realAccAmount?string(',###.00'))!''}
+																			</#if>
+																		</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																		<span>未收 &nbsp;:&nbsp; <font color="red">
+																					<#if (orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount)?? && 
+																						(orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount) == 0>0.00
+																					<#elseif (orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount)?? 
+																						&& ((orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount) gt 0) 
+																						&& ((orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount) lt 1) >
+																						${(orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount)!''}
+																					<#else>
+																						${((orderGathering.orderInfo.recvAccAmount-orderGathering.orderInfo.realAccAmount)?string(',###.00'))!''}
+																					</#if>
+																				   </font>
+																		</span>
+																
+																</label>
+																
+															</div>
+															<!-- 按钮 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">缴费流水信息： </label>
+																<div class="col-sm-9">
+																	<div class="clearfix testRight">
+																		<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+																				|| (orderInfo.orderStatus == 4 && orderInfo.auditStatus == 2))>
+																			&nbsp;&nbsp;
+																			<button id="newPos" class="btn btn-info btnMy" type="button">
+																				新POS收款
+																			</button>
+																			&nbsp;&nbsp;
+																			<button id="oldPos" class="btn btn-info btnMy" type="button">
+																				旧POS收款
+																			</button>
+																			&nbsp;&nbsp;
+																			<button id="bankTransfer" class="btn btn-info btnMy" type="button">
+																				银行转账
+																			</button>
+																		<#else>
+																			<button class="btn btnMy" type="button">
+																				新POS收款
+																			</button>
+																			&nbsp;&nbsp;
+																			<button class="btn btnMy" type="button">
+																				旧POS收款
+																			</button>
+																			&nbsp;&nbsp;
+																			<button class="btn btnMy" type="button">
+																				银行转账
+																			</button>
+																		</#if>
+																	</div>
+																	
+																</div>
+															</div>
+															<!-- 缴费流水信息表格 -->
+															<div class="row">
+																<div class="col-xs-1"></div>
+																<div class="col-xs-10">
+																	<div class="table-responsive">
+																		<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+																			<thead>
+																				<tr>
+									                                                <th width="10%" class="center">终端号</th>
+									                                                <th width="10%" class="center">交易参考号</th>
+									                                                <th width="15%" class="center">账号</th>
+									                                                <th width="10%" class="center">持卡人姓名</th>
+									                                                <th width="10%" class="center">银行名称</th>
+									                                                <th width="10%" class="center">开户行支行</th>
+									                                                <th width="6%" class="center">交易金额</th>
+									                                                <th width="7%" class="center">交易时间</th>
+									                                                <th width="7%" class="center">类型</th>
+									                                                <th width="15%" class="center">操作</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																			<#if (orderGathering.feadResult)??>
+																				<#list orderGathering.feadResult as fead>
+																					<tr>
+										                                                <td class="center">${(fead.posTerminalCode)!''}</td>
+										                                                <td class="center">${(fead.tradeRefCode)!''}</td>
+										                                                <td class="center">${(fead.payAccountNumber)!''}</td>
+										                                                <td class="center">
+											                                                <input type="text" name="payAccountName${(fead.ebAccountDetailId)!''}" id="payAccountName${(fead.ebAccountDetailId)!''}" 
+			                                                									value="${(fead.payAccountName)!''}" style="width: 100px;height: 30px;"/>
+		                                                								</td>
+										                                                <td class="center">${(fead.payBankName)!''}</td>
+										                                                <td class="center">
+										                                                	<input type="text" name="bankName${(fead.ebAccountDetailId)!''}" id="bankName${(fead.ebAccountDetailId)!''}" 
+		                                                										value="${(fead.bankName)!''}" style="width: 100px;height: 30px;"/>
+																						</td>
+										                                                <td class="center">${(fead.ebAmount)!''}</td>
+										                                                <td class="center">${((fead.tradeTime)?string("yyyy-MM-dd"))!''}</td>
+										                                                <td class="center">
+										                                                	<#if fead.ebAccountDetailType == 1>新POS刷卡
+										                                                	<#elseif fead.ebAccountDetailType == 2>老POS刷卡
+										                                                	<#elseif fead.ebAccountDetailType == 3>银行转账
+										                                                	<#else>未知类型
+										                                                	</#if>
+										                                                </td>
+										                                                <td class="center">
+										                                                	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+																										 || (orderInfo.orderStatus == 4 && orderInfo.auditStatus == 2))>
+																								<#if fead.ebAccountDetailType == 3>
+																									<a href="javascript:void(0);" class="btnA" 
+										                                                    			onclick="deleteGathering(this,${fead.financeDistributionId},${fead.ebAccountDetailId });">删除</a>
+										                                                    	<#else>
+										                                                    		<#if fead.ebAmount == fead.distributionAmountDetail>
+										                                                    			<a href="javascript:void(0);" class="btnA" 
+											                                                    			onclick="cancelLinkOrder(this,${fead.financeDistributionId},${fead.ebAccountDetailId });">撤销关联</a>
+										                                                    		</#if>
+																								</#if>
+																								<a href="javascript:void(0);" class="btnA" onclick="saveGatheringInfo(this, ${fead.ebAccountDetailId });">保存信息</a>
+																							<#else>
+																								订单已签约
+																							</#if>
+										                                                </td>
+										                                            </tr>
+																				</#list>
+																			</#if>
+																			</tbody>
+																		</table>
+																	</div><!-- /.table-responsive -->
+																</div><!-- /span -->
+																
+																<div class="col-xs-1"></div>
+															</div><!-- /row -->
+														</div>
+													</div>
+												</div>
+												
+												<#include "orderAttAndLog.html" />
+												
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+													<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+															|| (orderInfo.orderStatus == 4 && orderInfo.auditStatus == 2))>
+														<button id="saveBtn" class="btn btn-info" type="button">
+															<i class="ace-icon fa fa-check bigger-110"></i>
+															修改订单
+														</button>
+													<#else>
+														<button class="btn" type="button" disabled>
+															<i class="ace-icon fa fa-check bigger-110"></i>
+															修改订单
+														</button>
+													</#if>
+														&nbsp; &nbsp; &nbsp;
+														<button id="backBtn" class="btn" type="reset">
+															<i class="ace-icon fa fa-undo bigger-110"></i>
+															取消
+														</button>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var path = "${basePath}";
+		var actionType = "${actionType!''}";
+		/**
+		 * 删除银行转账
+		 */
+	    function deleteGathering(obj, financeDistributionId, ebAccountDetailId){
+	    	window.parent.order.confirm("您确定要删除银行转账吗？",function(e){
+	    		window.parent.order.showMask();
+	    		var orderInfoId = $("#orderInfoId").val();
+	    		$.ajax({
+	    			url : path+"/order/gathering/deletegathering",
+	    			type : "post",
+	    			data : {
+	    				orderInfoId:orderInfoId,
+	    				financeDistributionId:financeDistributionId,
+	    				ebAccountDetailId:ebAccountDetailId
+	    			},
+	    			dataType : "json",
+	    			success : function(json) {
+	    				window.parent.order.hideMask();
+	    				if (json.isSuccess) {
+	    					//刷新当前页面
+	     		        	//window.parent.order.alert("操作成功!",true,function(){
+	     		        	//	location.reload(true);
+	     		        	//});
+	     		        	window.parent.order.messageBox("提示", "操作成功！", true);
+	     		        	location.reload(true);
+	    					
+	    				} else {
+	    					window.parent.order.messageBox("提示", json.msg, false);
+	    				}
+	    			},
+	    			error : function() {
+	    				window.parent.order.hideMask();
+	    				window.parent.order.messageBox("提示", Common.SERVER_EXCEPTION, false);
+	    			}
+	    		});
+	    	});
+		}
+	    
+	    /**
+		 * 保存信息
+		 */
+	    function saveGatheringInfo(obj, ebAccountDetailId){
+	 		var payAccountName = $("#payAccountName" + ebAccountDetailId).val();
+	 		var bankName = $("#bankName" + ebAccountDetailId).val();
+	 		if(payAccountName == null || payAccountName == ""){
+	 			window.parent.order.messageBox("提示", "请输入持卡人姓名!", false);
+	 			return;
+	 		}
+	 		
+	 		if(bankName == null || bankName == ""){
+	 			window.parent.order.messageBox("提示", "请输入银行开户行支行！", false);
+	 			return;
+	 		}
+	 		window.parent.order.confirm("您确定要保存刷卡流水的信息吗？",function(e){
+	 			var orderInfoId = $("#orderInfoId").val();
+	 			window.parent.order.showMask();
+	 			$.ajax({
+	    			url : path+"/order/gathering/savefeadinfo",
+	    			type : "post",
+	    			data : {
+	    				orderInfoId:orderInfoId,
+	    				ebAccountDetailId:ebAccountDetailId,
+	    				payAccountName:payAccountName,
+	    				bankName:bankName
+	    			},
+	    			dataType : "json",
+	    			success : function(json) {
+	    				window.parent.order.hideMask();
+	    				if (json.isSuccess) {
+	    					window.parent.order.messageBox("提示", "操作成功！", true);
+	    				} else {
+	    					window.parent.order.messageBox("提示", json.msg, false);
+	    				}
+	    			},
+	    			error : function() {
+	    				window.parent.order.hideMask();
+	    				window.parent.order.messageBox("提示", Common.SERVER_EXCEPTION, false);
+	    			}
+	    		});
+	 		});
+		}
+		/**
+		 * 取消关联流水
+		 */
+	    function cancelLinkOrder(obj, financeDistributionId, ebAccountDetailId){
+	    	window.parent.order.confirm("您确定要取消关联流水吗？",function(e){
+	    		var orderInfoId = $("#orderInfoId").val();
+	    		window.parent.order.showMask();
+	    		$.ajax({
+	    			url : path+"/order/gathering/cancellinkorder",
+	    			type : "post",
+	    			data : {
+	    				orderInfoId:orderInfoId,
+	    				ebAccountDetailId:ebAccountDetailId,
+	    				financeDistributionId:financeDistributionId
+	    			},
+	    			dataType : "json",
+	    			success : function(json) {
+	    				window.parent.order.hideMask();
+	    				if (json.isSuccess) {
+	    					//window.parent.order.alert("操作成功!",true,function(){
+	     		        	//	location.reload(true);
+	     		        	//});
+	    					window.parent.order.messageBox("提示", "操作成功！", true);
+	     		        	location.reload(true);
+	    				} else {
+	    					window.parent.order.messageBox("提示", json.msg, false);
+	    				}
+	    			},
+	    			error : function() {
+	    				window.parent.order.hideMask();
+	    				window.parent.order.messageBox("提示", Common.SERVER_EXCEPTION, false);
+	    			}
+	    		});
+	    	});
+		}
+		
+	    $(window).load(function(){
+			var documentHeight = $(document).height();
+			window.parent.setDocumentHeight(3,documentHeight+370);
+		});
+	</script>
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderAgglomeration.js"></script>
+</html>

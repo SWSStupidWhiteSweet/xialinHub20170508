@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>认购信息</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/ace.css" id="main-ace-style" />
+		<link rel="stylesheet" href="${basePath}/assets/css/order/order.css" id="main-ace-style" />
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<input type="hidden" id="pageStep" value="4" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div id="agglomerationForm" class="form-horizontal" role="form">
+									<input type="hidden" id="orderInfoId" name="orderInfoId" value="${(orderInfo.orderInfoId)!''}">
+						    		<input type="hidden" id="isOtherBuyer" name="isOtherBuyer" value="${(orderInfo.isOtherBuyer)!''}">
+						    		<input type="hidden" id="orderStatus" name="orderStatus" value="${(orderInfo.orderStatus)!''}">
+						    		<input type="hidden" id="fingerprint" name="fingerprint" value="${(orderInfo.fingerprint)!''}">
+						    		<input type="hidden" id="buyerRelation" name="buyerRelation"  >
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-1-5" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 客户认购信息
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-1-5" aria-expanded="false">
+														<div class="panel-body">
+															<!-- 认筹时间 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="realBuyTime">认购时间： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<div class="row">
+																			<div class="col-xs-5">
+																				<div class="input-group input-group-sm">
+																					<input class="form-control" name="realBuyTime" id="realBuyTime" value="${(orderInfo.realBuyTime[0..10])!''}" type="text" 
+																							data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择认购日期" />
+																					<span class="input-group-addon">
+																						<i class="ace-icon fa fa-calendar"></i>
+																					</span>
+																				</div>
+																			</div>
+																			<div class="col-xs-1">
+																				<span><font color="red">&nbsp;&nbsp;*</font></span>
+																			</div>
+																			
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<!-- 其他购房人 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">其他购房人： </label>
+																<div class="col-sm-9">
+																	<div class="clearfix">
+																		<label class="inline">
+																			<small class="muted smaller-90"></small>
+																			<input id="otherBuyerBtn" type="checkbox" <#if (orderInfo.isOtherBuyer)?? && orderInfo.isOtherBuyer == 2>checked</#if> 
+																					class="ace ace-switch ace-switch-5" />
+																			<span class="lbl middle" style="font-size:15px">&nbsp;&nbsp;【*若购房人非报备客户，请开启并录入信息】</span>
+																		</label>
+																		&nbsp;&nbsp;
+																		<label class="inline">
+																			<a id="otherBuyerA" style="display:<#if (orderInfo.isOtherBuyer)?? && orderInfo.isOtherBuyer == 2>block<#else>none</#if> "
+																				 href="javascript:void(0);" >增加其他购房人</a>
+																		</label>
+																	</div>
+																	
+																	<div class="clearfix" id="otherBuyerParent" style="<#if (orderInfo.isOtherBuyer)?? && orderInfo.isOtherBuyer != 2>display:none</#if>">
+																	<#if moreBuyers?? && (moreBuyers?size gt 0)>
+																		<#list moreBuyers as buyer>
+																			<div class="otherBuyerDiv" nameKey="otherBuyerDiv">
+													                            <label class="poly-form-alone-label">购房人:&nbsp;</label>
+													                            <input class="poly-small-input" type="text" value="${(buyer.name)!''}">&nbsp;
+													                            <label class="poly-check-group-one">联系电话:&nbsp;</label>
+													                            <input class="poly-small-input" type="text" value="${(buyer.mobile)!''}">&nbsp;
+													                            <label class="poly-check-group-one">关系:&nbsp;</label>
+													                            <select class="otherSelect" >
+													                                <option value="1" <#if (buyer.relation)?? && buyer.relation == 1>selected</#if> >夫妻</option>
+													                                <option value="2" <#if (buyer.relation)?? && buyer.relation == 2>selected</#if> >父母</option>
+													                                <option value="3" <#if (buyer.relation)?? && buyer.relation == 3>selected</#if> >子女</option>
+													                                <option value="4" <#if (buyer.relation)?? && buyer.relation == 4>selected</#if> >亲戚</option>
+													                                <option value="5" <#if (buyer.relation)?? && buyer.relation == 5>selected</#if> >朋友</option>
+													                            </select>
+													                            <span class="poly-content-del" style="margin-left: 7px;" onclick="delOtherBuyer(this);">
+													                            	<i class="ace-icon fa fa-trash-o bigger-200 orange"></i>
+													                            </span>
+												                            </div>
+																		</#list>
+																	</#if>
+																	</div>
+																	
+																</div>
+															</div>
+															<!-- 认购房源 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">认购房源： </label>
+																<div class="col-sm-9">
+																	<div class="clearfix">
+																		<label class="poly-form-alone-label">楼   栋:&nbsp;</label>
+											                            <input class="poly-small-input" type="text" id="houseBuilding" value="${(orderInfo.houseBuilding)!''}">&nbsp;
+											                            <span><font color="red">&nbsp;&nbsp;*</font></span>
+											                            <label class="poly-check-group-one">单元:&nbsp;</label>
+											                            <input class="poly-small-input" type="text" id="houseUnit" value="${(orderInfo.houseUnit)!''}">&nbsp;
+											                            <span><font color="red">&nbsp;&nbsp;*</font></span>
+											                            <label class="poly-check-group-one">认购房号:&nbsp;</label>
+											                            <input class="poly-small-input" type="text" id="houseNumber" value="${(orderInfo.houseNumber)!''}">
+											                            <span><font color="red">&nbsp;&nbsp;*</font></span>
+																	</div>
+																	
+																</div>
+															</div>
+															
+															<!-- 认购户型 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">认购户型 ： </label>
+																<div class="col-sm-9">
+																	<div class="clearfix">
+											                            <select id="house" name="house" data-placeholder="选择户型" style="width: 350px;">
+											                            <option value="" houseName="" roomTotal="" 
+																				livingRoomTotal=""  kitchenTotal="" bathroomTotal="" 
+																				floorArea="" useArea=""  giveArea="" selected>请选择户型</option>
+											                            <#if houseList?? && (houseList?size gt 0)>
+											                            	<#list houseList as house>
+											                            		<option value="${(house.houseId)!''}" houseName="${(house.houseName)!''}" 
+											                            			roomTotal="${(house.roomTotal)!''}" livingRoomTotal="${(house.livingRoomTotal)!''}"  
+																						kitchenTotal="${(house.kitchenTotal)!''}" bathroomTotal="${(house.bathroomTotal)!''}" 
+																						floorArea="${(house.floorArea)!''}" useArea="${(house.useArea)!''}"  
+																						giveArea="${(house.giveArea)!''}" 
+																						<#if (orderInfo.houseId)?? && (house.houseId)?? && orderInfo.houseId == house.houseId>
+																						selected
+																						</#if> >
+																				${(house.houseName)!''}-${(house.roomTotal)!''}室/${(house.livingRoomTotal)!''}厅/${(house.kitchenTotal)!''}厨/${(house.bathroomTotal)!''}卫/${(house.floorArea)!''}平米
+																						<#if (house.delFlag)?? && house.delFlag == 0>-已被删除</#if>
+																				</option>
+											                            	</#list>
+											                            </#if>
+											                            
+																		</select>
+																		<span><font color="red">&nbsp;&nbsp;*</font></span>
+											                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											                            <label >认购总价:&nbsp;</label>
+											                            <input class="" type="text" id="houseAmount" value="${((orderInfo.houseAmount)?string('#.00'))!''}">&nbsp;元
+																		<span><font color="red">&nbsp;&nbsp;*</font></span>
+																	</div>
+																	
+																</div>
+															</div>
+															
+															<!-- 房源信息 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">房源信息： </label>
+																<div class="col-sm-10">
+																	<div class="clearfix">
+																		<label class="col-sm-12 textLeft" >
+																			<span id="houseIdSpan">ID：${(currentHouse.houseId)!''} </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseNameSpan">认购户型：${(currentHouse.houseName)!''}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseInfoSpan">${(currentHouse.roomTotal)!''}室${(currentHouse.livingRoomTotal)!''}厅
+																			${(currentHouse.bathroomTotal)!''}卫${(currentHouse.kitchenTotal)!''}厨 </span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseFloorAreaSpan">建筑面积： ${(currentHouse.floorArea)!''}平米</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseUseAreaSpan">套内面积： ${(currentHouse.useArea)!''}平米</span>&nbsp;&nbsp;&nbsp;&nbsp;
+																			<span id="houseGiveAreaSpan">赠送面积： ${(currentHouse.giveArea)!''}平米</span>
+																		</label>
+																	</div>
+																</div>
+															</div>
+															
+															<!-- 备注 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right" for="">备注： </label>
+																<div class="col-sm-5">
+																	<div class="clearfix">
+																		<textarea id="remark" rows="5" class="autosize-transition form-control">${(orderInfo.remark)!''}</textarea>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+												
+												<#include "orderAttAndLog.html" />
+												
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+														<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+															|| (orderInfo.orderStatus == 4 && orderInfo.auditStatus == 2))>
+															<button id="saveBtn" class="btn btn-info" type="button">
+																<i class="ace-icon fa fa-check bigger-110"></i>
+																修改订单
+															</button>
+														<#else>
+															<button class="btn" type="button" disabled>
+																<i class="ace-icon fa fa-check bigger-110"></i>
+																修改订单
+															</button>
+														</#if>
+															&nbsp; &nbsp; &nbsp;
+															<button id="backBtn" class="btn" type="reset">
+																<i class="ace-icon fa fa-undo bigger-110"></i>
+																取消
+															</button>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$('textarea[class*=autosize]').autosize({append: "\n"});
+		var path = "${basePath}";
+		var actionType = "${actionType!''}";
+	  	/**
+		 * 删除其他购房人
+		 */
+	    function delOtherBuyer(target){
+	    	target.parentNode.remove();
+	    	//设置iframe高度
+	    	var documentHeight = $(document).height();
+			window.parent.setDocumentHeight(4,documentHeight-40);
+	    }
+	  	
+	    $(window).load(function(){
+			var documentHeight = $(document).height();
+			window.parent.setDocumentHeight(4,documentHeight+320);
+		});
+	</script>
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderSubscription.js"></script>
+</html>

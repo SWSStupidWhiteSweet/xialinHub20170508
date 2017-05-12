@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>报表图表-客户满意度统计</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								报表图表
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									客户满意度统计
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<button id="query" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i> 搜索
+										</button>
+										<button id="export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="satisfactionGridTable"></table>
+										<div id="satisfactionGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province">省份名称 </label>
+	
+							<div class="col-sm-9">
+								<select id="province" name="province" data-placeholder="选择所属省" url="../../common/getprovincecombo" child="city" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city"> 城市名称 </label>
+	
+							<div class="col-sm-9">
+								<select id="city" name="city" data-placeholder="选择所属市" url="../../common/getcitycombo" cascade="cascade" child="buildingProject">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="buildingProject"> 楼盘项目 </label>
+	
+							<div class="col-sm-9">
+								<select id="buildingProject" name="buildingProject" data-placeholder="选择楼盘项目" url="../../common/getbuildingprojectcombo" cascade="cascade">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="datePeriod">起止日期</label>
+	
+							<div class="col-sm-9">
+								<input class="col-xs-10 col-sm-7" type="text" id="datePeriod" placeholder="请选择查询起止日期" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/report/customersatisfaction.js"></script>
+</html>

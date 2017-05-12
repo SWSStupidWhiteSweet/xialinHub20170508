@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+		 	.agents{
+		 	    border: 1px solid #e2e2e2;
+   				float: left;
+			    height: 40px;
+			    padding: 10px 8px;
+			    margin: 10px 10px;
+			    background:white;
+			    color:#555;
+		 	}
+		 	.agents1{
+		 		border: 1px solid #e2e2e2;
+   				float: left;
+			    height: 40px;
+			    padding: 10px 8px;
+			    margin: 10px 10px;
+			    color:#555;
+		 		background:#E4EFC9;
+		 	}
+		 	.agents1:hover{
+		 		border: 1px solid #e2e2e2;
+   				float: left;
+			    height: 40px;
+			    padding: 10px 8px;
+			    margin: 10px 10px;
+			    color: white;
+		 		background:#6fb3e0;
+		 	}
+		 	
+		 	.agents:hover{
+		 		border: 1px solid #e2e2e2;
+   				float: left;
+			    height: 40px;
+			    padding: 10px 8px;
+			    margin: 10px 10px;
+			    color: white;
+		 		background:#6fb3e0;
+		 	}
+		 	.lab{
+		 	    border-top: 1px solid #e2e2e2;
+			    margin-top: 20px;
+		 	}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>修改密码</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		
+		<style type="text/css">
+			.required-star{
+				color: tomato;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								POS终端管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+									新增POS终端
+									<#else>
+									修改POS终端
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="posTerminalForm" class="form-horizontal" role="form">
+								
+									<input type="hidden" id="actionType" value="${actionType}" />
+									<input type="hidden" id="fingerprint" value="${(posTerminal.fingerprint)!''}" />
+									<input id="posId" <#if actionType == "edit"> value="${(posTerminal.posId)!''}" </#if> hidden="hidden"/>
+									
+									<!-- <input type="hidden" id="merchantId" value="${(merchant.merchantId)!''}" /> -->
+									
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantType"> POS机类型 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="posType" name="posType"  <#if actionType == "edit">disabled="disabled"</#if> >
+													<option id="newPos" value="1">新POS</option>
+													<#if actionType == "edit" && posTerminal.posType == 2>
+														<option id="oldPos" value="2" selected="selected">旧POS</option>
+													<#else>
+														<option id="oldPos" value="2">旧POS</option>
+													</#if>
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="terminalNo"> 终端编号 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="terminalNo" name="terminalNo" type="text" class="col-xs-10 col-sm-5" placeholder="请输入终端编号" value="${(posTerminal.terminalNo)!''}" <#if actionType == "edit">disabled="disabled"</#if>/>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="terminalMerchantNo">终端商户编号 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="terminalMerchantNo" name="terminalMerchantNo" placeholder="请输入商户编号" class="col-xs-10 col-sm-5" value="${(posTerminal.terminalMerchantNo)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="svrFeeRatioD">借记卡手续费率%</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="svrFeeRatioD" name="svrFeeRatioD" placeholder="请输入手续费率（借记卡）" class="col-xs-10 col-sm-5"  value="${(posTerminal.svrFeeRatioD)!''}" /> 
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="svrFeeMaxD">借记卡单笔最高手续费</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="svrFeeMaxD" name="svrFeeMaxD" placeholder="请输入单笔最高手续费（借记卡）" class="col-xs-10 col-sm-5"  value="${(posTerminal.svrFeeMaxD)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="svrFeeRatioC">贷记卡手续费率%</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="svrFeeRatioC" name="svrFeeRatioC" placeholder="请输入手续费率（贷记卡）" class="col-xs-10 col-sm-5" value="${(posTerminal.svrFeeRatioC)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="svrFeeMaxC">贷记卡单笔最高手续费</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="svrFeeMaxC" name="svrFeeMaxC" placeholder="请输入单笔最高手续费（贷记卡）,若上不封顶请勿填" class="col-xs-10 col-sm-5" value="${(posTerminal.svrFeeMaxC)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankName"> 开户行 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="bankName" name="bankName" placeholder="请输入开户行" class="col-xs-10 col-sm-5" value="${(posTerminal.bankName)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankAccount"> 账号 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="bankAccount" name="bankAccount" placeholder="请输入账号" class="col-xs-10 col-sm-5" value="${(posTerminal.bankAccount)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bankAccountName"> 户名 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="bankAccountName" name="bankAccountName" placeholder="请输入户名" class="col-xs-10 col-sm-5" value="${(posTerminal.bankAccountName)!''}" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<input id="saveSupport" type="hidden" value=1 />
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<#if actionType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											<#if actionType == "edit">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/terminal/terminalinfo.js?${.now?long}"></script>
+</html>

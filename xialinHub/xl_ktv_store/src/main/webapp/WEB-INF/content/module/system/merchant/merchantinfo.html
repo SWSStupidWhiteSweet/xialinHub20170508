@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>修改密码</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								商户管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if actionType == "add">
+									新增商户
+									<#else>
+									修改商户
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="merchantForm" class="form-horizontal" role="form">
+									<input type="hidden" id="actionType" value="${actionType}" />
+									<input type="hidden" id="merchantId" value="${(merchant.merchantId)!''}" />
+									
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantType"> 商户类型 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="merchantType" name="merchantType" data-placeholder="选择商户类型" <#if actionType == "modify">disabled="disabled"</#if> url="../../common/getmerchanttypecombo" selectval="${(merchant.merchantType)!''}">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantName"> 商户名称 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="merchantName" name="merchantName" type="text" class="col-xs-10 col-sm-5" placeholder="请输入商户名称" value="${(merchant.merchantName)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantAddr"> 商户地址 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="merchantAddr" name="merchantAddr" placeholder="请输入商户地址" class="col-xs-10 col-sm-5" value="${(merchant.merchantAddr)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantTel"> 商户电话 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="merchantTel" name="merchantTel" placeholder="请输入商户联系电话" class="col-xs-10 col-sm-5" value="${(merchant.merchantTel)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="merchantContact"> 联系人 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="merchantContact" name="merchantContact" placeholder="请输入联系人" class="col-xs-10 col-sm-5" value="${(merchant.merchantContact)!''}" />
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="companyName"> 总公司名称 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+												<input type="text" id="companyName" name="companyName" placeholder="请输入总公司名称" class="col-xs-10 col-sm-5" value="" />
+												<#else>
+												<input readonly="readonly" type="text" id="companyName" name="companyName" placeholder="请输入总公司名称" class="col-xs-10 col-sm-5" value="${(company.companyName)!''}" />
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="province"> 所属省 </label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="province" name="province" data-placeholder="选择所属省" <#if actionType == "modify">disabled="disabled"</#if> url="../../common/getprovincecombo" child="city" selectval="${(company.provinceId)!''}">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="city"> 所属市 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="city" name="city" data-placeholder="选择所属市" <#if actionType == "modify">disabled="disabled"</#if> url="../../common/getcitycombo" cascade="cascade" selectval="${(company.cityId)!''}">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="operatorAccount"> 超管账号 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+												<input type="text" id="operatorAccount" name="operatorAccount" placeholder="请输入超管账号" class="col-xs-10 col-sm-5" value="" />
+												<#else>
+												<input readonly="readonly" type="text" id="operatorAccount" name="operatorAccount" placeholder="请输入超管账号" class="col-xs-10 col-sm-5" value="${(operator.operatorAccount)!''}" />
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="operatorPwd"> 超管密码 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if actionType == "add">
+												<input type="password" id="operatorPwd" name="operatorPwd" placeholder="请输入超管密码" class="col-xs-10 col-sm-5" value="" />
+												<#else>
+												<input type="password" readonly="" id="operatorPwd" name="operatorPwd" placeholder="请输入超管密码" class="col-xs-10 col-sm-5" value="123123" />
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="system:merchant:create">
+											<#if actionType == "add">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="system:merchant:update">
+											<#if actionType == "modify">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var provinceId = "${(company.provinceId)!''}";
+		var cityId = "${(company.cityId)!''}";
+	</script>
+	<script type="text/javascript" src="../../assets/module/system/merchant/merchantinfo.js"></script>
+</html>

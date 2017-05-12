@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>POS流水管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								异常刷卡流水
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									更换项目
+								</small>
+							</h1>
+						</div>
+						
+						<input id="eb_account_detail_id" type="hidden" value="${(relatePosRecordsEntity.eb_account_detail_id)!''}" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="posTerminalForm" class="form-horizontal" role="form">
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="project_info_name"> 项目 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="project_info_name" name="project_info_name" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.project_info_name)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pos_terminal_code"> 终端编号 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="pos_terminal_code" name="pos_terminal_code" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.pos_terminal_code)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="eb_account_detail_type"> POS类型 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="eb_account_detail_type" name="eb_account_detail_type" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.eb_account_detail_type)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pay_account_number"> 刷卡银行卡号 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="pay_account_number" name="pay_account_number" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.pay_account_number)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="eb_amount"> 刷卡金额 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="eb_amount" name="eb_amount" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.eb_amount)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="eb_amount_fee"> 刷卡手续费 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="eb_amount_fee" name="eb_amount_fee" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.eb_amount_fee)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="trade_time"> 刷卡日期 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="trade_time" name="trade_time" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.trade_time)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="trade_ref_code"> 交易参考号 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="trade_ref_code" name="trade_ref_code" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.trade_ref_code)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="custom_name"> 客户姓名 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="custom_name" name="custom_name" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.custom_name)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="order_info_code"> 订单编号 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="order_info_code" name="order_info_code" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.order_info_code)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="group_fee"> 套餐金额 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="group_fee" name="group_fee" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.group_fee)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="channel_type"> 渠道 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="channel_type" name="channel_type" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.channel_type)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="create_src"> 来源 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="create_src" name="create_src" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.create_src)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cheap_code"> 优惠告知书编号 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="cheap_code" name="cheap_code" type="text" class="col-xs-10 col-sm-5"  value="${(relatePosRecordsEntity.cheap_code)!''}" disabled="disabled"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="province_id"> 所属省 </label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="province_id" name="province_id" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city_id">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="city_id"> 所属市 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="city_id" name="city_id" data-placeholder="选择所属市" url="../../common/getcitycombo" child="buiding">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="buiding"> 楼盘 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="buiding" name="buiding" data-placeholder="选择楼盘" url="../../common/getbuildingprojectbycitycombo" child="project_info_id">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="project_info_id"> 项目 </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="project_info_id" name="project_info_id" data-placeholder="选择项目" url="../../common/getcitycombo" cascade="cascade" >
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecordsmodifysave">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/tradingflow/errorrelatedposrecordsmodify.js?${.now?long}"></script>
+</html>

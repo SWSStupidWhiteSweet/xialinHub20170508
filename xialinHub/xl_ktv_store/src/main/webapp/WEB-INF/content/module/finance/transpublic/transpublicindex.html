@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>财务管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" >
+			<div class="page-content" style="padding-bottom:5px;padding-top:5px;">
+				<div class="page-content-area">
+					<div class="page-header" >
+						<h1>
+							财务管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								对公转账管理
+							</small>
+						</h1>
+					</div>
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tabbable">
+										<ul class="nav nav-tabs">
+											<@shiro.hasPermission name="finance:transpublic:usefultranspublicdata">
+											<li>
+												<a data-toggle="tab" href="#usefulTransPulic" > 有效对公转账 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:transpublic:uselesstranspublicdata">
+											<li>
+												<a data-toggle="tab" href="#uselessTransPulic" > 无效对公转账 </a>
+											</li>
+											</@shiro.hasPermission>
+										</ul>
+			
+										<div class="tab-content" style="height:700px;">
+											<@shiro.hasPermission name="finance:transpublic:usefultranspublicdata">
+											<div id="usefulTransPulic" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-9">
+																<@shiro.hasPermission name="finance:transpublic:usefultranspublicdata">
+																<button id="search" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																
+																<@shiro.hasPermission name="finance:transpublic:usefultranspublic_export">
+																<button id="export" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																
+																<br/>
+																<label style="color: #2594dc;">
+																转账笔数：<span id = "eb_count" style="color: #57ae2a;">${transPublicGridEntity.eb_count}</span>&nbsp;&nbsp;&nbsp;
+																转账金额：<span id = "eb_amount_count" style="color: #57ae2a;">${transPublicGridEntity.eb_amount_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																套餐金额：<span id = "group_fee_count" style="color: #57ae2a;">${transPublicGridEntity.group_fee_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="usefulTransPublicGrid"></table>
+																<div id="usefulTransPublicGridPager"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:transpublic:uselesstranspublicdata">
+											<div id="uselessTransPulic" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-9">
+																<@shiro.hasPermission name="finance:transpublic:uselesstranspublicdata">
+																<button id="search2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:transpublic:uselesstranspublicexport">
+																<button id="export2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="uselessTransPublicGrid"></table>
+																<div id="uselessTransPublicGridPager"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="space-4"></div>
+
+					<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="provinceId">省</label>
+					<div class="col-sm-9">
+						<select id="provinceId" name="provinceId" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="cityId">
+						</select>
+					</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="cityId">市</label>
+						<div class="col-sm-9">
+							<select id="cityId" name="cityId" data-placeholder="选择所属市"  url="../../common/getcitycombo" child="buildingProjectId">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="buildingProjectId">楼盘</label>
+						<div class="col-sm-9">
+							<select id="buildingProjectId" name="buildingProjectId" data-placeholder="选择楼盘"  url="../../common/getbuildingprojectbycitycombo" child="projectInfoId">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectInfoId">项目</label>
+						<div class="col-sm-9">
+							<select id="projectInfoId" name="projectInfoId" data-placeholder="选择项目"  url="../../common/getprojectinfocombo" cascade="cascade" >
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="channelType">渠道</label>
+						<div class="col-sm-9">
+							<select id="channelType" name="channelType" style="width: 120px;" data-placeholder="选择渠道"  url="../../common/getchanneltypecombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="customName">客户姓名</label>
+						<div class="col-sm-9">
+							<input type="text" id="customName" style="width: 120px;" placeholder="输入客户姓名">
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="bankName">转账银行</label>
+						<div class="col-sm-9">
+							<input type="text" id="bankName" style="width: 120px;" placeholder="输入转账银行">
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="cheapCode">优惠告知书编号</label>
+						<div class="col-sm-9">
+							<input type="text" id="cheapCode" style="width: 120px;" placeholder="优惠告知书编号">
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="../../assets/module/finance/transpublic/transpublicindex.js?${.now?long}"></script>
+<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	
+	// 初使化tab 选中
+	$(".nav-tabs").find("li:first").addClass("active");
+	$(".tab-content").find("div:first").addClass("in").addClass("active");
+	
+	//标签
+	
+</script>
+</html>

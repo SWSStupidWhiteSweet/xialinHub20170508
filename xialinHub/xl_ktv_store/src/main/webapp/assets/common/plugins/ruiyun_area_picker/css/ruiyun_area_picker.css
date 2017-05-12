@@ -1,0 +1,156 @@
+/*ruiyunAreaPicker省市区块四级联动选择器样式*/
+.ruiyun-area-picker-span {
+	display: inline-block;
+	width: 250px;
+	line-height: 18px;
+	height: 35px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	color: #ccc;
+	cursor: pointer;
+	padding: 5px 40px 5px 5px;
+	position: relative;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.ruiyun-area-picker-span .ruiyun-area-picker-open {
+	border: 1px solid #00ba9f;
+}
+
+.ruiyun-area-picker-title .ruiyun-area-picker-item {
+	color: #333;
+	/*padding: 5px;*/
+	border-radius: 3px;
+	line-height: 20px;
+}
+
+.ruiyun-area-picker-title .ruiyun-area-picker-item:hover {
+	background-color: #f1f8ff;
+}
+
+.ruiyun-area-picker-span>.ruiyun-area-picker-arrorw {
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	width: 10px;
+	margin-top: -3px;
+	height: 5px;
+	background: url(../img/drop-arrow.png) -10px -25px no-repeat;
+}
+
+.ruiyun-area-picker-span.ruiyun-area-picker-open>.ruiyun-area-picker-arrorw {
+	background-position: -10px -10px;
+}
+
+.ruiyun-area-picker-dropdown {
+	position: fixed;
+	outline: 0;
+	z-index: 999999;
+	display: none;
+	margin-bottom: 20px;
+	width: 300px;
+	line-height: 18px;
+}
+
+.ruiyun-area-picker-dropdown.ruiyun-area-picker-open {
+	display: block;
+}
+
+.ruiyun-area-picker-select-wrap {
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.ruiyun-area-picker-tab {
+	border-bottom: 1px solid #ccc;
+	background: #f0f0f0;
+	font-size: 13px;
+	word-spacing: -5px;
+}
+
+.ruiyun-area-picker-tab>a {
+	display: inline-block;
+	padding: 8px 22px;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid transparent;
+	color: #333333;
+	text-align: center;
+	outline: 0;
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 14px;
+	margin-bottom: -1px;
+}
+
+.ruiyun-area-picker-tab>a.ruiyun-area-picker-active {
+	background: #fff;
+	border-bottom: 1px solid #fff;
+	color: #4492C9;
+}
+
+.ruiyun-area-picker-tab>a:first-child {
+	border-left: none;
+}
+
+.ruiyun-area-picker-content {
+	width: 100%;
+	min-height: 10px;
+	background-color: #fff;
+	padding: 10px 15px;
+}
+
+.ruiyun-area-picker-content .ruiyun-area-picker-ul {
+	list-style: none;
+	margin : 0 0 0 0;
+}
+
+.ruiyun-area-picker-content>div {
+	display: none;
+}
+
+.ruiyun-area-picker-content>div.ruiyun-area-picker-active {
+	display: block;
+}
+
+.ruiyun-area-picker-ul li {
+	display: inline-block;
+	padding: 3px 5px;
+	cursor: pointer;
+	margin: 0 3px;
+}
+
+.ruiyun-area-picker-ul li.ruiyun-area-picker-active, .ruiyun-area-picker-ul li.ruiyun-area-picker-active:hover {
+	background-color: #4492C9;
+	color: #ffffff;
+}
+
+.ruiyun-area-picker-ul li:hover {
+	background-color: #f1f8ff;
+	color: #4492C9;
+}
+
+.ruiyun-area-picker-loading {
+	background: url("../img/spinner.gif") no-repeat center;
+	height: 16px;
+}
+
+.ruiyun-area-picker-tip {
+	display: none;
+	position: fixed;
+	height: 30px;
+	border: 1px solid #ccc;
+	padding: 5px;
+	cursor: pointer;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+	background-color: #ffffff;
+	z-index: 1000;
+}
+
+.ruiyun-area-picker-reset {
+	position: absolute;
+	background: url("../img/icon-tabcloseover.png") no-repeat;
+	height: 11px;
+	width: 11px;
+	top: 30%;
+	right: 25px;
+}

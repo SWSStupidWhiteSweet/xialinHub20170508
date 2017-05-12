@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>楼盘项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" style="height:85%;">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+						<h1>
+							<a href="../buildingproject/buildingprojectindex">楼盘管理</a>
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								<span style="color:green;">${buildingProject.buildingProjectName}</span> --楼盘详情
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								<li class="active">
+									<a data-toggle="tab" href="#projectInfoDic" onclick="$('#projectInfo').attr('src', $('#projectInfo').attr('src'));"> 楼盘基础信息 </a>
+								</li>
+								<@shiro.hasPermission name="buildingalbum:toalbuminfo">
+								<li>
+									<a data-toggle="tab" href="#buildingalbum" onclick="$('#toalbumaudit').attr('src', '../buildingalbum/toalbuminfo?type=${actionType}&buildingProjectId=${(buildingProject.buildingProjectId)}');"> 楼盘相册管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:property:index">
+								<li>
+									<a data-toggle="tab" href="#propertyInfo" onclick="$('#propertyInfoDetails').attr('src', '../building/property/index?type=${actionType}&buildingProjectId=${(buildingProject.buildingProjectId)}');"> 物业信息管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:index">
+								<li>
+									<a data-toggle="tab" href="#houseInfo" onclick="$('#houseInfoDetails').attr('src', '../building/housetype/index?type=${actionType}&buildingProjectId=${(buildingProject.buildingProjectId)}');"> 户型管理</a>
+								</li>
+								</@shiro.hasPermission>
+							</ul>
+
+								<div class="tab-content" style="height:700px;padding:0px 12px">
+								<div id="projectInfoDic" class="tab-pane fade in active" style="height:698px;">
+									<iframe id="projectInfo" src="../buildingproject/basedetails?buildingProjectId=${(buildingProject.buildingProjectId)!''}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								<@shiro.hasPermission name="buildingalbum:toalbuminfo">
+								<div id="buildingalbum" class="tab-pane fade" style="height:698px;">
+									<iframe id="toalbumaudit" src="" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:property:index">
+								<div id="propertyInfo" class="tab-pane fade" style="height:698px;">
+									<iframe id="propertyInfoDetails" src="" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:index">
+								<div id="houseInfo" class="tab-pane fade" style="height:698px;">
+									<iframe id="houseInfoDetails" src="" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+							</div>
+							<!-- <div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="modifyPwdBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												重置
+											</button>
+										</div>
+									</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

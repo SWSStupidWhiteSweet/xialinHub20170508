@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>已开发票列表</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<button id="options" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>
+											 搜索
+										</button>
+										<@shiro.hasPermission name="finance:invoiceindex:btn:openinvoicereceiveregain">
+										<button id="receiveRegain" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-share red"></i>回收
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:invoiceindex:btn:invalidbyupdate">
+										<button id="receiveInvoice" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-trash-o red"></i>作废
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="finance:invoiceindex:btn:openinvoiceexport">
+										<button id="export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<!-- #section:elements.form -->
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="cheapCode">优惠告知书编号：</label>
+						<div class="col-sm-9">
+							<input type="hidden" id="cancelStartDate" value="" />
+							<input type="hidden" id="cancelEndDate" value="" />
+							<input type="hidden" id="cancelOperatorName" value="" />
+							<input type="hidden" id="invoiceTitle" value="" />
+							<input type="hidden" id="cancelType" value="" />
+							<input type="text" id="cheapCode" placeholder="优惠告知书编号" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="customName">客户姓名：</label>
+
+						<div class="col-sm-9">
+							<input type="text" id="customName" placeholder="客户姓名" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="orderInfoCode"> 订单编号： </label>
+						<div class="col-sm-9">
+							<input type="text" id="orderInfoCode" placeholder="订单编号" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="invoiceNumber">发票票号： </label>
+						<div class="col-sm-9">
+							<input type="text" id="invoiceNumber" placeholder="发票票号" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="invoiceCode">发票代码： </label>
+						<div class="col-sm-9">
+							<input type="text" id="invoiceCode" placeholder="发票代码" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="invoiceType">发票类型：</label>
+						<div class="col-sm-9">
+								<input id="hide" name="invoiceType" type="radio" value="1" checked/>普通发票&nbsp;
+								<input id="hide" name="invoiceType" type="radio" value="2"/>红字发票
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="startTime">发票开具时间： </label>
+						<div class="col-sm-9">
+							<input class="date-picker" style="width: 140px;" name="startDate" id="startDate" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择开始日期"  title="选择开始日期"/>
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="endTime">至</label>
+						<div class="col-sm-9">
+							<input class="date-picker" style="width: 140px;" name="endDate" id="endDate" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择保护结束日期"  title="选择保护结束日期"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/invoice/openinvoice/openinvoicelist.js"></script>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+</html>

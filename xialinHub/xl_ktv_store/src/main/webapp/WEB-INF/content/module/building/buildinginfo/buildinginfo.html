@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								楼盘期数管理
+   								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+										${ buildingInfo?? ?string('修改','添加')}楼盘期数
+								</small>
+							</h1>
+   							<input type="hidden" id="buildingProjectId" value="${buildingProjectId}"/>
+   							<input type="hidden" id="buildingInfoId" value="${(buildingInfo.buildingInfoId)!''}"/>
+   							<input type="hidden" id="type" value="${type}"/>
+						</div>
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="buildingInfoForm" class="form-horizontal" role="form">
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-input-readonly">楼盘期数名称</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="buildingInfoName" name="buildingInfoName" class="col-xs-10 col-sm-5" placeholder="楼盘期数名称" value="${(buildingInfo.buildingInfoName)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="oldPwd">楼盘期数简称</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="buildingInfoNa" name="buildingInfoNa" class="col-xs-10 col-sm-5" placeholder="楼盘期数简称" value="${(buildingInfo.buildingInfoNa)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="newPwd">楼盘期数别名</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" id="buildingInfoAlias" name="buildingInfoAlias" class="col-xs-10 col-sm-5" placeholder="楼盘期数别名" value="${(buildingInfo.buildingInfoAlias)!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="confirmPwd">楼盘分期简介</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<textarea id="biref" name="biref" class="col-xs-10 col-sm-5" rows=5 placeholder="楼盘分期简介...">${(buildingInfo.biref)!''}</textarea>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="areapicker">分期均价（元/平方米）</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<#if type =='edit' >
+												<input type="text" id="buildingInfoPrice" ${(((buildingInfo.buildingInfoPrice)!0)=0)?string("readonly","")} name="buildingInfoPrice" class="col-xs-10 col-sm-5" placeholder="分期均价" value="${(buildingInfo.buildingInfoPrice)!''}">
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<input class="ace" type="checkbox" ${(((buildingInfo.buildingInfoPrice)!0)=0)?string("checked","")} id="isundetermined" />
+														<span class="lbl">待定</span>
+													</label>
+												</span>
+												</#if>
+												<#if type =='add' >
+												<input type="text" id="buildingInfoPrice"  name="buildingInfoPrice" class="col-xs-10 col-sm-5" placeholder="分期均价" value="${(buildingInfo.buildingInfoPrice)!''}">
+												<span class="help-inline col-xs-12 col-sm-7" style="height:33px;line-height:33px;">
+													<label class="middle">
+														<input class="ace" type="checkbox"  id="isundetermined" />
+														<span class="lbl">待定</span>
+													</label>
+												</span>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="uploadFile">销售状态</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="saleStatus" name="saleStatus" data-placeholder="选择销售状态" url="../common/getbuildinginfosaleflag" selectval="${(buildingInfo.saleStatus)!''}"></select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="uploadFile">状态</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="status" name="status" data-placeholder="选择状态" url="../common/getstatuscombo" selectval="${(buildingInfo.status)!''}"></select>
+											</div>
+										</div>
+									</div>
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="button">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildinginfo/buildinginfo.js"></script>
+</html>

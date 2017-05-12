@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>楼盘项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<script type="text/javascript">
+    $(function() {
+        var iframeId = $("#iframeId").val();
+        if (iframeId == 'buildingLogInfoDiv') {
+            $("#buildingLogInfoLi").addClass("active");
+            $("#buildingLogInfo").attr("src",$("#buildingLogInfo").attr("data-src"));
+            $("#buildingLogInfoDiv").addClass("in").addClass("active");
+        } else if(iframeId =='houseInfo'){
+            $("#houseInfoLi").addClass("active");
+            $("#houseInfoDetails").attr("src",$("#houseInfoDetails").attr("data-src"));
+            $("#houseInfo").addClass("in").addClass("active");
+		} else if(iframeId =='houseInfoLog'){
+
+            $("#houseInfoLogLi").addClass("active");
+            $("#houseInfoLogDetails").attr("src",$("#houseInfoLogDetails").attr("data-src"));
+            $("#houseInfoLog").addClass("in").addClass("active");
+		} else if(iframeId =='contentDiv'){
+
+            $("#contentLi").addClass("active");
+            $("#content").attr("src",$("#content").attr("data-src"));
+            $("#contentDiv").addClass("in").addClass("active");
+		} else if(iframeId =='buildingalbum'){
+
+            $("#toalbumauditLi").addClass("active");
+            $("#toalbumaudit").attr("src",$("#toalbumaudit").attr("data-src"));
+            $("#buildingalbum").addClass("in").addClass("active");
+		} else if(iframeId =='buildingalbumaudit'){
+            $("#buildingbumauditLi").addClass("active");
+            $("#buildingbumaudit").attr("src",$("#buildingbumaudit").attr("data-src"));
+            $("#buildingalbumaudit").addClass("in").addClass("active");
+		} else if(iframeId =='configDiv'){
+            $("#configLi").addClass("active");
+            $("#config").attr("src",$("#config").attr("data-src"));
+            $("#configDiv").addClass("in").addClass("active");
+		} else if(iframeId =='propertyInfo'){
+            $("#propertyInfoDetailsLi").addClass("active");
+            $("#propertyInfoDetails").attr("src",$("#propertyInfoDetails").attr("data-src"));
+            $("#propertyInfo").addClass("in").addClass("active");
+		} else if(iframeId =='agentGroupDiv'){
+            $("#agentGroupLi").addClass("active");
+            $("#agentGroup").attr("src",$("#agentGroup").attr("data-src"));
+            $("#agentGroupDiv").addClass("in").addClass("active");
+		} else {
+            $(".nav-tabs").find("li:first").addClass("active");
+            $(".tab-content").find("iframe:first").attr("src",$(".tab-content").find("iframe:first").attr("data-src"));
+            $(".tab-content").find("div:first").addClass("in").addClass("active");
+        }
+
+    });
+</script>
+<body class="no-skin">
+
+	<div class="main-container" id="main-container">
+		<div class="main-content" style="height:85%;">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header" style="padding-bottom:3px;margin-top: -22px;">
+						<h3>
+							<a href="../buildingproject/buildingprojectindex">楼盘管理</a>
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								<span style="color:green;">${buildingProject.buildingProjectName}</span> --楼盘配置
+							</small>
+						</h3>
+						<input type="hidden" value="${type!''}" id = "iframeId" />
+					</div>
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfogrid">
+								<li id="buildingInfoLi">
+									<a data-toggle="tab" href="#buildingInfoDiv" onclick="$('#buildingInfo').attr('src', $('#buildingInfo').attr('data-src'));"> 楼盘期数管理 </a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfologgrid">
+								<li id = "buildingLogInfoLi">
+									<a data-toggle="tab" href="#buildingLogInfoDiv" onclick="$('#buildingLogInfo').attr('src', $('#buildingLogInfo').attr('data-src'));"> 楼盘期数审核列表 </a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:property:index">
+								<li id="propertyInfoDetailsLi">
+									<a data-toggle="tab" href="#propertyInfo" onclick="$('#propertyInfoDetails').attr('src', $('#propertyInfoDetails').attr('data-src'));"> 物业信息管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:index">
+								<li id="houseInfoLi">
+									<a data-toggle="tab" href="#houseInfo" onclick="$('#houseInfoDetails').attr('src', $('#houseInfoDetails').attr('data-src'));"> 户型管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:auditindex">
+								<li id="houseInfoLogLi">
+									<a data-toggle="tab" href="#houseInfoLog" onclick="$('#houseInfoLogDetails').attr('src', $('#houseInfoLogDetails').attr('data-src'));"> 户型审核管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingcontent:getbuildingcontentgrid">
+								<li id="contentLi">
+									<a data-toggle="tab" href="#contentDiv" onclick="$('#content').attr('src', $('#content').attr('data-src'));"> 楼盘动态管理</a>
+								</li>
+								</@shiro.hasPermission>
+
+								<@shiro.hasPermission name="buildingalbum:toalbuminfo">
+								<li id="toalbumauditLi">
+									<a data-toggle="tab" href="#buildingalbum" onclick="$('#toalbumaudit').attr('src', $('#toalbumaudit').attr('data-src'));"> 楼盘相册管理</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingalbum:audit">
+								<li id="buildingbumauditLi">
+									<a data-toggle="tab" href="#buildingalbumaudit" onclick="$('#buildingbumaudit').attr('src',$('#buildingbumaudit').attr('data-src'));"> 楼盘相册审核</a>
+								</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingproject:configindex">
+								<li id="configLi">
+									<a data-toggle="tab" href="#configDiv" onclick="$('#config').attr('src', $('#config').attr('data-src'));"> 案场配置</a>
+								</li>
+								</@shiro.hasPermission>
+
+								<@shiro.hasPermission name="buildingproject:agentsindex">
+								<li id="agentGroupLi">
+									<a data-toggle="tab" href="#agentGroupDiv" onclick="$('#agentGroup').attr('src', $('#agentGroup').attr('data-src'));"> 销售团队</a>
+								</li>
+								</@shiro.hasPermission>
+
+							</ul>
+
+							<div class="tab-content" style="height:700px;padding:0px 12px">
+
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfogrid">
+								<div id="buildingInfoDiv" class="tab-pane fade" style="height:698px;">
+									<iframe id="buildingInfo" data-src="../buildinginfo/tobuildinginfolist?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfologgrid">
+								<div id="buildingLogInfoDiv" class="tab-pane fade" style="height:698px;">
+									<iframe id="buildingLogInfo" data-src="../buildinginfo/tobuildinginfologlist?buildingProjectId=${buildingProject.buildingProjectId}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:property:index">
+								<div id="propertyInfo" class="tab-pane fade" style="height:698px;">
+									<iframe id="propertyInfoDetails" data-src="../building/property/index?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:index">
+								<div id="houseInfo" class="tab-pane fade" style="height:698px;">
+									<iframe id="houseInfoDetails" data-src="../building/housetype/index?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="building:housetype:auditindex">
+								<div id="houseInfoLog" class="tab-pane fade" style="height:698px;">
+									<iframe id="houseInfoLogDetails" data-src="../building/housetype/auditindex?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingcontent:getbuildingcontentgrid">
+								<div id="contentDiv" class="tab-pane fade" style="height:698px;">
+									<iframe id="content" data-src="../buildingcontent/tobuildingcontent?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingalbum:toalbuminfo">
+								<div id="buildingalbum" class="tab-pane fade" style="height:698px;">
+									<iframe id="toalbumaudit" data-src="../buildingalbum/toalbuminfo?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingalbum:audit">
+								<div id="buildingalbumaudit" class="tab-pane fade" style="height:698px;">
+									<iframe id="buildingbumaudit" data-src="../buildingalbum/toalbumaudit?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingproject:configindex">
+								<div id="configDiv" class="tab-pane fade" style="height:698px;">
+									<iframe id="config" data-src="../buildingproject/configindex?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildingproject:agentsindex">
+								<div id="agentGroupDiv" class="tab-pane fade" style="height:698px;">
+									<iframe id="agentGroup" data-src="../buildingproject/agentgroupindex?buildingProjectId=${(buildingProject.buildingProjectId)}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

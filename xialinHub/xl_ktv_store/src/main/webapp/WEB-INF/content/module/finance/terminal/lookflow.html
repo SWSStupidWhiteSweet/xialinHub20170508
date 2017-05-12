@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>POS终端管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								POS终端管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									刷卡流水
+								</small>
+							</h1>
+						</div>
+						
+						<input type="hidden" id = "posId" value="${posId}" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i> 搜索
+										</button>
+										<@shiro.hasPermission name="finance:terminal:exportflow">
+										<button id="export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+										<button id="return" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-reply green"></i> 返回
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="lookFlowGrid"></table>
+										<div id="lookFlowGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<div class="space-4"></div>
+
+						<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="provinceId">省</label>
+						<div class="col-sm-9">
+							<select id="provinceId" name="provinceId" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="cityId">
+							</select>
+						</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="cityId">市</label>
+							<div class="col-sm-9">
+								<select id="cityId" name="cityId" data-placeholder="选择所属市"  url="../../common/getcitycombo" child="buildingProjectId">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="buildingProjectId">楼盘</label>
+						<div class="col-sm-9">
+							<select id="buildingProjectId" name="buildingProjectId" data-placeholder="选择楼盘"  url="../../common/getbuildingprojectbycitycombo" child="projectInfoId">
+							</select>
+						</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="projectInfoId">项目</label>
+							<div class="col-sm-9">
+								<select id="projectInfoId" name="projectInfoId" data-placeholder="选择项目"  url="../../common/getprojectinfocombo">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="operatorName">操作人</label>
+							<div class="col-sm-9">
+								<input type="text" id="operatorName" style="width: 120px;"  placeholder="输入姓名" />
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="createTime">操作时间</label>
+							<div class="col-sm-9">
+								<input class="col-xs-10 col-sm-7" type="text" id="createTime" placeholder="请选择查询起止日期" />
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/terminal/lookflow.js?${.now?long}"></script>
+	<script type="text/javascript">
+		$('#search').click(function () {
+	        var dialog = $("#condition").removeClass('hide')
+	            .dialog(
+	                {
+	                    modal : true,
+	                    title : "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='ace-icon fa fa-search'></i> 请选择查询条件</h4></div>",
+	                    title_html : true,
+	                    width : "500px",
+	                    buttons : [ {
+	                        text : "取消",
+	                        "class" : "btn btn-xs",
+	                        click : function() {
+	                            $(this).dialog("close");
+	                        }
+	                    }, {
+	                        text : "查询",
+	                        "class" : "btn btn-primary btn-xs",
+	                        click : function() {
+	                        	var createTime = $("#createTime").val();
+	                        	var createTimes = createTime.split(" 至 ");
+	                        	var createTime1 = createTime==""?"":createTimes[0];
+	                        	var createTime2 = createTime==""?"":createTimes[1];
+	                            var params = {
+	                            		posId:$("#posId").val(),
+	                            		provinceId:$("#provinceId").val(),
+	                    				cityId:$("#cityId").val(),
+	                    				buildingProjectId:$("#buildingProjectId").val(),
+	                    				projectInfoId:$("#projectInfoId").val(),
+	                    				operatorName:$("#operatorName").val(),
+	                    				createTime1:createTime1,
+	                    				createTime2:createTime2
+	                            };
+	                            /* $.ajax({
+	                    			type:"post",
+	                    			url:"errorrelatedposrecordsdatacount",
+	                    			datatype:"json",
+	                    			data:params,
+	                    			success:function(data){
+	                    				$("#group_count").text(data.group_count);
+	                    				$("#group_fee_count").text(data.group_fee_count);
+	                    				$("#eb_count").text(data.eb_count);
+	                    				$("#eb_amount_count").text(data.eb_amount_count);
+	                    				$("#eb_amount_fee_count").text(data.eb_amount_fee_count);
+	                    			}
+	                    		}); */
+	                            Common.jqGridReload("lookFlowGrid", params);
+	                            $(this).dialog("close");
+	                        }
+	                    }  ,{
+	                    	text : "重置",
+	                        "class" : "btn btn-primary btn-xs",
+	                        click : function() {
+	                        	$("#provinceId").select2("val","");
+                            	$("#provinceId").trigger("change");
+                            	$("#operatorName").val("");
+                            	$("#createTime").val("");
+	                        }
+	                    }]
+	                });
+	    });
+	</script>
+</html>

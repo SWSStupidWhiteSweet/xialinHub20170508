@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>签约资料预审管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content" style="padding-bottom:0px;padding-top:0px;">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							订单管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+								签约资料预审管理
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<!-- 						<div class="col-sm-12"> -->
+
+
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								<li class="active"><a data-toggle="tab" href="#home"
+									id="home1"> <i class="green icon-home bigger-110"></i> 待审核
+								</a></li>
+
+								<li><a data-toggle="tab" href="#profile" id="profile1">
+										已审核 </a></li>
+
+
+							</ul>
+
+							<div class="tab-content">
+
+								<div class="row tab-pane in active" id="home">
+									<div class="row">
+										<div class="col-xs-12" align="left">
+											<button id="serch"
+												class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-search blue"></i> 搜索
+											</button>
+											<@shiro.hasPermission name="order:rc:query1">
+											<button id="query" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-reorder red"></i> 查看
+											</button>
+											</@shiro.hasPermission> <@shiro.hasPermission
+											name="order:rc:sh">
+											<button id="check"
+												class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-check green"></i> 审核
+											</button>
+											</@shiro.hasPermission> <@shiro.hasPermission
+											name="order:rc:yyexport">
+											<button id="export"class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+											</button>
+											</@shiro.hasPermission>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 ">
+											<table id="grid-table-order"></table>
+											<div id="grid-pager"></div>
+										</div>
+									</div>
+								</div>
+
+								<div id="profile" class="tab-pane row">
+									<div class="row">
+
+										<div class="col-xs-12" align="left">
+											<button id="serch-1"
+												class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-pencil blue"></i> 搜索
+											</button>
+											<@shiro.hasPermission name="order:rc:query1">
+											<button id="check-1" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-reorder red"></i> 查看
+											</button>
+											</@shiro.hasPermission> <@shiro.hasPermission
+											name="order:rc:yexport">
+											<button id="export-1" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+											</button>
+											</@shiro.hasPermission>
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<table id="grid-table-order-1"></table>
+											<div id="grid-pager-1"></div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div id="waitCondition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- 											<form class="form-horizontal" role="form1"> -->
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"
+							for="province">预客户姓名 </label>
+						<div class="col-sm-4">
+							<input id="cusname" name="cusname" type="text"
+								style="width: 200px;" placeholder="请输入客户姓名">
+						</div>
+
+
+						<label class="col-sm-2 control-label no-padding-right">
+							优惠告知书编号</label>
+						<div class="col-sm-4">
+							<input id="cheapCode" name="cheapCode" type="text"
+								style="width: 200px;" placeholder="优惠告知书编号（完整）">
+						</div>
+					</div>
+					<br> <br>
+					<div class="form-group">
+
+						<label class="col-sm-2 control-label no-padding-right">手机号码</label>
+
+						<div class="col-sm-4">
+							<input id="memberTel" name="memberTel" style="width: 200px;"
+								type="text" placeholder="手机号码">
+						</div>
+
+						<label class="col-sm-2 control-label no-padding-right">
+							身份证号码</label>
+
+						<div class="col-sm-4">
+							<input id="code" name="code" type="text" style="width: 200px;"
+								placeholder="身份证号码">
+						</div>
+					</div>
+					<br> <br>
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"
+							for="merchantName"> 提交时间 </label>
+
+						<div class="col-sm-4">
+							<input id="datepicker" name="datepicker" type="text"
+								data-date-format="yyyy-mm-dd">
+						</div>
+
+					</div>
+
+
+					<!-- 											</form> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="waitCondition1" class="hide">
+		<div class="row">
+			<div class="col-xs-12" align="left">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"
+							for="province">预客户姓名 </label>
+						<div class="col-sm-4">
+							<input id="cusname-1" name="cusname-1" type="text"
+								style="width: 200px;" placeholder="请输入客户姓名">
+						</div>
+
+
+						<label class="col-sm-2 control-label no-padding-right">
+							优惠告知书编号</label>
+						<div class="col-sm-4">
+							<input id="cheapCode-1" name="cheapCode-1" type="text"
+								style="width: 200px;" placeholder="优惠告知书编号（完整）">
+						</div>
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-sm-2 control-label no-padding-right">手机号码</label>
+
+						<div class="col-sm-4">
+							<input id="memberTel-1" name="memberTel-1" style="width: 200px;"
+								type="text" placeholder="手机号码">
+						</div>
+
+						<label class="col-sm-2 control-label no-padding-right">
+							身份证号码</label>
+
+						<div class="col-sm-4">
+							<input id="code-1" name="code-1" type="text"
+								style="width: 200px;" placeholder="身份证号码">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"
+							for="merchantName"> 提交时间 </label>
+
+						<div class="col-sm-4">
+							<input id="datepicker-1" name="datepicker-1" type="text"
+								data-date-format="yyyy-mm-dd">
+						</div>
+
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript"
+	src="../../assets/module/order/rc/signorder.js"></script>
+<script type="text/javascript"
+	src="../../assets/module/order/rc/signordersh.js"></script>
+<script type="text/javascript">
+	jQuery(function($) {
+
+		$("#datepicker").datepicker({
+			dateFormat : 'yyyy-mm-dd',
+			showOtherMonths : true,
+			selectOtherMonths : false,
+
+		});
+		$("#datepicker-1").datepicker({
+			dateFormat : 'yyyy-mm-dd',
+			showOtherMonths : true,
+			selectOtherMonths : false,
+
+		});
+	});
+</script>
+
+</html>

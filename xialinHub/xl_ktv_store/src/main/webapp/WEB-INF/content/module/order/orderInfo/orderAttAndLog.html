@@ -1,0 +1,567 @@
+<meta charset="utf-8" />
+<#--<#include "/common/include_photo_album.html"/>-->
+<link rel="stylesheet" href="${basePath}/assets/module/project/css/project.css" />
+<style>
+	.msgDiv{
+		font-size: 15px;
+	    height: 35px;
+	    line-height: 35px;
+	    background-color: #6fb3e0;
+	    margin-top:0;
+	    color: #f5f5f5;
+	}
+	.cancleY{
+		    display: inline-block;
+		    cursor: pointer;
+		    text-align: center;
+		    width: 49%;
+		    background: #EFEFEF no-repeat 0 0;
+		    color: black;
+	}
+	.cancleN{
+		    display: inline-block;
+		    text-align: center;
+		    width: 49%;
+		    color: #f5f5f5;
+	}
+</style>
+<!-- 附件录入 -->
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="#faq-attpanel" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+			<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+			&nbsp; 附件录入
+		</a>
+	</div>
+	<div class="panel-collapse collapse in" id="faq-attpanel" aria-expanded="false">
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> 请录入附件类型: </label>
+				<div class="col-sm-10">
+					<!-- 附件上传 -->
+					<div class="clearfix">
+						<div style="float: left;">
+						<select id="fjTypeDiv" style="width:100px" onchange="changFjType()">
+							<option value="1">到访附件</option>
+                               <option value="2">认筹附件</option>
+                               <option value="3">认购附件</option>
+                               <option value="4">签约附件</option>
+						</select>
+						&nbsp;
+						<select id="fjNameDiv" style="width:150px" >
+							<option value="11">转介客户确认单</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+						<div>
+						<!-- input type="hidden" id="orderAttachmentId" />-->
+						<input type="hidden" id="orderAttachmentNameStr" />
+						<input type="hidden" id="orderAttachmentUrlStr" />
+						<input type="hidden" id="orderAttachmentTypeStr" />
+						<input type="file" id="uploadFile" name="uploadFile" class="col-xs-10 col-sm-5">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 附件展示区 -->
+			<div class="form-group" id="imgDiv">
+				<div class="tab-pane">
+					<ul class="ace-thumbnails" id="attImg">
+						<#if (attAndLog.orderAttList)?? && (attAndLog.orderAttList?size gt 0)>
+							<#list attAndLog.orderAttList as att>
+								<li style="border: 1px solid #333;" id="fj_${(att.orderAttachmentId)!''}">
+									<!--<a href="..${(att.orderAttachmentUrl?replace('s_','l_'))!''}" title="${(att.orderAttachmentType)!''}" data-rel="colorbox">  -->
+									<a href=" javascript:void(0)" title="${(att.orderAttachmentType)!''}" src="..${(att.orderAttachmentUrl?replace('s_','l_'))!''}" 
+												onclick="window.parent.showPic(this);">
+										<img id="" class="building_house_img" src="${basePath}${(att.orderAttachmentUrl)!''}">
+									</a>
+									<div class="favourable msgDiv">
+									<#if (orderInfo.orderStatus)?? && (orderInfo.auditStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 || (orderInfo.orderStatus==4 && orderInfo.auditStatus == 2))>
+		                        		<span class="lbl cancleY" onclick="invalidFj(${(att.orderAttachmentId)!''});">标记无效</span>
+										<span class="lbl cancleN" >${(att.orderAttachmentType)!''}</span>
+									<#else>
+										<span class="lbl" >${(att.orderAttachmentType)!''}</span>
+		                        	</#if>
+										
+									</div>
+								</li>
+							</#list>
+						</#if>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 开发商回款 -->		
+<#if (attAndLog.packageInfo.packageType)?? && (attAndLog.packageInfo.packageType == 1 || attAndLog.packageInfo.packageType == 3)>							
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="#faq-atthuikuan" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+			<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+			&nbsp; 开发商回款
+		</a>
+	</div>
+	<div class="panel-collapse collapse in" id="faq-atthuikuan" aria-expanded="false">
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"></label>
+				<div class="col-sm-7">
+					<div class="clearfix">
+						<label class="col-sm-12" style="text-align: left;padding-left: 0;">
+							<span>应收回款金额:&nbsp;&nbsp;${(orderInfo.recvDistAmount)!''}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<span>已收回款金额:&nbsp;&nbsp;${(orderInfo.realDistAmount)!''}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> 已回款明细： </label>
+				<div class="col-sm-7">
+					<div class="row" >
+						<div class="col-xs-10">
+							<div class="table-responsive">
+								<table class="table table-striped table-bordered table-hover">
+									<thead>
+	                                     <tr>
+	                                         <th width="10%" class="center">回款金额</th>
+	                                         <th width="20%" class="center">确认回款人</th>
+	                                         <th width="20%" class="center">回款日期</th>
+	                                         <th width="30%" class="center">回款确认时间</th>
+	                                         <th width="20%" class="center">备注</th>
+	                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<#if (attAndLog.fddList)?? && (attAndLog.fddList?size gt 0)>
+                                    	<#list attAndLog.fddList as fdd>
+                                    		<tr>
+                                    			<td>${(fdd.distributionAmount)!''}</td>
+                                    			<td>${(fdd.operatorName)!''}</td>
+                                    			<td>${((fdd.createTime)?string("yyyy-MM-dd"))!''}</td>
+                                    			<td>${((fdd.tradeTime)?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
+                                    			<td>${(fdd.remark)!''}</td>
+                                    		</tr>
+                                    	</#list>
+                                    	</#if>
+                                    </tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /span -->
+					</div><!-- /row -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</#if>	
+
+<!-- 结佣信息-->		
+<#if (orderInfo.channelType)?? && orderInfo.channelType == 2>						
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="#faq-attjieyong" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+			<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+			&nbsp; 结佣信息
+		</a>
+	</div>
+	<div class="panel-collapse collapse in" id="faq-attjieyong" aria-expanded="false">
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> 结佣条件： </label>
+				<div class="col-sm-7">
+					<div class="row" style="">
+						<div class="col-xs-10">
+							<div class="table-responsive">
+								<table class="table table-striped table-bordered table-hover">
+									<thead>
+	                                     <tr>
+	                                         <th width="80%" class="center">结佣条件</th>
+                                             <th width="20%" class="center">情况</th>
+	                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<tr>
+                                            <td class="center">报备客户有效</td>
+                                            <td class="center"><img src="${basePath}/assets/img/order/tick.png" /></td>
+                                       	</tr>
+                                       	<tr>
+                                            <td class="center">看房有效</td>
+                                            <td class="center"><img src="${basePath}/assets/img/order/tick.png" /></td>
+                                       	</tr>
+                                       	<tr>
+                                            <td class="center">无退款中/无已退款记录</td>
+                                            <td class="center">
+                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 6 || orderInfo.orderStatus == 7 || orderInfo.orderStatus == 8)>
+                                            		<img src="${basePath}/assets/img/order/close_small.png" />
+                                            	</#if>
+                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+                                            			|| orderInfo.orderStatus == 4 || orderInfo.orderStatus == 5)>
+                                            		<#if (orderInfo.vacationFlag)?? && (orderInfo.refundFlag)?? && orderInfo.refundFlag == 1 && orderInfo.vacationFlag == 1>
+                                            			<img src="${basePath}/assets/img/order/tick.png" />
+                                            		<#else>
+                                            			<img src="${basePath}/assets/img/order/close_small.png" />
+                                            		</#if>
+                                            	</#if>
+                                           </td>
+                                        </tr>
+                                        <tr>
+                                             <td class="center">客户附件齐全（到访附件/认筹附件/认购附件）</td>
+                                             <td class="center">
+                                             <#if (attAndLog.isFjWhole)?? && attAndLog.isFjWhole == 1>
+                                             	<img src="${basePath}/assets/img/order/tick.png" />
+                                             <#else>
+                                             	<img src="${basePath}/assets/img/order/close_small.png" />
+                                             </#if>
+                                             </td>
+                                        </tr>
+                                        <tr>
+                                             <td class="center">成交审核已通过</td>
+                                             <td class="center">
+                                             <#if (orderInfo.auditStatus)?? && orderInfo.auditStatus == 1>
+                                            	 <img src="${basePath}/assets/img/order/tick.png" />
+                                             <#else>
+                                             	<img src="${basePath}/assets/img/order/close_small.png" />
+                                             </#if>
+                                             </td>
+                                        </tr>
+                                        <#if (attAndLog.packageInfo.packageType)?? && (attAndLog.packageInfo.packageType == 2 || attAndLog.packageInfo.packageType == 3)>
+                                        <tr>
+                                             <td class="center">电商费已结清，前佣可结。
+                                             	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 5 || orderInfo.orderStatus == 6 || orderInfo.orderStatus == 7)>
+                                             		(应结：${(orderInfo.settleFrontAmount)!''},禁止结佣：${(orderInfo.forbidFrontAmount)!''},已结：${(orderInfo.realFrontAmount)!''})
+                                             	</#if>
+                                             </td>
+                                             <td class="center">
+                                             <#if (orderInfo.orderStatus)?? && orderInfo.orderStatus == 5>
+                                              		<img src="${basePath}/assets/img/order/tick.png" />
+                                             <#else>
+                                             		<img src="${basePath}/assets/img/order/close_small.png" />
+                                             </#if>
+                                             </td>
+                                        </tr>
+                                        </#if>
+                                        <#if (attAndLog.packageInfo.packageType)?? && (attAndLog.packageInfo.packageType == 1 || attAndLog.packageInfo.packageType == 3) >
+                                        <tr>
+                                            <td class="center">开发商回款，后佣可结。
+                                            	<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 5 || orderInfo.orderStatus == 7 || orderInfo.orderStatus == 8)>
+                                            		(应结：${(orderInfo.settleBackAmount)!''},禁止结佣：${(orderInfo.forbidBackAmount)!''},已结：${(orderInfo.realBackAmount)!''})
+                                            	</#if>
+                                            </td>
+                                            <td class="center">
+                                            <#if (orderInfo.orderStatus)?? && orderInfo.orderStatus == 5>
+                                            	<img src="${basePath}/assets/img/order/tick.png" />
+                                            <#else>
+                                            	<img src="${basePath}/assets/img/order/close_small.png" />
+                                            </#if>
+                                            </td>
+                                       	</tr>
+                                        </#if>
+		                                            
+                                    </tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /span -->
+					</div><!-- /row -->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 结佣记录 -->										
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="#faq-jieyongjilu" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+			<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+			&nbsp; 结佣记录
+		</a>
+	</div>
+	<div class="panel-collapse collapse in" id="faq-jieyongjilu" aria-expanded="false">
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"></label>
+				<div class="col-sm-7">
+					<div class="row" style="" id="orderRecordTable">
+						<div class="col-xs-10">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th width="10%" class="center">佣金类型</th>
+                                            <th width="10%" class="center">结佣金额</th>
+                                            <th width="20%" class="center">申请时间</th>
+                                            <th width="20%" class="center">结佣时间</th>
+                                            <th width="10%" class="center">结佣状态</th>
+                                            <th width="20%" class="center">结算对象</th>
+                                            <th width="10%" class="center">佣金占比</th>
+										</tr>
+									</thead>
+									<tbody>
+										<#if (attAndLog.brokerList)?? && (attAndLog.brokerList?size gt 0)>
+											<#list attAndLog.brokerList as broker>
+												<tr>
+													<td class="center">
+													<#if (broker.brokerageType)?? && broker.brokerageType == 1>
+														前佣
+													<#else>
+														后佣
+													</#if>
+	                                                </td>
+	                                                <td class="center">
+	                                                	${(broker.brokerageDistributionAmount)!''}
+	                                                </td>
+	                                                <td class="center">
+	                                                	${((broker.createTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+	                                                </td>
+	                                                <td class="center">
+	                                                	${((broker.completeTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+	                                                </td>
+	                                                <td class="center">
+	                                                <#if (broker.isComplete)?? && broker.isComplete == 1>
+	                                              		  已结算
+	                                                <#else>
+	                                                	未结算
+	                                                </#if>
+	                                                </td>
+	                                                <td class="center">
+	                                                <#if (broker.brokerageObject)?? && broker.brokerageObject == 1>
+	                                              		  公司
+	                                                <#else>
+	                                                	门店
+	                                                </#if>
+	                                                </td>
+	                                                <td class="center">
+	                                                <#if (broker.brokerageType)?? && broker.brokerageType == 1>
+	                                                	<#if (orderInfo.canFrontAmount)?? && (orderInfo.canFrontAmount)?string('#.00') == '0.00'>
+	                                                		0%
+	                                                	</#if>
+	                                                	<#if (orderInfo.canFrontAmount)?? && (orderInfo.canFrontAmount)?string('#.00') != '0.00'>
+	                                                		${((broker.brokerageDistributionAmount*100/orderInfo.canFrontAmount)?string('#.00'))!''}%
+	                                                	</#if>
+	                                                </#if>
+	                                                <#if (broker.brokerageType)?? && broker.brokerageType == 2>
+	                                                	<#if (orderInfo.canBackAmount)?? && (orderInfo.canBackAmount)?string('#.00') == '0.00'>
+	                                                		0%
+	                                                	</#if>
+	                                                	<#if (orderInfo.canBackAmount)?? && (orderInfo.canBackAmount)?string('#.00') != '0.00'>
+	                                                		${((broker.brokerageDistributionAmount*100/orderInfo.canBackAmount)?string('#.00'))!''}%
+	                                                	</#if>
+	                                                </#if>
+	                                                </td>
+												</tr>
+											</#list>
+										</#if>
+									</tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /span -->
+					</div><!-- /row -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</#if>
+
+<!-- 订单日志 -->										
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="#faq-orderHis" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+			<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+			&nbsp; 订单日志
+		</a>
+	</div>
+	<div class="panel-collapse collapse in" id="faq-orderHis" aria-expanded="false">
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="buildingProjectId"> </label>
+				<div class="col-sm-7">
+					<div class="row" style="" id="orderRecordTable">
+						<div class="col-xs-10">
+							<div class="table-responsive">
+								<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th width="55%" class="center">操作内容</th>
+                                            <th width="20%" class="center">操作时间</th>
+                                            <th width="15%" class="center">操作人</th>
+                                            <th width="10%" class="center">操作终端</th>
+										</tr>
+									</thead>
+									<tbody>
+										<#if (attAndLog.hisList)?? && (attAndLog.hisList?size gt 0)>
+											<#list attAndLog.hisList as his>
+												<tr>
+	                                                <td class="center">${(his.descript)!''}</td>
+	                                                <td class="center">
+	                                                	${((his.modifyTime)?string("yyyy-MM-dd HH:mm:ss"))!''}
+	                                                </td>
+	                                                <td class="center">${(his.modifyOperatorName)!''}</td>
+	                                                <td class="center">
+	                                                	云后台
+	                                                </td>
+	                                            </tr>
+											</#list>
+										</#if>
+																				
+									</tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /span -->
+					</div><!-- /row -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function changFjType(){
+		var fjType = $("#fjTypeDiv").val();
+		var fjNameDiv = "";
+		if(fjType == 1){
+			fjNameDiv +='<option value="11">转介客户确认单</option>';
+		}else if(fjType == 2){
+			fjNameDiv +='<option value="7">优惠告知书</option>';
+			fjNameDiv +='<option value="12">POS小票</option>';
+		}else if(fjType == 3){
+			fjNameDiv +='<option value="8">新房认购书</option>';
+			fjNameDiv +='<option value="9">定金收据</option>';
+			fjNameDiv +='<option value="10">身份证</option>';
+		}else if(fjType == 4){
+			fjNameDiv +='<option value="13">网签证明</option>';
+		}
+		$("#fjNameDiv").html(fjNameDiv);
+	}
+	
+	var imgDivHeight_now = $("#imgDiv").outerHeight(true);
+	/**
+	 * 上传控件
+	 */
+	$("#uploadFile").uploadifive({
+//		buttonClass : "btn btn-success",
+		buttonText : "选择文件",
+		uploadScript : "../common/upload/file",
+		fileSizeLimit : 1024 * 20,
+		fileType : "image/*",
+		queueSizeLimit : 1,
+		removeCompleted : true,
+		onUploadComplete : function(file, data) {
+			var jsonData = eval("(" + data + ")");
+			var attType = $("#fjNameDiv option:selected").text();
+			
+			var imgLi = '<li style="border: 1px solid #333;" >';
+			imgLi += '<input type="hidden" name="img_url" value="'+ jsonData[0].httpPath + '" />';
+			imgLi += '<input type="hidden" name="img_name" value="'+ jsonData[0].srcFileName + '" />';
+			imgLi += '<input type="hidden" name="img_type" value="'+ attType + '" />';
+			//imgLi += '<a href="../'+jsonData[0].httpPath+'" title="'+attType+'" data-rel="colorbox">';
+			imgLi += '<a href=" javascript:void(0)" title="'+attType+'" src="../'+jsonData[0].httpPath.replace("s_","")+'" onclick="window.parent.showPic(this);">';
+			imgLi += '<img class="building_house_img" src="${basePath}'+jsonData[0].httpPath.replace("s_","")+'" > </a>';
+			imgLi += '<div class="favourable msgDiv">';
+			imgLi += '<span class="lbl cancleY" onclick="deleteFj(this);" style="width: 51%;" >删除</span>';
+			imgLi += '<span class="lbl cancleN" >'+attType+'</span> </div> </li>';
+			$("#attImg").append(imgLi);
+			
+			refreshFj();
+			
+			//设置iframe的高度
+			var imgDivHeight = $("#imgDiv").outerHeight(true);
+			if(imgDivHeight_now != imgDivHeight){
+				setIframeHeight(0);
+				imgDivHeight_now = imgDivHeight;
+			}
+		}
+	});
+	
+	//删除附件
+    function deleteFj(target){
+    	 window.parent.order.confirm("确定删除该附件吗?",function(){
+    		 window.parent.order.messageBox("提示","删除成功!",true);
+    		 $(target).parent().parent().remove();
+	         refreshFj();
+	         
+	       	 //设置iframe的高度
+	         var imgDivHeight = $("#imgDiv").outerHeight(true);
+				if(imgDivHeight_now != imgDivHeight){
+					setIframeHeight(-256);
+					imgDivHeight_now = imgDivHeight;
+				}
+			
+    	 })
+    }
+	
+	//刷新附件
+    function refreshFj(){
+    	var fjs ='';
+    	var fjnames = '';
+    	var fjtypes = '';
+    	$("input[name=img_url]").each(function(){
+    		if(fjs == ''){
+				fjs = $(this).val();
+			}else{
+				fjs += ',' + $(this).val();
+			}
+   	 	});
+    	$("input[name=img_name]").each(function(){
+    		if(fjnames == ''){
+    			fjnames = $(this).val();
+			}else{
+				fjnames += ',' + $(this).val();
+			}
+   	 	});
+    	$("input[name=img_type]").each(function(){
+    		if(fjtypes == ''){
+    			fjtypes = $(this).val();
+			}else{
+				fjtypes += ',' + $(this).val();
+			}
+   	 	});
+		$("#orderAttachmentNameStr").val(fjnames);
+		$("#orderAttachmentUrlStr").val(fjs);
+		$("#orderAttachmentTypeStr").val(fjtypes);
+    }
+	//标记无效
+	function invalidFj(fjid){
+	   	 window.parent.order.confirm("确定标记该附件无效吗?",function(){
+	   		$.ajax({
+    			url : "${basePath}/orderinfo/invalidattachment",
+    			type : "post",
+    			data : {
+    				attachmentId:fjid
+    			},
+    			dataType : "json",
+    			success : function(json) {
+    				if (json.isSuccess) {
+    					window.parent.order.messageBox("提示","标记无效成功!",true);
+    			    	$("#fj_"+fjid).remove();
+    			    	//设置iframe的高度
+    			         var imgDivHeight = $("#imgDiv").outerHeight(true);
+    						if(imgDivHeight_now != imgDivHeight){
+    							setIframeHeight(-256);
+    							imgDivHeight_now = imgDivHeight;
+    						}
+    						
+    				} else {
+    					 window.parent.order.messageBox("提示", json.msg, false);
+    				}
+    			},
+    			error : function() {
+    				 window.parent.order.messageBox("提示", Common.SERVER_EXCEPTION, false);
+    			}
+    		});
+	   	 })
+	}
+	
+	
+	//设置iframe的高度
+	function setIframeHeight(moreHeight){
+		var documentHeight = $(document).height();
+		window.parent.setDocumentHeight($("#pageStep").val(),documentHeight+moreHeight);
+	}
+	
+	//初始化画廊
+	//$('.ace-thumbnails [data-rel="colorbox"]').colorbox(Common.colorbox_params);
+</script>

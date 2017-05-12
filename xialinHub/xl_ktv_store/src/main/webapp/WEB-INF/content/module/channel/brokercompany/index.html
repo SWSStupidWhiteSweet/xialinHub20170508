@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>经纪公司管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+		.inputstyle{
+		    width: 100%;
+		    height: 100%;
+		    font-size: 30px;
+		    outline: medium none;
+		    position: absolute;
+		    filter:alpha(opacity=0);
+		    -moz-opacity:0;
+		    opacity:0; 
+		    left:0px;
+		    top: 0px;
+		    cursor:potinter;
+		}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								渠道管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									经纪公司管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<button id="query" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i> 搜索
+										</button>
+										<@shiro.hasPermission name="channel:brokercompany:add">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 添加
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="channel:brokercompany:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="channel:brokercompany:toshow">
+										<button id="view" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-reorder red"></i> 查看
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="channel:brokercompany:delete">
+										<button id="delete" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-trash-o orange"></i> 删除
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="channel:brokercompany:excel">
+										<button id="excel" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="channel:brokercompany:import">
+										<button id="import" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-upload blue"></i> 导入
+											<input type="file" id="uploadFile"/>
+										</button>
+										</@shiro.hasPermission>
+										<button id="exportmod" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-download blue"></i> 导入模板下载
+										</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="brokerCompanyType"> 公司类型 </label>
+							
+							<div class="col-sm-8">
+								<select id="brokerCompanyType" name="brokerCompanyType" style="width: 150px;" data-placeholder="选择公司类型"  url="../../common/getbrokercompanytypecombo">
+								</select>
+							</div>
+						</div>
+	
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="province"> 所属省份  </label>
+	
+							<div class="col-sm-8">
+								<select id="province" name="province" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city">
+								</select>
+							</div>
+						</div>
+	
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="city"> 所属城市 </label>
+	
+							<div class="col-sm-8">
+								<select id="city" name="city" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="brokerCompanyName"> 公司名称 </label>
+	
+							<div class="col-sm-8">
+								<input type="text" id="brokerCompanyName" style="width: 150px;" placeholder="输入公司名称">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="director"> 负责人 </label>
+	
+							<div class="col-sm-8">
+								<input type="text" id="director" style="width: 150px;" placeholder="输入负责人">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="directorTel"> 负责人电话 </label>
+	
+							<div class="col-sm-8">
+								<input type="text" id="directorTel" style="width: 150px;" placeholder="输入负责人电话">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="status"> 状态 </label>
+							
+							<div class="col-sm-8">
+								<select id="status" name="status" style="width: 150px;" data-placeholder="选择状态"  url="../../common/getstatuscombo">
+										</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="createTime"> 创建时间 </label>
+	
+							<div class="col-sm-8">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="createTime" style="width: 200px;" readonly="readonly" placeholder="选择创建时间" />
+								<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/channel/brokercompany/index.js?${.now?long}"></script>
+	<script type="text/javascript">
+		$('.date-range-picker').daterangepicker({
+	        applyClass : 'btn-sm btn-success',
+	        cancelClass : 'btn-sm btn-default',
+	        locale: {
+	            applyLabel: '确认',
+	            cancelLabel: '取消',
+	            fromLabel : '起始时间',
+	            toLabel : '结束时间',
+	            customRangeLabel : '自定义',
+	            firstDay : 1
+	        },
+	        ranges : {
+	            //'最近1小时': [moment().subtract('hours',1), moment()],
+	            '今日': [moment().startOf('day'), moment()],
+	            '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+	            '最近7日': [moment().subtract('days', 6), moment()],
+	            '最近30日': [moment().subtract('days', 29), moment()],
+	            '本月': [moment().startOf("month"),moment().endOf("month")],
+	            '上个月': [moment().subtract(1,"month").startOf("month"),moment().subtract(1,"month").endOf("month")]
+	        },
+	        opens : 'right',    // 日期选择框的弹出位置
+	        separator : ' 至 ',
+	        locale : {  
+	            applyLabel : '确定',  
+	            cancelLabel : '取消',  
+	            fromLabel : '起始时间',  
+	            toLabel : '结束时间',  
+	            customRangeLabel : '自定义',  
+	            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],  
+	            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月',  
+	                    '七月', '八月', '九月', '十月', '十一月', '十二月' ],  
+	            firstDay : 1  
+	        },
+	        showWeekNumbers : true,     // 是否显示第几周
+	 
+	 
+	        //timePicker: true,
+	        //timePickerIncrement : 10, // 时间的增量，单位为分钟
+	        //timePicker12Hour : false, // 是否使用12小时制来显示时间
+	 
+	         
+	        //maxDate : moment(),           // 最大时间
+	        format: 'YYYY-MM-DD'
+	 
+	    }, function(start, end, label) { // 格式化日期显示框
+	        $('#beginTime').val(start.format('YYYY-MM-DD'));
+	        $('#endTime').val(end.format('YYYY-MM-DD'));
+	    })
+	    .next().on('click', function(){
+	        $(this).prev().focus();
+	    });
+	</script>
+</html>

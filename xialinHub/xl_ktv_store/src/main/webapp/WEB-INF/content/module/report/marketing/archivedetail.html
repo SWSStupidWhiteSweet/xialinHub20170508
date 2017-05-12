@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>客档详情</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								<a href="javascript:void();" onclick="javascript:back();">
+								客档信息查询
+								</a>
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									客档详情
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="merchantForm" class="form-horizontal" role="form">
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >客档姓名</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.archivesName)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" > 客档电话 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.archivesTel1)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"> 客档等级</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.archivesLevel)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"> 客档分组 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.archivesGroup)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"> 到访人关系 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.accessRelation)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" > 到访人数 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.personTotal)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" > 到访时间 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.accessTime)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" > 需求面积 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.idealArea)!''} " readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" > 其它意向 </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input type="text" class="col-xs-10 col-sm-5" value="${(archiveDetail.idealOther)!''}" readonly="readonly"/>
+											</div>
+										</div>
+									</div>
+									
+									<div class="tabbable">
+										<ul class="nav nav-tabs">
+											<li class="active">
+												<a data-toggle="tab" href="#ext1" > 接待过程 </a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#ext2" > 客户分析 </a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#ext3" > 跟踪策略 </a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#ext4" > 客户反馈 </a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#ext5" > 照片留档 </a>
+											</li>
+											<li>
+												<a data-toggle="tab" href="#comment" > 销经评分 </a>
+											</li>
+										</ul>
+			
+										<div class="tab-content" style="height:700px;">
+											<div id="ext1" class="tab-pane fade in active" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<#list archiveExtList0 as archiveExt0>
+																	<h6>
+																		创建时间：${(archiveExt0.createTime)!''}
+																	</h6>
+																	<label>描述：${(archiveExt0.archivesDescript)!''}</label>
+																</#list>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="ext2" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<#list archiveExtList1 as archiveExt1>
+																	<h6>
+																		创建时间：${(archiveExt1.createTime)!''}
+																	</h6>
+																	<label>描述：${(archiveExt1.archivesDescript)!''}</label>
+																</#list>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="ext3" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<#list archiveExtList2 as archiveExt2>
+																	<h6>
+																		创建时间：${(archiveExt2.createTime)!''}
+																	</h6>
+																	<label>描述：${(archiveExt2.archivesDescript)!''}</label>
+																</#list>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="ext4" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<#list archiveExtList3 as archiveExt3>
+																	<h6>
+																		创建时间：${(archiveExt3.createTime)!''}
+																	</h6>
+																	<label>描述：${(archiveExt3.archivesDescript)!''}</label>
+																</#list>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="ext5" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<div>
+																	<#list archiveExtList4 as archiveExt4>
+																	<img style="width:100px;height:100px" src="../../../..${(archiveExt4.archivesDescript)!''}" />
+																	</#list>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="comment" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<#list archiveCommentList as archiveComment>
+																	<h6>
+																		创建时间：${(archiveComment.createTime)!''}
+																	</h6>
+																	<label>评分：${(archiveComment.commentPoint)!''}</label>
+																	<label>描述：${(archiveComment.commentContent)!''}</label>
+																</#list>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../../assets/module/report/marketing/archivedetail.js"></script>
+</html>

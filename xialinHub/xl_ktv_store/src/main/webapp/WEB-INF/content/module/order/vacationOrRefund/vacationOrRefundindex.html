@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>退房退款申请</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+        <#include "/common/include_head_css.html"/>
+        <#include "/common/include_jquery_core.html"/>
+        <#include "/common/include_bootstrap_core.html"/>
+        <#include "/common/include_ace_core.html"/>
+        <#include "/common/include_jqgrid_core.html"/>
+        <#include "/common/include_plugin.html"/>
+    </head>
+    <body class="no-skin">
+        <div class="main-container" id="main-container">
+            <div class="main-content">
+                <div class="page-content" style="padding-bottom:10px;">
+                    <div class="page-content-area">
+                        <div class="page-header">
+                            <h1>
+                                    	订单管理
+                                <small>
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                    退(房/款)申请
+                                </small>
+                            </h1>
+                        </div>
+                        <div class="row">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active">
+                                        <a data-toggle="tab" id="refund" href="#home">
+                                            <i class="green icon-home bigger-110"></i>
+                                            	退款申请
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a data-toggle="tab" id="vacation" href="#profile">
+     										退房申请
+                                            <!--<span class="badge badge-danger">4</span>-->
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane in active">
+                                        <!--条件查询-->
+                                        <div id="refundCondition" class="hide">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundTimeFlag">
+                                                                <select id="refundTimeFlag" name="timeFlag">
+                                                                    <option value="0">请选择</option>
+                                                                    <option value="1">创建日期</option>
+                                                                    <option value="2">到访日期</option>
+                                                                    <option value="3">认筹日期</option>
+                                                                    <option value="4">认购日期</option>
+                                                                    <option value="5">网签日期</option>
+                                                                </select>
+                                                            </label>
+                                                            <div class="col-sm-9" style="padding-top: 4px;">
+                                                                <input  type="text" readonly="readonly" style="width: 200px" name="startTime" id="refundStartTime"
+                                                                        placeholder="请选择查询起止日期" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundOrderInfoCode">订单号</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;"  type="text" name="orderInfoCode" id="refundOrderInfoCode" placeholder="订单号"
+                                                                       value="${(orderForQuery.orderInfoCode)!''}">
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundChannelType">渠道类型</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundChannelType" name="channelType" readonly="readonly"
+                                                                        data-placeholder="选择渠道类型"
+                                                                        url="../../common/getchanneltypecombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">客户姓名</label>
+                                                            <div class="col-sm-4">
+                                                                <input  style="width:200px;" type="text" name="customName" id="refundCustomName" placeholder="客户姓名" value="">
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">客户手机号</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;" type="text" name="customTel" id="refundCustomTel" placeholder="客户手机号" value="">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundProvince">省</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundProvince" name="provinceId" data-placeholder="选择所属省"
+                                                                        url="../../common/getprovincecombo" child="refundCity">
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundCity">市</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundCity" name="cityId" data-placeholder="选择所属市(请先选择所属省)"  url="../../common/getcitycombo"
+                                                                        child="refundBuildingProjectId"
+                                                                        cascade="cascade" >
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundBuildingProjectId">楼盘</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundBuildingProjectId" name="buildingProjectId" readonly="readonly"
+                                                                        data-placeholder="选择楼盘(请先选择所属市)"
+                                                                        url="../../common/getbuildingprojectcombo"
+                                                                        child="refundBuildingInfoId,refundProjectInfoId" cascade="cascade" >
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundProjectInfoId">项目</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundProjectInfoId" name="projectInfoId" readonly="readonly"
+                                                                        data-placeholder="选择项目(请先选择所楼盘)"
+                                                                        url="../../common/getprojectinfocombo"  cascade="cascade" >
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundBuildingInfoId">楼盘期数</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundBuildingInfoId" name="buildingInfoId" readonly="readonly"
+                                                                        data-placeholder="选择期数(请先选择所楼盘)"
+                                                                        url="../../common/getbuildinginfocombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundOrderStatus">订单状态</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundOrderStatus" name="orderStatus" readonly="readonly" data-placeholder="选择订单状态"
+                                                                        url="../../common/getorderstatuscombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundBrokerCompanyId">中介公司</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundBrokerCompanyId" name="brokerCompanyId" readonly="readonly"
+                                                                        data-placeholder="选择中介公司"
+                                                                        url="../../common/getbrokercompanycombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundStroeId">中介门店</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="refundStroeId" name="stroeId" readonly="readonly"
+                                                                        data-placeholder="选择门店"
+                                                                        url="../../common/getstorecombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundBrokerTel">报备人手机</label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" style="width:200px;" name="brokerTel" id="refundBrokerTel" placeholder="报备人手机"
+                                                                       value="">
+                                                            </div>
+                                                            <label class="col-sm-2 control-label no-padding-right" for="refundBrokerName">报备人</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;" type="text" name="brokerName" id="refundBrokerName" placeholder="报备人" value="">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <!--<a href="${basePath}/financial/orderrefundapply/refundAuditFlow?openType=audit&orderInfoId=1&&orderRefundApplyId=28">
+                                                    <button id="refundAuditFlow" class="btn btn-white btn-default btn-round">
+                                                        退房审核流程
+                                                    </button>
+                                                </a>-->
+                                                <button id="searchRefund" class="btn btn-white btn-default btn-round">
+                                                    <i class="ace-icon fa fa-search blue"></i> 搜索
+                                                </button>
+                                                <@shiro.hasPermission name="financial:orderrefundapply:refundapply">
+                                                    <button id="refundApply" class="btn btn-white btn-default btn-round">
+                                                        <i class="ace-icon fa fa-hand-paper-o blue"></i> 申请退款
+                                                    </button>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="financial:orderrefundapply:excel">
+                                                    <button id="refundExcel" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+													</button>
+                                                </@shiro.hasPermission>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-sm-12 refundGird">
+                                                        <table id="refundGrid-table"></table>
+                                                        <div id="refundGrid-pager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="profile" class="tab-pane">
+                                        <div id="vacationCondition" class="hide">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationTimeFlag">
+                                                                <select id="vacationTimeFlag" name="timeFlag">
+                                                                    <option value="0">请选择</option>
+                                                                    <option value="1">创建日期</option>
+                                                                    <option value="2">到访日期</option>
+                                                                    <option value="3">认筹日期</option>
+                                                                    <option value="4">认购日期</option>
+                                                                    <option value="5">网签日期</option>
+                                                                </select>
+                                                            </label>
+                                                            <div class="col-sm-9" style="padding-top: 4px;">
+                                                                <input  type="text" readonly="readonly" style="width: 200px" name="startTime" id="vacationStartTime"
+                                                                        placeholder="请选择查询起止日期" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationOrderInfoCode">订单号</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;"  type="text" name="orderInfoCode" id="vacationOrderInfoCode" placeholder="订单号"
+                                                                       value="${(orderForQuery.orderInfoCode)!''}">
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationChannelType">渠道类型</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationChannelType" name="channelType" readonly="readonly"
+                                                                        data-placeholder="选择渠道类型"
+                                                                        url="../../common/getchanneltypecombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">客户姓名</label>
+                                                            <div class="col-sm-4">
+                                                                <input  style="width:200px;" type="text" name="customName" id="vacationCustomName" placeholder="客户姓名" value="">
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">客户手机号</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;" type="text" name="customTel" id="vacationCustomTel" placeholder="客户手机号" value="">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationProvince">省</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationProvince" name="provinceId" data-placeholder="选择所属省"
+                                                                        url="../../common/getprovincecombo" child="vacationCity">
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationCity">市</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationCity" name="cityId" data-placeholder="选择所属市(请先选择所属省)"
+                                                                         url="../../common/getcitycombo"
+                                                                        child="vacationBuildingProjectId"
+                                                                        cascade="cascade" >
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationBuildingProjectId">楼盘</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationBuildingProjectId" name="buildingProjectId" readonly="readonly"
+                                                                        data-placeholder="选择楼盘(请先选择所属市)"
+                                                                        url="../../common/getbuildingprojectcombo" selectval="${(buildingProject.status)!''}"
+                                                                        child="vacationBuildingInfoId,vacationProjectInfoId"  cascade="cascade" >
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationProjectInfoId">项目</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationProjectInfoId" name="projectInfoId" readonly="readonly"
+                                                                        data-placeholder="选择项目(请先选择所楼盘)"
+                                                                        url="../../common/getprojectinfocombo"  cascade="cascade" >
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationBuildingInfoId">楼盘期数</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationBuildingInfoId" name="buildingInfoId" readonly="readonly"
+                                                                        data-placeholder="选择期数(请先选择所楼盘)"
+                                                                        url="../../common/getbuildinginfocombo"  cascade="cascade" >
+                                                                </select>
+                                                            </div>
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationOrderStatus">订单状态</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationOrderStatus" name="orderStatus" readonly="readonly"
+                                                                         data-placeholder="选择订单状态"
+                                                                        url="../../common/getorderstatuscombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationBrokerCompanyId">中介公司</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationBrokerCompanyId" name="brokerCompanyId" readonly="readonly"
+                                                                        data-placeholder="选择中介公司"
+                                                                        url="../../common/getbrokercompanycombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+
+
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationStroeId">中介门店</label>
+                                                            <div class="col-sm-4">
+                                                                <select id="vacationStroeId" name="stroeId" readonly="readonly"
+                                                                        data-placeholder="选择门店"
+                                                                        url="../../common/getstorecombo" selectval="${(buildingProject.status)!''}">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationBrokerTel">报备人手机</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;" type="text" name="brokerTel" id="vacationBrokerTel" placeholder="报备人手机"
+                                                                        value="">
+                                                            </div>
+                                                            <label class="col-sm-2 control-label no-padding-right" for="vacationBrokerName">报备人</label>
+                                                            <div class="col-sm-4">
+                                                                <input style="width:200px;" type="text" name="brokerName" id="vacationBrokerName" placeholder="报备人" value="">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <!--<button id="vacationSearch" class="btn btn-white btn-default btn-round">
+                                                    搜索条件
+                                                </button>-->
+                                                <button id="searchVacation" class="btn btn-white btn-default btn-round">
+                                                    <i class="ace-icon fa fa-search blue"></i> 搜索
+                                                </button>
+                                                <@shiro.hasPermission name="order:vacation:vacationapply">
+                                                <button id="vacationApply" class="btn btn-white btn-default btn-round">
+                                                    <i class="ace-icon fa fa-hand-paper-o blue"></i> 申请退房
+                                                </button>
+                                                </@shiro.hasPermission>
+                                                <@shiro.hasPermission name="order:vacation:excel">
+                                                <button id="vacationExcel" class="btn btn-white btn-default btn-round">
+													<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+												</button>
+                                                </@shiro.hasPermission>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-sm-12 vacationGird">
+                                                        <table id="vacationGrid-table"></table>
+                                                        <div id="vacationGrid-pager"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /span -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        var vacationOrRefundPaths = "${basePath}";
+
+        var pageFlag="${pageFlag!''}";
+    </script>
+    <script type="text/javascript" src="../../assets/module/order/vacationOrRefund/vacationOrRefundindex.js"></script>
+
+</html>

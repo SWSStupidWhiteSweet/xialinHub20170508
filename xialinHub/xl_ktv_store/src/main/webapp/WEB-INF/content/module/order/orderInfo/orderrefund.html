@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>订单管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<script type="text/javascript"
+	src="../assets/module/order/orderInfo/orderrefund.js"></script>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							订单管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+								批量收款
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- 显示金额  -->
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="row" align="center">
+										<div class="col-xs-3" align="center">已选择订单信息</div>
+										<div class="col-xs-9" align="left">
+											<label class="red control-label no-padding-right"
+												for="form-field-1">未收总金额 : ${(allMoney)!''} </label>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<br> <br>
+
+							<div class="table-responsive">
+								<table id="sample-table-1"
+									class="table table-striped table-bordered table-hover">
+									<thead>
+
+										<tr>
+
+											<th>订单号</th>
+											<th>客户信息</th>
+											<th class="hidden-480">项目名称</th>
+
+											<th>城市</th>
+											<th class="hidden-480">套餐类型</th>
+
+											<th>渠道归属</th>
+											<th>报备人信息</th>
+											<th>所属公司/门店</th>
+											<th>订单状态</th>
+											<th>认购房源楼栋</th>
+											<th>单元</th>
+											<th>房号</th>
+											<th>应收电商费</th>
+											<th>已收电商费</th>
+										</tr>
+
+									</thead>
+
+									<tbody>
+										<#list orderinfo as user>
+										<tr>
+
+
+											<td>${(user.orderInfoCode)!''}</td>
+											<td>${(user.customName)!''}</td>
+											<td class="hidden-480">${(user.projectInfoName)!''}</td>
+											<td>${(user.cityName)!''}</td>
+
+											<td class="hidden-480">${(user.cheapCode)!''}</td>
+
+											<td>
+											<#if (user.channelType)?? && user.channelType==1>自然来访</#if>
+											<#if (user.channelType)?? && user.channelType==2>中介</#if>
+											<#if (user.channelType)?? && user.channelType==3>线上</#if>
+											</td>
+											<td>${(user.provinceName)!''}</td>
+											<td>${(user.storeName)!''}</td>
+											<td><#if (user.orderStatus)?? && user.orderStatus==1>到访</#if>
+												<#if (user.orderStatus)?? && user.orderStatus==2>认筹</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==3>认购</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==4>签约待审</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==5>成交有效</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==6>退款</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==7>退房</#if> <#if
+													(user.orderStatus)?? && user.orderStatus==8>退房且退款</#if>
+													<#if (user.orderStatus)?? && user.orderStatus==-1>废弃订单</#if>
+													
+													</td>
+											<td>${(user.houseBuilding)!''}</td>
+											<td>${(user.houseUnit)!''}</td>
+											<td>${(user.houseNumber)!''}</td>
+											<td>${(user.recvAccAmount)!''}</td>
+											<td>${(user.realAccAmount)!''}</td>
+
+										</tr>
+										</#list>
+
+
+
+									</tbody>
+								</table>
+							</div>
+							<!-- 中间收款信息信息 -->
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="row" align="center">
+										<div class="col-xs-3" align="center">收款信息</div>
+										<div class="col-xs-9" align="left">
+											<label class=" control-label no-padding-right"
+												for="form-field-1">交易参考号: </label> <input type="text"
+												id="tradeRefCode" name="tradeRefCode" class="col-sm-3"
+												placeholder="请输入12位POS刷卡交易参考号"> <select
+												style="width: 100px; height: 30px;"
+												name="ebAccountDetailType" id="ebAccountDetailType">
+												<option value="">请选择类型</option>
+												<option value="1">新POS</option>
+												<option value="2">老POS</option>
+											</select>
+											<button id="searchTransRefNo"
+												class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-pencil blue"></i> 搜索
+											</button>
+											<span class="red">*请输入12位POS刷卡机小票参考号添加关联*</span>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							<br> <br>
+
+							<!-- 已关联刷卡流水  -->
+							<div class="table-responsive">
+								<table id="fead-table"
+									class="table table-striped table-bordered table-hover">
+									<thead>
+
+										<tr>
+
+											<th>终端号</th>
+											<th>交易参考号</th>
+											<th class="hidden-480">账号</th>
+
+											<th>金额</th>
+											<th class="hidden-480">刷卡时间</th>
+
+											<th>状态</th>
+											<th>操作</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 最下面的数据 -->
+							<div class="table-responsive">
+								<table id="fd-fead-table"
+									class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>订单号</th>
+											<th>终端编码</th>
+											<th class="hidden-480">交易参考号</th>
+
+											<th>账号</th>
+											<th class="hidden-480">交易金额</th>
+
+											<th>分配金额</th>
+											<th>刷卡时间</th>
+											<th>状态</th>
+
+										</tr>
+
+									</thead>
+
+									<tbody>
+										<#list gatheringList as user>
+										<tr>
+											<td>${(user.order_info_code)!''}</td>
+											<td>${(user.pos_terminal_code)!''}</td>
+											<td class="hidden-480">${(gathering.trade_ref_code)!'' }</td>
+											<td>${(user.pay_account_number)!''}</td>
+
+											<td class="hidden-480">${(user.eb_amount)!''}</td>
+
+											<td>${(user.distribution_amount)!''}</td>
+											<td>${((user.trade_time)?string("yyyy-MM-dd
+												HH:mm:ss"))!''}</td>
+											<td><#if (user.status)?? && user.status==1>已付款</#if> <#if
+													(user.status)?? && user.status==2>已撤销</#if></td>
+
+										</tr>
+										</#list>
+
+
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="orderInfoIds" name="orderInfoIds"
+		value="${ids}">
+</body>
+
+
+</html>

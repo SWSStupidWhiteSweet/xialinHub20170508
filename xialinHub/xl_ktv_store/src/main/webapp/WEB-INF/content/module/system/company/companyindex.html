@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>公司管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								系统管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									公司管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-5">
+									</div>
+									<div class="col-sm-7">
+										<button id="company_options" class="btn btn-white btn-default btn-round">
+											 <span class="ace-icon fa fa-search blue"></span>&nbsp;搜索
+										</button>
+										<@shiro.hasPermission name="system:company:create">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 创建公司
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:company:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改公司
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:company:lock">
+										<button id="lock" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-lock orange"></i> 禁用公司
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-5">
+										<div id="tree" style="height:595px"></div>
+									</div>
+									<div class="col-sm-7">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="company_condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="company_province">选择所属省 </label>
+						<div class="col-sm-9">
+							<select id="company_province" name="company_province" data-placeholder="选择所属省" url="../../common/getprovincecombo" child="company_city"></select>
+						</div>
+					</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="company_city">选择所属市 </label>
+					<div class="col-sm-9">
+						<select id="company_city" name="company_city" data-placeholder="选择所属市" url="../../common/getcitycombo" cascade="cascade"> </select>
+					</div>
+				</div>
+				<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">输入公司名称</label>
+						<div class="col-sm-9">
+							<input type="text" name="myCompanyName" id="myCompanyName" placeholder="输入公司名称" class="col-xs-10 col-sm-7" />
+						</div>
+					</div>
+			   </form>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/system/company/companyindex.js?${.now?long}"></script>
+	<script type="text/javascript" src="../../assets/module/system/company/companytree.js"></script>
+</html>

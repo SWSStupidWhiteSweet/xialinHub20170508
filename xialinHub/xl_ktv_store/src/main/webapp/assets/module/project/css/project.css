@@ -1,0 +1,86 @@
+.project-des-content {
+    width: 100%;
+    padding: 5px 5px;
+    margin: 0 10px;
+}
+.project-building-info{
+	width:70%;
+	float:left;
+}
+.project-building-img{
+	width: 30%;
+	float:left;
+}
+.building_house_img{
+	width: 300px;
+	height: 200px;
+}
+.hose-des p{   
+ 	width: 100%;
+    text-align: center;
+    height: 24px;
+    line-height: 30px;
+    padding: 3px 0;
+}
+.pro-recommend{
+  	width: 100%;
+    height: 36px;
+    margin-top: 17px;
+    line-height: 36px;
+    padding: 0 30%;
+    background: #5f76a2;
+    color: white;
+    text-align: center;
+}
+.favourable{
+	margin-top: 15px;
+	text-align: center;
+}
+.favourable-num{
+	color: darkgray;
+}
+.required-star{
+	background-color: #FFF;
+    color: #ff5555;
+    width: 16px !important;
+    font-size: 16px;
+    margin-left: 5px;
+    padding-left: 10px;
+}
+.radio-padding{
+	padding-right:20px;
+}
+.package-group{
+	width: 45%;
+	float:left;
+}
+.package-label{
+	width: 190px;
+}
+.package-prices{
+	float: left;
+    width: 450px;
+    color: grey;
+    padding-left: 15px;
+}
+.package-price-des{
+    width: 100%;
+    height:170px;
+    border: 1px solid gainsboro;
+    padding: 5px;
+    padding-top:10px;
+    font-size: 14px;
+}
+.package-input{
+	width: 100px;
+	height: 28px;
+}
+.package-price-div{
+	float: left;
+    padding: 5px;
+}
+.package-p-red{
+	color: red;
+    font-size: 20px;
+    text-align: center;
+}

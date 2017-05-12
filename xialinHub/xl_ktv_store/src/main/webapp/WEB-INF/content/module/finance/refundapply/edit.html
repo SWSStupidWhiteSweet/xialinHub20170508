@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>退款支付</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.img-div{
+				width: 200px;
+				height: 300px;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								退款支付
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<#if operateType == "edit">
+									退款
+									<#else>
+									打款详情
+									</#if>
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="paymentForm" class="form-horizontal" role="form">
+									<input type="hidden" id="orderRefundApplyId" value="${(orderRefundApplyId)!''}" />
+									<input type="hidden" id="orderFingerprint" value="${(orderFingerprint)!''}" />
+									<input type="hidden" id="applyFingerprint" value="${(applyFingerprint)!''}" />
+									<input type="hidden" id="orderInfoId" value="${(orderInfoId)!''}" />
+									<input type="hidden" id="operateType" value="${(operateType)!''}" />
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="devAmount">订单信息：</label>
+
+										<div class="col-sm-10">
+											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>订单号</th>
+													<th>商户</th>
+													<th>项目</th>
+													<th>客户</th>
+													<th>报备人</th>
+													<th>所属门店</th>
+													<th>认筹套餐</th>
+													<th>已收认筹金额</th>
+													<th>认筹日期</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>${(orderInfo.order_info_code)!''}</td>
+													<td>${(orderInfo.merchantname)!''}</td>
+													<td>${(orderInfo.project_info_name)!''}</td>
+													<td>${(orderInfo.custom_name)!''}</td>
+													<td>${(orderInfo.broker_name)!''}</td>
+													<td>${(orderInfo.store_name)!''}</td>
+													<td>${(orderInfo.project_package_name)!''}</td>
+													<td>${(orderInfo.real_acc_amount)!''}</td>
+													<td>${(orderInfo.group_buy_time)!''}</td>
+												</tr>
+											</tbody>
+											</table>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="tradeTime"> 佣金结算信息： </label>
+
+										<div class="col-sm-10">
+											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>项目名称</th>
+													<th>所属城市</th>
+													<th>佣金类型</th>
+													<th>结佣对象</th>
+													<th>结佣对象名称</th>
+													<th>结佣金额</th>
+													<th>佣金结算状态</th>
+												</tr>
+											</thead>
+											<tbody>
+												<#list broker as broker>
+												<tr>
+													<td>${(broker.project_info_name)!''}</td>
+													<td>${(broker.city_name)!''}</td>
+													<td>${(broker.brokerage_type)!''}</td>
+													<td>${(broker.brokerage_object)!''}</td>
+													<td>${(broker.brokerage_object_name)!''}</td>
+													<td>${(broker.brokerage_distribution_amount)!''}</td>
+													<td>${(broker.status)!''}</td>
+												</tr>
+												</#list>
+											</tbody>
+											</table>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="payWay">收款信息：</label>
+
+										<div class="col-sm-10">
+											<div class="clearfix">
+												<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>收款类型</th>
+													<th>终端编号</th>
+													<th>交易参考号</th>
+													<th>转账银行</th>
+													<th>账号</th>
+													<th>银行卡类型</th>
+													<th>金额</th>
+													<th>交易时间</th>
+													<th>收款用途</th>
+												</tr>
+											</thead>
+											<tbody>
+												<#list financeEb as financeEb>
+												<tr>
+													<td>${(financeEb.eb_account_detail_type)!''}</td>
+													<td>${(financeEb.pos_terminal_code)!''}</td>
+													<td>${(financeEb.trade_ref_code)!''}</td>
+													<td>${(financeEb.bank_name)!''}</td>
+													<td>${(financeEb.pay_account_number)!''}</td>
+													<td><#if (financeEb.pay_account_type)?? && (financeEb.pay_account_type) == "D">
+														借记卡
+														<#elseif (financeEb.pay_account_type)?? && (financeEb.pay_account_type) == "C">
+														贷记卡
+													</#if></td>
+													<td>${(financeEb.distribution_amount)!''}</td>
+													<td>${(financeEb.trade_time)!''}</td>
+													<td>${(financeEb.used)!''}</td>
+												</tr>
+												</#list>
+											</tbody>
+											</table>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="companyId">退款账户信息 ： </label>
+
+										<div class="col-sm-10">
+											<div class="clearfix">
+												<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>退款人</th>
+													<th>申请人</th>
+													<th>申请时间</th>
+												</tr>
+											</thead>
+											<tbody>
+												<#list refund as refund>
+												<tr>
+													<td>${(refund.payment)!''}</td>
+													<td>${(refund.applyname)!''}</td>
+													<td>${(refund.create_time)!''}</td>
+												</tr>
+												</#list>
+											</tbody>
+											</table>
+											<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>是否原卡原退</th>
+													<th>退款方式</th>
+													<th>银行卡号</th>
+													<th>退款金额</th>
+													<th>退款金额大写</th>
+													<th>银行卡所属</th>
+													<th>开户行支行</th>
+													<th>打款方式</th>
+													<th>手续费</th>
+												</tr>
+											</thead>
+											<tbody id="orderInfoRefundTbody">
+												<#if operateType == "edit">
+													<#list refundDetail as refundDetail>
+													<tr>
+														<td hidden>${(refundDetail.order_refund_detail_id)!''}</td>
+														<td hidden>${(refundDetail.fingerprint)!''}</td>
+														<td>${(refundDetail.is_to_src)!''}</td>
+														<td>${(refundDetail.refund_type)!''}</td>
+														<td>${(refundDetail.bank_account_number)!''}</td>
+														<td>${(refundDetail.refund_amount)!''}</td>
+														<td>${(refundDetail.refund_amount_chain)!''}</td>
+														<td>${(refundDetail.bank_account_name)!''}</td>
+														<td>${(refundDetail.bank_name)!''}</td>
+														<td>${(refundDetail.selecttype)!''}</td>
+														<td>${(refundDetail.input)!''}</td>
+													</tr>
+													</#list>
+												<#else>
+													<#list refundDetailView as refundDetailView>
+													<tr>
+														<td hidden>${(refundDetailView.order_refund_detail_id)!''}</td>
+														<td hidden>${(refundDetailView.fingerprint)!''}</td>
+														<td>${(refundDetailView.is_to_src)!''}</td>
+														<td>${(refundDetailView.refund_type)!''}</td>
+														<td>${(refundDetailView.bank_account_number)!''}</td>
+														<td>${(refundDetailView.refund_amount)!''}</td>
+														<td>${(refundDetailView.refund_amount_chain)!''}</td>
+														<td>${(refundDetailView.bank_account_name)!''}</td>
+														<td>${(refundDetailView.bank_name)!''}</td>
+														<td>${(refundDetailView.selecttype)!''}</td>
+														<td>${(refundDetailView.input)!''}</td>
+													</tr>
+													</#list>
+												</#if>
+											</tbody>
+											</table>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="financeAttachment">退款附件： </label>
+
+										<div class="col-sm-10">
+											<div class="clearfix">
+												<#if operateType == "edit">
+												<input type="file" id="attrs" name="attrs" class="col-xs-10 col-sm-5">
+												<div id = "showImage" style="margin:-30px 0 20px 130px;"></div>
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												<img class="img-div" src="'../../${(refundAtt.order_attachment_url)!''}'">
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="remark"> 备注： </label>
+										<div class="col-sm-10">
+											<div class="clearfix">
+												<#if operateType == "edit">
+												<input type="text" id="remark" name="remark" placeholder="请输入备注" class="col-xs-10 col-sm-5" value="" />
+												<#else>
+												<label class="col-sm-3 control-label no-padding-right" >
+												${(remark)!''}
+												</label>
+												</#if>
+											</div>
+										</div>
+									</div>
+									
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:refundapply:saverefunddetailinfo">
+											<#if operateType == "edit">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</#if>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/refundapply/show.js?${.now?long}"></script>
+</html>

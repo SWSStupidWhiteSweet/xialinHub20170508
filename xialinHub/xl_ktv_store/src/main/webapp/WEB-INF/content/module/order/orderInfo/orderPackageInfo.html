@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>选择套餐</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<link rel="stylesheet" href="${basePath}/assets/css/order/order.css" id="main-ace-style" />
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div id="companyForm" class="form-horizontal" role="form">
+									<div class="tab-content no-border padding-5">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-allpackage" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 所有套餐
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-allpackage" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for="buildingProjectId"> 套餐状态： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<select id="isStart" name="isStart" style="width:200px">
+																			<option value="1" <#if isStart?? && isStart==1>selected="selected"</#if> >已上架</option>
+																			<option value="2" <#if isStart?? && isStart==2>selected="selected"</#if> >已下架</option>
+																		</select>
+																		&nbsp;&nbsp;
+																		<button id="searchPackageInfo" class="btn btn-info btnMy" type="button">
+																			查询
+																		</button>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for=""></label>
+																<div class="col-sm-10">
+																	<#if packageList?? && (packageList?size gt 0)>
+																		<#list packageList as packageInfo>
+																			<div class="package-suit">
+															        			<div class="package-suit-left">
+		    																			<div class="radio">
+																							<label style="padding-left:0;">
+																								<input name="package" value="${packageInfo.projectPackageId}" 
+																									<#if (packageInfo.projectPackageId)?? && (orderInfo.projectPackageId)?? && packageInfo.projectPackageId == orderInfo.projectPackageId>checked</#if> type="radio" class="ace" />
+																								<span class="lbl"></span>
+																								<input type="hidden" id="packageType${(packageInfo.projectPackageId)!''}" value="${(packageInfo.packageType)!''}">
+																	                            <input type="hidden" id="groupFeeChargetype${(packageInfo.projectPackageId)!''}" value="${(packageInfo.groupFeeChargetype)!''}">
+																	                            <input type="hidden" id="groupFee${(packageInfo.projectPackageId)!''}" value="${(packageInfo.groupFee)!''}">
+																	                            <input type="hidden" id="groupFeePct${(packageInfo.projectPackageId)!''}" value="${(packageInfo.groupFeePct)!''}">
+																							</label>
+																						</div>
+														                        </div>
+														                        <div class="package-suit-middle">
+														                            <span>
+														                            <#if packageInfo.packageType == 2 || packageInfo.packageType == 3>
+														                            	<#if (packageInfo.groupFee)??>
+													                            			${(packageInfo.groupFee)!''}抵
+													                            		</#if>
+													                            		<#if (packageInfo.groupFeePct)??>
+													                            			${(packageInfo.groupFeePct)!''}% 抵
+													                            		</#if>
+														                            	
+														                            	
+														                            	<#if packageInfo.groupType == 1>
+														                            		${(packageInfo.groupDiscount)!''}折
+														                            	<#elseif packageInfo.groupType == 2>
+														                            		${(packageInfo.gruopDeduction)!'' }
+														                            	<#else>
+														                            		${(packageInfo.gruopDeduction)!'' } + ${(packageInfo.groupDiscount)!'' }折
+														                            	</#if>
+														                            
+														                            </#if>
+																					</span></br>
+														                            <a href="javascript:void(0);" data-value="${(packageInfo.projectPackageId)!''}" title="套餐详情" 
+														                            	data-addtab="order_view_project_package" class="package-a" 
+														                            		onclick="lookPackageInfo(${(packageInfo.projectPackageId)!''})" >套餐详情</a>
+														                        </div>
+														                        <div class="package-suit-right">
+														                            <div>套餐名称:${(packageInfo.projectPackageName)!''}</div>
+														                            <div>套餐ID:${(packageInfo.projectPackageId)!''}</div>
+														                            <div>套餐类型:
+														                            	<#if packageInfo.packageType == 1>
+														                            		<td class="pro-content">非电商</td>
+														                            	<#elseif packageInfo.packageType == 2>
+														                            		<td class="pro-content">电商</td>
+														                            	<#else>
+														                            		<td class="pro-content">电商+非电商</td>
+														                            	</#if>
+														                            </div>
+														                        </div>
+																            </div>
+																		</#list>
+																	<#else>
+																		<div class="package-suit package_E">
+												                    		<div class="package-suit-right">
+												                    			没有设置套餐数据
+												                    		</div>
+													                    </div>
+																	</#if>
+														            
+														            <br/><br/>
+												                    <div id="showBeforeTotalAmountDiv" 
+												                    	style="display: <#if (currentPackage.groupFeeChargetype)?? && currentPackage.groupFeeChargetype == 2>block<#else>none</#if>;">
+												                    	面价：<input type="text" id="beforeTotalAmount" value="${(orderInfo.beforeTotalAmount)!''}" title="计算电商费的参考总价"> 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												                    	应收电商费(自动计算)：<span id="spanRecvAccAmount">0 元</span>
+												                    	<input type="hidden" id="pkIdTmp" value="${(currentPackage.projectPackageId)!''}">
+												                    </div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<a href="#faq-currentpackage" data-toggle="collapse" class="accordion-toggle" aria-expanded="false">
+															<i class="pull-right ace-icon fa fa-chevron-left" data-icon-hide="ace-icon fa fa-chevron-down" data-icon-show="ace-icon fa fa-chevron-left"></i>
+															&nbsp; 当前套餐
+														</a>
+													</div>
+													<div class="panel-collapse collapse in" id="faq-currentpackage" aria-expanded="false">
+														<div class="panel-body">
+															<div class="form-group">
+																<label class="col-sm-1 control-label no-padding-right" for="buildingProjectId"></label>
+																<div class="col-sm-10">
+																	<#if currentPackage??>
+																		<div class="package-suit currentPackage">
+														        			<div class="package-suit-left">
+	    																			<div class="radio">
+																						<label style="padding-left:0;">
+																							<input name="currentPackage" id="currentPackage" checked="checked" value="${(currentPackage.projectPackageId)!''}" type="radio" class="ace" />
+																							<span class="lbl"></span>
+																							<input type="hidden" id="currentPackageType" value="${(currentPackage.packageType)!''}">
+																                            <input type="hidden" id="currentGroupFeeChargetype" value="${(currentPackage.groupFeeChargetype)!''}">
+																                            <input type="hidden" id="currentGroupFee" value="${(currentPackage.groupFee)!''}">
+																                            <input type="hidden" id="currentGroupFeePct" value="${(currentPackage.groupFeePct)!''}">
+																						</label>
+																					</div>
+													                        </div>
+													                        <div class="package-suit-middle">
+													                            <span>
+													                            <#if currentPackage.packageType == 2 || currentPackage.packageType == 3>
+													                            	<#if (currentPackage.groupFee)??>
+												                            			${(currentPackage.groupFee)!''}抵
+												                            		</#if>
+												                            		<#if (currentPackage.groupFeePct)??>
+												                            			${(currentPackage.groupFeePct)!''}% 抵
+												                            		</#if>
+													                            	
+													                            	<#if currentPackage.groupType == 1>
+													                            		${(currentPackage.groupDiscount)!''}折
+													                            	<#elseif currentPackage.groupType == 2>
+													                            		${(currentPackage.gruopDeduction)!'' }
+													                            	<#else>
+													                            		${(currentPackage.gruopDeduction)!'' } + ${(currentPackage.groupDiscount)!'' }折
+													                            	</#if>
+													                            
+													                            </#if>
+																				</span></br>
+													                            <a href="javascript:void(0);" data-value="${(currentPackage.projectPackageId)!''}" title="套餐详情" 
+													                            	data-addtab="order_view_project_package" class="package-a" 
+													                            		onclick="lookPackageInfo(${(currentPackage.projectPackageId)!''})" >套餐详情</a>
+													                        </div>
+													                        <div class="package-suit-right">
+													                            <div>套餐名称:${(currentPackage.projectPackageName)!''}</div>
+													                            <div>套餐ID:${(currentPackage.projectPackageId)!''}</div>
+													                            <div>套餐类型:
+													                            	<#if currentPackage.packageType == 1>
+													                            		<td class="pro-content">非电商</td>
+													                            	<#elseif currentPackage.packageType == 2>
+													                            		<td class="pro-content">电商</td>
+													                            	<#else>
+													                            		<td class="pro-content">电商+非电商</td>
+													                            	</#if>
+													                            </div>
+													                        </div>
+															            </div>
+																	<#else>
+																		<div class="package-suit package_E">
+												                    		<div class="package-suit-right">
+												                    			还未选择套餐
+												                    		</div>
+													                    </div>
+																	</#if>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div class="clearfix form-actions">
+													<div class="col-md-offset-3 col-md-9">
+													<#if (orderInfo.orderStatus)?? && (orderInfo.orderStatus == 1 || orderInfo.orderStatus == 2 || orderInfo.orderStatus == 3 
+															|| (orderInfo.orderStatus == 4 && orderInfo.auditStatus == 2))>
+														<button id="savePackageBtn" class="btn btn-info" type="button">
+															<i class="ace-icon fa fa-check bigger-110"></i>
+															修改订单
+														</button>
+													<#else>
+														<button class="btn" disabled type="button">
+															<i class="ace-icon fa fa-check bigger-110"></i>
+															修改订单
+														</button>
+													</#if>
+														
+														&nbsp; &nbsp; &nbsp;
+														<button id="backBtn" class="btn" type="reset">
+															<i class="ace-icon fa fa-undo bigger-110"></i>
+															取消
+														</button>
+													</div>
+												</div>
+												
+												<input type="hidden" id="orderInfoId" value="${(orderInfo.orderInfoId )!''}">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var path = "${basePath}";
+		var actionType = "${actionType}";
+		function lookPackageInfo(packageId){
+			if(Common.isEmpty(packageId)){
+				window.parent.order.messageBox("提示","套餐Id不能为空！",false);
+				return ;
+			}
+			var url = "${basePath}/project/package/looked?projectPackageId="+packageId;
+			window.parent.location.href = url;
+		}
+		$(window).load(function(){
+			var documentHeight = $(document).height();
+			window.parent.setDocumentHeight(2,documentHeight);
+		});
+	</script>
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderPackageInfo.js"></script>
+</html>

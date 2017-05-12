@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>楼盘期数管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" style="height:85%;">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+						<h1>
+							<a href="../buildingproject/buildingprojectindex">楼盘项目管理</a>
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								<span style="color:green;">${buildingProjectInfo.buildingProjectName}</span> -- 楼盘期数管理
+							</small>
+						</h1>
+						<input type="hidden" value="${type!''}" id = "iframeId" ></input>
+					</div>
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfogrid">
+									<li>
+										<a data-toggle="tab" href="#buildingInfoDic" onclick="$('#buildingInfo').attr('src', $('#buildingInfo').attr('data-src'));"> 楼盘期数列表 </a>
+									</li>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfologgrid">
+									<li id = "buildingLogInfoLi">
+										<a data-toggle="tab" href="#buildingLogInfoDiv" onclick="$('#buildingLogInfo').attr('src', $('#buildingLogInfo').attr('data-src'));"> 楼盘期数审核列表 </a>
+									</li>
+								</@shiro.hasPermission>
+							</ul>
+
+							<div class="tab-content" style="height:710px;padding:0px 12px">
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfogrid">
+								<div id="buildingInfoDic" class="tab-pane fade" style="height:708px;">
+									<iframe id="buildingInfo" data-src="../buildinginfo/tobuildinginfolist?buildingProjectId=${buildingProjectInfo.buildingProjectId}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+								<@shiro.hasPermission name="buildinginfo:getbuildinginfologgrid">
+								<div id="buildingLogInfoDiv" class="tab-pane fade" style="height:708px;">
+									<iframe id="buildingLogInfo" data-src="../buildinginfo/tobuildinginfologlist?buildingProjectId=${buildingProjectInfo.buildingProjectId}" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+								</@shiro.hasPermission>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		var iframeId = $("#iframeId").val();
+		if(iframeId=='buildingLogInfo'){
+			$("#buildingLogInfoLi").addClass("active");
+			$("#buildingLogInfo").attr("src",$("#buildingLogInfo").attr("data-src"));
+			$("#buildingLogInfoDiv").addClass("in").addClass("active");
+		}else{
+			$(".nav-tabs").find("li:first").addClass("active");
+			$(".tab-content").find("iframe:first").attr("src",$(".tab-content").find("iframe:first").attr("data-src"));
+			$(".tab-content").find("div:first").addClass("in").addClass("active");
+		}
+	});
+</script>
+</html>

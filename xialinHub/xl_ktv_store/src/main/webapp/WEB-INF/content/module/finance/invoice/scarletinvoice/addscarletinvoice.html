@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>添加红字发票</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+							<h1>
+								发票管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<span style="color:green;">红字发票</span>--添加红字发票
+								</small>
+							</h1>
+						</div>
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="scarletCreateForm" class="form-horizontal" role="form">
+									
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="orderInfoCode">订单编号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												 <input id="orderInfoId" type="hidden" value=""/>
+											     <input id="invoiceType" type="hidden" value="2"/>
+											     <input id="status" type="hidden" value="1"/>
+												<input id="orderInfoCode" name="orderInfoCode" type="text" class="col-xs-10 col-sm-2">
+												<button id="search" class="btn btn-white btn-default btn-round">查询</button>
+											</div>
+										</div>
+									 </div>
+									 
+									 <div id="info">
+										 <div class="form-group">
+											<label class="col-sm-3 control-label no-padding-right" for="customName">关联客户姓名：</label>
+											<div class="col-sm-9">
+												<div class="clearfix">
+													<input id="customName" name="customName" type="text" readonly="readonly" class="col-xs-10 col-sm-2" value="">
+												</div>
+											</div>
+										</div>
+										
+										 <div class="form-group">
+											<label class="col-sm-3 control-label no-padding-right" for="cheapCode">优惠告知书编号：</label>
+											<div class="col-sm-9">
+												<div class="clearfix">
+													<input id="cheapCode" name="cheapCode" type="text" readonly="readonly" class="col-xs-10 col-sm-2" value="">
+												</div>
+											</div>
+										</div>
+										
+										 <div class="form-group">
+											<label class="col-sm-3 control-label no-padding-right" for="groupFee">认筹金额：</label>
+											<div class="col-sm-9">
+												<div class="clearfix">
+													<input id="groupFee" name="groupFee" type="text" readonly="readonly" class="col-xs-10 col-sm-2" value="">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceNumber">发票票号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceNumber" name="invoiceNumber" type="text" class="col-xs-10 col-sm-2" value=""><font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceCode">发票代码：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceCode" name="invoiceCode" type="text" class="col-xs-10 col-sm-2" value="">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceAmount">发票金额：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceAmount" name="invoiceAmount" type="text" class="col-xs-10 col-sm-2" value=""><font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceTime">发票开具时间：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input class="date-picker" style="width: 140px;" name="invoiceTime" id="invoiceTime" value="" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="选择发票开具时间"  title="选择发票开具时间"/>
+												<font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceTitle">付款方：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceTitle" name="invoiceTitle" type="text" class="col-xs-10 col-sm-2" value=""><font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									 
+									 <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceContent">发票内容：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceContent" name="invoiceContent" type="text" class="col-xs-10 col-sm-2" value="">
+											</div>
+										</div>
+									</div>
+									 
+									<div class="clearfix">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+	<script type="text/javascript" src="../../assets/module/finance/invoice/scarletinvoice/addscarletinvoice.js"></script>
+</html>

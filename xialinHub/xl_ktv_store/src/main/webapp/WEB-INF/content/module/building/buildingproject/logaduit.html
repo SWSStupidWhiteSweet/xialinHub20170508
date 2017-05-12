@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘项目审核</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.col-sm-9 span{
+				margin-top: 5px;
+				word-break:break-word;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-header">
+							<h1>
+								<#if type == 'view'>日志审核详情</#if>
+								<#if type == 'audit'>
+									<#if ((data.logInfo.operateFlag)!'')=='C'>楼盘新增审核</#if>
+									<#if ((data.logInfo.operateFlag)!'')=='U'>楼盘更新审核</#if>
+									<#if ((data.logInfo.operateFlag)!'')=='D'><span style="color:red;">楼盘删除审核</span></#if>
+								</#if>
+							</h1>
+							<input type="hidden" id="buildingProjectLogId" value='${buildingProjectLogId}'></input>
+							<input type="hidden" id="historyTotal" value='${data.historyTotal}'></input>
+					</div>
+					<div class="page-content-area">
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="modifyPwdForm" class="form-horizontal" role="form">
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"></label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="text-warning bigger-110  col-sm-3">
+												楼盘正式数据
+											</span>
+											</#if>
+											<span class="text-warning bigger-110  col-sm-3">
+												楼盘日志数据
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘名称：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.buildingProjectName)!'') != ((data.info.buildingProjectName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.info.buildingProjectName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.buildingProjectName)!'') != ((data.info.buildingProjectName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.buildingProjectName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘简介：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.biref)!'') != ((data.info.biref)!'')> red </#if>  col-sm-3">
+												${(data.info.biref)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.biref)!'') != ((data.info.biref)!'')> red </#if> col-sm-3">
+												${(data.logInfo.biref)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">空中720url：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.sky720url)!'') != ((data.info.sky720url)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.sky720url)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.sky720url)!'') != ((data.info.sky720url)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.sky720url)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">所属省份：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.provinceName)!'') != ((data.info.provinceName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.provinceName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.provinceName)!'') != ((data.info.provinceName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.provinceName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">所属城市：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.cityName)!'') != ((data.info.cityName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.cityName)!''}
+											</span> 
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.cityName)!'') != ((data.info.cityName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.cityName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">所属区域：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.districtName)!'') != ((data.info.districtName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.districtName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.districtName)!'') != ((data.info.districtName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.districtName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">所属板块：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.plateName)!'') != ((data.info.plateName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.plateName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.plateName)!'') != ((data.info.plateName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.plateName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">销售状态：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.saleStatus)!0) != ((data.info.saleStatus)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if ((data.info.saleStatus)!0)==1>期房在售</#if>
+												<#if ((data.info.saleStatus)!0)==2>现房在售</#if>
+												<#if ((data.info.saleStatus)!0)==3>待售</#if>
+												<#if ((data.info.saleStatus)!0)==4>售罄</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.saleStatus)!0) != ((data.info.saleStatus)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if ((data.logInfo.saleStatus)!0)==1>期房在售</#if>
+												<#if ((data.logInfo.saleStatus)!0)==2>现房在售</#if>
+												<#if ((data.logInfo.saleStatus)!0)==3>待售</#if>
+												<#if ((data.logInfo.saleStatus)!0)==4>售罄</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">状态：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.status)!0) != ((data.info.status)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if ((data.info.status)!-1)==1>启用</#if>
+												<#if ((data.info.status)!-1)==0>禁用</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.status)!0) != ((data.info.status)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if ((data.logInfo.status)!-1)==1>启用</#if>
+												<#if ((data.logInfo.status)!-1)==0>禁用</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">开盘时间：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.startDate)!'') != ((data.info.startDate)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if (data.info.startDate)??>${((data.info.startDate)=='1970-01-01')?string('待定',data.info.startDate)}</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.startDate)!'') != ((data.info.startDate)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if (data.logInfo.startDate)??>${((data.logInfo.startDate)=='1970-01-01')?string('待定',data.logInfo.startDate)}</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">交房时间：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.joinDate)!'') != ((data.info.joinDate)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												<#if (data.info.joinDate)??>${((data.info.joinDate)=='1970-01-01')?string('待定',data.info.joinDate)}</#if>
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.joinDate)!'') != ((data.info.joinDate)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												<#if (data.logInfo.joinDate)??>${((data.logInfo.joinDate)=='1970-01-01')?string('待定',data.logInfo.joinDate)}</#if>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘地址：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.address)!'') != ((data.info.address)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.address)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.address)!'') != ((data.info.address)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.address)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘经度：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.longitude)!0) != ((data.info.longitude)!0)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.longitude)?if_exists?string("###.######")}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.longitude)!0) != ((data.info.longitude)!0)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.longitude)?if_exists?string("###.######")}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">楼盘纬度：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.latitude)!0) != ((data.info.latitude)!0)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.latitude)?if_exists?string("###.######")}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.latitude)!0) != ((data.info.latitude)!0)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.latitude)?if_exists?string("###.######")}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">物业公司：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.propertyCompany)!'') != ((data.info.propertyCompany)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.propertyCompany)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.propertyCompany)!'') != ((data.info.propertyCompany)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.propertyCompany)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">售楼部电话：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.tel)!'') != ((data.info.tel)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.tel)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.tel)!'') != ((data.info.tel)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.tel)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">400热线：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.tel400)!'') != ((data.info.tel400)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.tel400)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.tel400)!'') != ((data.info.tel400)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.tel400)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">标签：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+												<#if (data.info.tags)?? && data.info.tags!='' && (data.info.tags)?index_of(':')!=-1>
+													<span class="bigger-110 <#if ((data.logInfo.tags)!'') != ((data.info.tags)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+															<#list data.info.tags?replace('[', '')?replace(']', '')?replace('},{','}...{')?split("...") as tag>
+																${tag?eval.tag_name};
+															</#list>
+													</span>
+												</#if>
+											</#if>
+											<#if (data.logInfo.tags)?? && data.logInfo.tags!='' && (data.logInfo.tags)?index_of(':')!=-1>
+												<span class="bigger-110 <#if ((data.logInfo.tags)!'') != ((data.info.tags)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+													<#list data.logInfo.tags?replace('[', '')?replace(']', '')?replace('},{','}...{')?split("...") as tag>
+														${tag?eval.tag_name};
+													</#list>
+												</span>
+											</#if>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">占地面积：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.footprint)!0) != ((data.info.footprint)!-10)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.footprint)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.footprint)!0) != ((data.info.footprint)!-10)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.footprint)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">建筑面积：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.floorArea)!0) != ((data.info.floorArea)!-10)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.floorArea)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.floorArea)!0) != ((data.info.floorArea)!-10)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.floorArea)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">容积率：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.volumeRatio)!0) != ((data.info.volumeRatio)!-10)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.volumeRatio)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.volumeRatio)!0) != ((data.info.volumeRatio)!-10)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.volumeRatio)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">绿化率：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.greeningRatio)!0) != ((data.info.greeningRatio)!-10)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.greeningRatio)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.greeningRatio)!0) != ((data.info.greeningRatio)!-10)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.greeningRatio)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">总户数：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.houseTotal)!0) != ((data.info.houseTotal)!-10)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.houseTotal)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.houseTotal)!0) != ((data.info.houseTotal)!-10)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.houseTotal)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">地上停车位：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.parkingTotalUg)!0) != ((data.info.parkingTotalUg)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.parkingTotalUg)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.parkingTotalUg)!0) != ((data.info.parkingTotalUg)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.parkingTotalUg)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">地下停车位：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.parkingTotalLg)!0) != ((data.info.parkingTotalLg)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.parkingTotalLg)!}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.parkingTotalLg)!0) != ((data.info.parkingTotalLg)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.parkingTotalLg)!}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">均价：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.price)!0) != ((data.info.price)!-1)> red </#if>  col-sm-3" style="margin-top:5px;">
+												${((data.info.price)==0)?string('待定',data.info.price)}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.price)!0) != ((data.info.price)!-1)> red </#if> col-sm-3" style="margin-top:5px;">
+												${((data.logInfo.price)==0)?string('待定',data.logInfo.price)}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">公司名称：</label>
+										<div class="col-sm-9">
+											<#if ((data.logInfo.operateFlag)!='C')>
+											<span class="bigger-110 <#if ((data.logInfo.companyName)!'') != ((data.info.companyName)!'')> red </#if>  col-sm-3" style="margin-top:5px;">
+												${(data.info.companyName)!''}
+											</span>
+											</#if>
+											<span class="bigger-110 <#if ((data.logInfo.companyName)!'') != ((data.info.companyName)!'')> red </#if> col-sm-3" style="margin-top:5px;">
+												${(data.logInfo.companyName)!''}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">操作信息：</label>
+										<div class="col-sm-9">
+											<span class="text-warning bigger-110  col-sm-9" style="margin-top:5px;">
+												操作员（${(data.logInfo.operatorName)!''}）&nbsp;于&nbsp;${(data.logInfo.createTime)!''}&nbsp;对&nbsp;（${(data.logInfo.buildingProjectName)!''}）进行了
+												<#if ((data.logInfo.operateFlag)!'')=='C'>"楼盘新增"</#if>
+												<#if ((data.logInfo.operateFlag)!'')=='U'>"楼盘更新"</#if>
+												<#if ((data.logInfo.operateFlag)!'')=='D'>"楼盘删除"</#if>操作，标红的为变动信息；请审核。
+											</span>
+										</div>
+									</div>
+									<#if type == 'view'>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right">审核理由：</label>
+										<div class="col-sm-9">
+											<span class="text-warning bigger-110 red col-sm-9" style="margin-top:5px;">
+												${(data.logInfo.auditReason)!''}
+											</span>
+										</div>
+									</div>
+									</#if>
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<#if type == 'audit'>
+											<@shiro.hasPermission name="buildingproject:audit">
+											<button id="agree" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												通过
+											</button>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<@shiro.hasPermission name="buildingproject:audit">
+											<button id="noAgree" class="btn btn-danger" type="button">
+												<i class="ace-icon fa fa-times bigger-110"></i>
+												不通过
+											</button>
+											</@shiro.hasPermission>
+											</#if>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="button">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildingproject/logaduit.js"></script>
+</html>

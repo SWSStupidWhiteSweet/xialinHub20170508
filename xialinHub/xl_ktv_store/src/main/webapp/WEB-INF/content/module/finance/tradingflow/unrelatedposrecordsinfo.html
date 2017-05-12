@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>财务管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		
+		<style type="text/css">
+			.required-star{
+				color: tomato;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								未关联刷卡流水
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									添加刷卡流水
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="unrelatedposrecordsinfoForm" class="form-horizontal" role="form">
+									
+									<!-- #section:elements.form -->
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="province"> 省/市：</label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="province" name="province" data-placeholder="选择所属省" url="../../common/getprovincecombo" child="city" >
+												</select>
+												<span class="required-star">*</span>
+												<select id="city" name="city" data-placeholder="选择所属市" url="../../common/getcitycombo" child="buildingProjectId" child="buildingProjectId">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="buildingProjectId">楼盘/项目：</label>
+
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="buildingProjectId" name="buildingProjectId" data-placeholder="选择所楼盘" url="../../common/getbuildingprojectbycitycombo" child="project_info_name" >
+												</select>
+												<span class="required-star">*</span>
+												<select id="project_info_name" name="project_info_name" style="width: 200px;" data-placeholder="选择项目名称"  url="../../common/getprojectinfocombo" child="pos_terminal_code" >
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pos_terminal_code">终端号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<!-- <input id="pos_terminal_code" name="pos_terminal_code" type="text" class="col-xs-10 col-sm-6" value=""> -->
+												<select id="pos_terminal_code" name="pos_terminal_code" style="width: 200px;" data-placeholder="选择POS机"  url="../../common/getposbyprojectcombo">
+												</select>
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pay_bank_name">开户行：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="pay_bank_name" name="pay_bank_name" type="text" placeholder="请输入开户行" class="col-xs-10 col-sm-6" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pay_account_name">持卡人：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="pay_account_name" name="pay_account_name" placeholder="请输入持卡人" type="text" class="col-xs-10 col-sm-6" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pay_account_number">刷卡银行卡号：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="pay_account_number" name="pay_account_number" placeholder="请输入刷卡银行卡号" type="text" class="col-xs-10 col-sm-6" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="eb_amount">刷卡金额：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="eb_amount" name="eb_amount" type="text" placeholder="请输入刷卡金额" class="col-xs-10 col-sm-6" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="eb_amount_fee">刷卡手续费：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="eb_amount_fee" name="eb_amount_fee" type="text" placeholder="若不输入则按照POS机手续费率计算" class="col-xs-10 col-sm-6" value="">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tradeTime"> 刷卡时间： </label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input class="datetimepicker col-xs-10 col-sm-6" name="tradeTime" id="tradeTime" value="" type="text" data-date-format="YYYY-MM-DD HH:mm:ss"  readonly="readonly" placeholder="选择刷卡时间" />
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="bank_serial_id">银行流水号：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="bank_serial_id" name="bank_serial_id" type="text" placeholder="请输入银行流水号" class="col-xs-10 col-sm-6" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="trade_ref_code">交易参考号：</label>
+
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="trade_ref_code" name="trade_ref_code" type="text" class="col-xs-10 col-sm-6" placeholder="请输入交易参考号" value="">
+												<span class="required-star">*</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="pay_account_type">卡片类型：</label>
+
+										<div class="col-sm-9">
+											<select id="pay_account_type" name="pay_account_type" style="width: 200px;" data-placeholder="选择卡片类型"  url="../../common/getpayaccounttypecombo">
+											</select>
+											<span class="required-star">*</span>
+										</div>
+									</div>
+									
+									
+									<input id="saveSupport" type="hidden" value=1 />
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<@shiro.hasPermission name="finance:tradingflow:saveunrelatedpos">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											</@shiro.hasPermission>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/tradingflow/unrelatedposrecordsinfo.js?${.now?long}"></script>
+	<script type="text/javascript">
+		/* $('.date-picker').datepicker({autoclose:true}); */
+		$('.datetimepicker').datetimepicker({
+		    autoclose : true
+		});
+	</script>
+
+</html>

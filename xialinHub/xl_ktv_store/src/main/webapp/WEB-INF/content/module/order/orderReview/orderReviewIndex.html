@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>成交审核</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <#include "/common/include_head_css.html"/>
+	<#include "/common/include_jquery_core.html"/>
+	<#include "/common/include_bootstrap_core.html"/>
+	<#include "/common/include_ace_core.html"/>
+	<#include "/common/include_jqgrid_core.html"/>
+	<#include "/common/include_plugin.html"/>
+  </head>
+  
+  <body class="no-skin">
+  		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content" style="padding-bottom:10px;">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								订单管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									成交审核
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="tabbable">
+								<ul class="nav nav-tabs" id="myTab">
+									<@shiro.hasPermission name="orderreview:passing">
+									<li class="active">
+										<a data-toggle="tab" href="#orderReviewPassing" onclick="$('#orderReviewPassingIframe').attr('src', $('#orderReviewPassingIframe').attr('src'));">
+											成交待审核
+										</a>
+									</li>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="orderreview:passed">
+									<li>
+										<a data-toggle="tab" href="#orderReviewPassed" onclick="$('#orderReviewPassedIframe').attr('src', '../orderreview/reviewpassedindex');">
+											审核已通过
+										</a>
+									</li>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="orderreview:notpass">
+									<li>
+										<a data-toggle="tab" href="#orderReviewNotPass" onclick="$('#orderReviewNotPassIframe').attr('src', '../orderreview/reviewnotpassindex');">
+											审核未通过
+										</a>
+									</li>
+									</@shiro.hasPermission>
+								</ul>
+						
+								<div class="tab-content">
+									<@shiro.hasPermission name="orderreview:passing">
+									<div id="orderReviewPassing" class="tab-pane fade in active" style="height:660px;">
+										<iframe id="orderReviewPassingIframe" src="../orderreview/reviewpassingindex" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+									</div>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="orderreview:passed">
+									<div id="orderReviewPassed" class="tab-pane fade" style="height:660px;">
+										<iframe id="orderReviewPassedIframe" src="" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+									</div>
+									</@shiro.hasPermission>
+									<@shiro.hasPermission name="orderreview:notpass">
+									<div id="orderReviewNotPass" class="tab-pane fade" style="height:660px;">
+										<iframe id="orderReviewNotPassIframe" src="" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+									</div>
+									</@shiro.hasPermission>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </body>
+<script type="text/javascript">
+	var reviewIndex = function() {};
+	$(function(){
+		$(".nav-tabs").find("li:first").addClass("active");
+		$(".tab-content").find("div:first").addClass("in").addClass("active");
+		
+		reviewIndex.messageBox = function(title, msg, isSuccess, hideTime) {
+			Common.messageBox(title, msg, isSuccess, hideTime);
+		}	
+	});
+</script>
+</html>

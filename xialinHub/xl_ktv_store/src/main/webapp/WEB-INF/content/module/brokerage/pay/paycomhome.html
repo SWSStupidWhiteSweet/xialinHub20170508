@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>财务管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" >
+			<div class="page-content" style="padding-bottom: 10px;padding-top:5px;">
+				<div class="page-content-area">
+					<div class="page-header" >
+						<h1>
+							财务管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								佣金支付
+							</small>
+						</h1>
+					</div>
+					
+					<input id="activeTab" type="hidden" value="${activeTab!''}" />
+					
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tabbable">
+										<ul class="nav nav-tabs">
+											<@shiro.hasPermission name="brokerage:pay:paycommissiongetgriddata">
+											<li>
+												<a data-toggle="tab" href="#payCommission" > 待支付结佣 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="brokerage:pay:paycommedgetgriddata">
+											<li>
+												<a data-toggle="tab" href="#paycommed" > 已支付结佣 </a>
+											</li>
+											</@shiro.hasPermission>
+										</ul>
+			
+										<div class="tab-content" style="height:700px;">
+											<div id="payCommission" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<button id="query1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																<@shiro.hasPermission name="brokerage:pay:save">
+																<button id="pay1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-money blue"></i> 结佣支付
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="brokerage:pay:paycommissionexcel">
+																<button id="excel1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+															</div>
+															<div class="col-sm-12">
+																<label style="color: #2594dc;">
+																待结佣笔数：<span id="total_count">${total1.total_count}</span>&nbsp;(笔)&nbsp;&nbsp;
+																<i class="ace-icon fa fa-jpy"></i>
+																待支付佣金金额：<span id="total_amount">${total1.total_amount}</span>&nbsp;(元)
+																</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table1"></table>
+																<div id="grid-pager1"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div id="paycommed" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<button id="query2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																<@shiro.hasPermission name="brokerage:pay:show">
+																<button id="show2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-reorder red"></i>  查看
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="brokerage:pay:paycommdeexcel">
+																<button id="excel2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table2"></table>
+																<div id="grid-pager2"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="condition1" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province1"> 选择省 </label>
+							<div class="col-sm-9">
+								<select id="province1" name="province1" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city1">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city1"> 市  </label>
+	
+							<div class="col-sm-9">
+								<select id="city1" name="city1" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="keyword1"> 搜索项 </label>
+							
+							<div class="col-sm-9">
+								<input type="text" id="keyword1" style="width: 300px;" placeholder="公司/门店/请佣申请单编号/结算账号">
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="borkerCompanyId1"> 结佣公司 </label>
+	
+							<div class="col-sm-9">
+								<select id="borkerCompanyId1" name="borkerCompanyId1"  data-placeholder="选择结佣公司"  url="../../common/getbrokercompanycombo">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="auditDate1"> 审批完成时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="auditDate1" readonly="readonly" placeholder="选择审核时间" />
+											<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div id="condition2" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province2"> 选择省 </label>
+							
+							<div class="col-sm-9">
+								<select id="province2" name="province2" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city2">
+								</select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city2"> 市  </label>
+	
+							<div class="col-sm-9">
+								<select id="city2" name="city2" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="keyword2"> 搜索项 </label>
+							
+							<div class="col-sm-9">
+								<input type="text" id="keyword2" style="width: 300px;" placeholder="公司/门店/请佣申请单编号/结算账号">
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="borkerCompanyId2"> 结佣公司 </label>
+	
+							<div class="col-sm-9">
+								<select id="borkerCompanyId2" name="borkerCompanyId2" style="width: 120px;" data-placeholder="选择结佣公司"  url="../../common/getbrokercompanycombo">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="auditDate2"> 审批完成时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="auditDate2" readonly="readonly" placeholder="选择审核时间" />
+											<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="completeDate2"> 完成打款时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="completeDate2" readonly="readonly" placeholder="选择审核时间" />
+											<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		
+	
+</body>
+
+<script type="text/javascript" src="../../assets/module/brokerage/pay/paycomhome.js?${.now?long}"></script>
+</html>

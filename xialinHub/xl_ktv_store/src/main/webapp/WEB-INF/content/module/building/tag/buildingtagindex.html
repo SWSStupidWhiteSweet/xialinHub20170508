@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘标签管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								标签管理
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<label> 标签： </label>
+										<input type="text" id="tag" placeholder="标签名">
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>搜索
+										</button>
+										<@shiro.hasPermission name="building:buildingtag:btn:save">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i>添加
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="building:buildingtag:btn:modifiy">
+										<button id="update" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i>修改
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="building:buildingtag:btn:delete">
+										<button id="delete" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-trash-o orange"></i>删除
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="building:buildingtag:btn:lock">
+										<button id="lock" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-exchange orange"></i>隐藏/显示
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/building/tag/tagindex.js"></script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘户型日志管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content" style="padding-bottom:10px;">
+					<input id="buildingProjectId" value="${buildingProjectId!''}" hidden="hidden" type="text" />
+					<div class="page-content-area">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										
+										<button id="search" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>
+											搜索
+										</button>
+										<@shiro.hasPermission name="building:housetype:audit">
+										<button id="aduit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 审核
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="building:housetype:export">
+										<button id="excel" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+										</@shiro.hasPermission>
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="auditFlag">审核状态：</label>
+	
+							<div class="col-sm-9">
+								<select id="auditFlag" name="auditFlag" data-placeholder="选择审核状态" url="../../common/getbuildingprojectlogauditflag"></select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="houseName">户型名称：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="houseName" style="width: 120px;" placeholder="户型名称">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/building/housetype/housetypeaudit.js"></script>
+</html>

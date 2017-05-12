@@ -1,0 +1,45 @@
+.flowName {
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.flowNodeInfo {
+	background: #438EB9;
+	padding: 18px 25px;
+	color: white;
+	font-weight: bold;
+	border-radius: 10px;
+	cursor: pointer;
+	height: 80px;
+	line-height: 80px;
+}
+
+.flowNodeInfoNo {
+	background: #dadada;
+	padding: 18px 25px;
+	font-weight: bold;
+	border-radius: 10px;
+	cursor: pointer;
+	height: 80px;
+	line-height: 80px;
+}
+
+.maginImg {
+	margin: 0 10px;
+}
+
+.height-auto {
+	height: auto !important;
+}
+.table_border{
+	border: 1px solid #B9B3B3;
+}
+.table_align{
+	text-align: center;
+	height: 35px;
+}
+.table_background{
+	background:#e5e5e5;
+}

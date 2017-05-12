@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>财务管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+
+
+<style type="text/css">
+		.inputstyle{
+		    width: 75px;
+		    height: 35px;
+		    font-size: 14px;
+		    cursor:potinter;
+		}
+</style>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" >
+			<div class="page-content" style="padding-bottom:5px;padding-top:5px;">
+				<div class="page-content-area">
+					<div class="page-header" >
+						<h1>
+							财务管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								POS流水管理
+							</small>
+						</h1>
+					</div>
+					
+					<input id="activeTab" type="hidden" value="${activeTab!''}" />
+					
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tabbable">
+										<ul class="nav nav-tabs">
+											<@shiro.hasPermission name="finance:tradingflow:getgriddata1">
+											<li>
+												<a data-toggle="tab" href="#relatedposrecords" > 已关联刷卡流水 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:tradingflow:getgriddata2">
+											<li>
+												<a data-toggle="tab" href="#unrelatedposrecords" > 未关联刷卡流水 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:tradingflow:canrelatedposrecordsdata">
+											<li>
+												<a data-toggle="tab" href="#canRelatedPosRecords" > 撤销刷卡流水 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecordsdata">
+											<li>
+												<a data-toggle="tab" href="#errorRelatedPosRecords" > 异常刷卡流水 </a>
+											</li>
+											</@shiro.hasPermission>
+										</ul>
+			
+										<div class="tab-content" style="height:700px;">
+											<@shiro.hasPermission name="finance:tradingflow:getgriddata1">
+											<div id="relatedposrecords" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<@shiro.hasPermission name="finance:tradingflow:getgriddata1">
+																<button id="search1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:relatedposrecords_excel">
+																<button id="excel1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																<div class="col-sm-12">
+																<label style="color: #2594dc;">
+																认筹笔数：<span id = "group_count" style="color: #57ae2a;">${relateCountData.group_count}</span>&nbsp;&nbsp;&nbsp;
+																认筹金额：<span id = "group_fee_count" style="color: #57ae2a;">${relateCountData.group_fee_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																刷卡笔数：<span id = "eb_count" style="color: #57ae2a;">${relateCountData.eb_count}</span>&nbsp;&nbsp;&nbsp;
+																刷卡金额：<span id = "eb_amount_count" style="color: #57ae2a;">${relateCountData.eb_amount_count}</span>&nbsp;(元)&nbsp;&nbsp;&nbsp;
+																银联手续费：<span id = "eb_amount_fee_count" style="color: #57ae2a;">${relateCountData.eb_amount_fee_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																</label>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table1"></table>
+																<div id="grid-pager1"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											
+											<@shiro.hasPermission name="finance:tradingflow:getgriddata2">
+											<div id="unrelatedposrecords" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<@shiro.hasPermission name="finance:tradingflow:getgriddata2">
+																<button id="search2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:saveunrelatedpos">
+																<button id="add2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-plus green"></i> 添加
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:deleteunrelatedpos">
+																<button id="delete2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-trash-o orange"></i> 删除
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:unrelatedposrecords_excel">
+																<button id="excel2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																<button id="downloadmod2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-download blue"></i> 导入模板下载
+																</button>
+																<@shiro.hasPermission name="finance:tradingflow:import">
+																<input type="file" id="uploadFile2" />
+																</@shiro.hasPermission>
+																<div class="col-sm-12">
+																<label style="color: #2594dc;">
+																刷卡笔数：<span id="eb_count2" style="color: #57ae2a;">${(count2.eb_count)!''}</span>&nbsp;&nbsp;&nbsp;
+																刷卡金额：<span id="eb_amount_count2" style="color: #57ae2a;">${(count2.eb_amount_count)!''}</span>(元)&nbsp;&nbsp;&nbsp;
+																银联手续费：<span id="eb_amount_fee_count2" style="color: #57ae2a;">${(count2.eb_amount_fee_count)!''}</span>&nbsp;(元)
+																</label>
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table2"></table>
+																<div id="grid-pager2"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											
+											<@shiro.hasPermission name="finance:tradingflow:canrelatedposrecordsdata">
+											<div id="canRelatedPosRecords" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<@shiro.hasPermission name="finance:tradingflow:canrelatedposrecordsdata">
+																<button id="search3" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:canrelatedposrecords_export">
+																<button id="export3" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																
+																<br/>
+																<label style="color: #2594dc;">
+																撤销笔数：<span id="eb_count3" style="color: #57ae2a;">${(count3.eb_count)!''}</span>&nbsp;&nbsp;&nbsp;
+																撤销金额：<span id="eb_amount_count3" style="color: #57ae2a;">${(count3.eb_amount_count)!''}</span>(元)&nbsp;&nbsp;&nbsp;
+																</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="canRelatedPosRecordsGrid"></table>
+																<div id="canRelatedPosRecordsGridPager"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											
+											<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecordsdata">
+											<div id="errorRelatedPosRecords" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecordsdata">
+																<button id="search4" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:confirmok">
+																<button id="confirm4" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-check orange"></i> 确认有效
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecordsmodifysave">
+																<button id="modify4" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-cogs blue"></i> 更换项目
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:tradingflow:errorrelatedposrecords_export">
+																<button id="export4" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+																
+																<br/>
+																<label style="color: #2594dc;">
+																认筹笔数：<span id="group_count4" style="color: #57ae2a;">${count4.group_count}</span>&nbsp;&nbsp;&nbsp;
+																认筹金额：<span id="group_fee_count4" style="color: #57ae2a;">${count4.group_fee_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																刷卡笔数：<span id="eb_count4" style="color: #57ae2a;">${count4.eb_count}</span>&nbsp;&nbsp;&nbsp;
+																刷卡金额：<span id="eb_amount_count4" style="color: #57ae2a;">${count4.eb_amount_count}</span>(元)&nbsp;&nbsp;&nbsp;
+																银联手续费：<span id="eb_amount_fee_count4" style="color: #57ae2a;">${count4.eb_amount_fee_count}</span>&nbsp;&nbsp;&nbsp;
+																</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="errorRelatedPosRecordsGrid"></table>
+																<div id="errorRelatedPosRecordsGridPager"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition1" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="province_id1">省</label>
+						<div class="col-sm-4">
+							<select id="province_id1" name="province_id1" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city_id1">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="city_id1">市</label>
+						<div class="col-sm-4">
+							<select id="city_id1" name="city_id1" data-placeholder="选择所属市"  url="../../common/getcitycombo" child="building_project_id1" >
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="building_project_id1">楼盘</label>
+						<div class="col-sm-4">
+							<select id="building_project_id1" name="building_project_id1" data-placeholder="选择楼盘"  url="../../common/getbuildingprojectbycitycombo" child="project_info_id1">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="project_info_id1">项目</label>
+						<div class="col-sm-4">
+							<select id="project_info_id1" name="project_info_id1" data-placeholder="选择项目"  url="../../common/getprojectinfocombo" cascade="cascade" >
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="create_src1">来源</label>
+						<div class="col-sm-4">
+							<select id="create_src1" name="create_src1" style="width: 120px;" data-placeholder="选择来源"  url="../../common/getcreatesrccombo">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="channel_type1">渠道</label>
+						<div class="col-sm-4">
+							<select id="channel_type1" name="channel_type1" style="width: 120px;" data-placeholder="选择渠道"  url="../../common/getchanneltypecombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="eb_account_detail_type1">pos机类型</label>
+						<div class="col-sm-4">
+							<select id="eb_account_detail_type1" name="eb_account_detail_type1" style="width: 120px;" data-placeholder="选择pos机类型"  url="../../common/getposcombo">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="is_start1">项目状态</label>
+						<div class="col-sm-4">
+							<select id="is_start1" name="is_start1" style="width: 120px;" data-placeholder="选择状态"  url="../../common/getisstartcombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="to_date1">刷卡时间</label>
+						<div class="col-sm-6">
+							<input class="col-xs-10 col-sm-7" type="text" id="to_date1" placeholder="请选择查询起止日期" />
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition2" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="create_src2">来源</label>
+						<div class="col-sm-4">
+							<select id="create_src2" name="create_src2" style="width: 120px;" data-placeholder="选择来源"  url="../../common/getcreatesrccombo">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="eb_account_detail_type2">pos机类型</label>
+						<div class="col-sm-4">
+							<select id="eb_account_detail_type2" name="eb_account_detail_type2" style="width: 120px;" data-placeholder="选择pos机类型"  url="../../common/getposcombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="is_start2">项目状态</label>
+						<div class="col-sm-4">
+							<select id="is_start2" name="is_start2" style="width: 120px;" data-placeholder="选择状态"  url="../../common/getisstartcombo">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="pay_account_type2">卡片类型</label>
+						<div class="col-sm-4">
+							<select id="pay_account_type2" name="pay_account_type2" style="width: 120px;" data-placeholder="卡片类型"  url="../../common/getpayaccounttypecombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="pos_terminal_code2">终端号</label>
+						<div class="col-sm-4">
+							<input type="text" id="pos_terminal_code2" style="width: 200px;"  placeholder="输入终端号" />
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="trade_ref_code2">交易参考号</label>
+						<div class="col-sm-4">
+							<input type="text" id="trade_ref_code2" style="width: 200px;" placeholder="输入交易参考号">
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="to_date2">刷卡时间</label>
+						<div class="col-sm-7">
+							<input class="col-xs-10 col-sm-6" type="text" id="to_date2" placeholder="请选择查询起止日期" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition3" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="province_id3">省</label>
+						<div class="col-sm-4">
+							<select id="province_id3" name="province_id3" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city_id3">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="city_id3">市</label>
+						<div class="col-sm-4">
+							<select id="city_id3" name="city_id3" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="create_src3">来源</label>
+						<div class="col-sm-4">
+							<select id="create_src3" name="create_src3" style="width: 120px;" data-placeholder="选择来源"  url="../../common/getcreatesrccombo">
+							</select>
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="eb_account_detail_type3">pos机类型</label>
+						<div class="col-sm-4">
+							<select id="eb_account_detail_type3" name="eb_account_detail_type3" style="width: 120px;" data-placeholder="选择pos机类型"  url="../../common/getposcombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="is_start3">项目状态</label>
+						<div class="col-sm-4">
+							<select id="is_start3" name="is_start3" style="width: 120px;" data-placeholder="选择状态"  url="../../common/getisstartcombo">
+							</select>
+						</div>
+					</div>
+					<div class="space-4"></div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="pos_terminal_code3">终端号</label>
+						<div class="col-sm-4">
+							<input type="text" id="pos_terminal_code3" style="width: 170px;"  placeholder="输入终端号" />
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="trade_ref_code3">交易参考号</label>
+						<div class="col-sm-4">
+							<input type="text" id="trade_ref_code3" style="width: 170px;" placeholder="输入交易参考号">
+						</div>
+					</div>
+					<div class="space-4"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="to_date3">刷卡时间</label>
+						<div class="col-sm-4">
+							<input class="col-xs-10 col-sm-12" type="text" id="to_date3" placeholder="请选择查询起止日期" />
+						</div>
+						
+						<label class="col-sm-2 control-label no-padding-right" for="can_date3">撤销时间</label>
+						<div class="col-sm-4">
+							<input class="col-xs-10 col-sm-12" type="text" id="can_date3" placeholder="请选择查询起止日期" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition4" class="hide" >
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<div class="space-4"></div>
+
+						<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right" for="province_id4">省</label>
+						<div class="col-sm-4">
+							<select id="province_id4" name="province_id4" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city_id4">
+							</select>
+						</div>
+						<label class="col-sm-2 control-label no-padding-right" for="city_id4">市</label>
+							<div class="col-sm-4">
+								<select id="city_id4" name="city_id4" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="create_src4">来源</label>
+							<div class="col-sm-4">
+								<select id="create_src4" name="create_src4" style="width: 120px;" data-placeholder="选择来源"  url="../../common/getcreatesrccombo">
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="channel_type4">渠道</label>
+							<div class="col-sm-4">
+								<select id="channel_type4" name="channel_type4" style="width: 120px;" data-placeholder="选择渠道"  url="../../common/getchanneltypecombo">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="eb_account_detail_type4">pos机类型</label>
+							<div class="col-sm-4">
+								<select id="eb_account_detail_type4" name="eb_account_detail_type4" style="width: 120px;" data-placeholder="选择pos机类型"  url="../../common/getposcombo">
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="is_start4">项目状态</label>
+							<div class="col-sm-4">
+								<select id="is_start4" name="is_start4" style="width: 120px;" data-placeholder="选择状态"  url="../../common/getisstartcombo">
+								</select>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="pay_account_type4">卡片类型</label>
+							<div class="col-sm-4">
+								<select id="pay_account_type4" name="pay_account_type4" style="width: 120px;" data-placeholder="选择卡片类型"  url="../../common/getpayaccounttypecombo">
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="cheap_code4">优惠告知书编号</label>
+							<div class="col-sm-4">
+								<input type="text" id="cheap_code4" style="width: 200px;" placeholder="优惠告知书编号">
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="pos_terminal_code4">终端号</label>
+							<div class="col-sm-4">
+								<input type="text" id="pos_terminal_code4" style="width: 200px;"  placeholder="输入终端号" />
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="custom_name4">客户姓名</label>
+							<div class="col-sm-4">
+								<input type="text" id="custom_name4" style="width: 200px;" placeholder="输入客户姓名">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="order_info_code4">订单号</label>
+							<div class="col-sm-4">
+								<input type="text" id="order_info_code4" style="width: 200px;" placeholder="输入订单号">
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="trade_ref_code4">交易参考号</label>
+							<div class="col-sm-4">
+								<input type="text" id="trade_ref_code4" style="width: 200px;" placeholder="输入交易参考号">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="to_date4">刷卡时间</label>
+							<div class="col-sm-4">
+								<input class="col-xs-10 col-sm-12" type="text" id="to_date4" placeholder="请选择查询起止日期" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+	
+</body>
+
+<script type="text/javascript" src="../../assets/module/finance/tradingflow/tradingflow.js?${.now?long}"></script>
+</html>
+

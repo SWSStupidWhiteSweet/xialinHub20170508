@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>财务管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+
+
+<style type="text/css">
+		.inputstyle{
+		    width: 75px;
+		    height: 35px;
+		    font-size: 14px;
+		    cursor:potinter;
+		}
+</style>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" >
+			<div class="page-content" style="padding-bottom:5px;padding-top:5px;">
+				<div class="page-content-area">
+					<div class="page-header" >
+						<h1>
+							财务管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								退款支付
+							</small>
+						</h1>
+					</div>
+					
+					<input id="activeTab" type="hidden" value="${activeTab!''}" />
+					
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="tabbable">
+										<ul class="nav nav-tabs">
+											<@shiro.hasPermission name="finance:refundapply:getnorefundgriddata">
+											<li>
+												<a data-toggle="tab" href="#noRefund" > 待退款申请 </a>
+											</li>
+											</@shiro.hasPermission>
+											<@shiro.hasPermission name="finance:refundapply:getrefundgriddata">
+											<li>
+												<a data-toggle="tab" href="#refund" > 已退款申请 </a>
+											</li>
+											</@shiro.hasPermission>
+										</ul>
+			
+										<div class="tab-content" style="height:700px;">
+											<@shiro.hasPermission name="finance:refundapply:getnorefundgriddata">
+											<div id="noRefund" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<button id="query1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																<@shiro.hasPermission name="finance:refundapply:saverefunddetailinfo">
+																<button id="refundSure1" class="btn btn-white btn-default btn-round">
+																	 <i class="ace-icon fa fa-check green"></i>确认退款
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:refundapply:batchapply">
+																<button id="allSure1" class="btn btn-white btn-default btn-round">
+																	 <i class="ace-icon fa fa-plus green"></i>批量退款
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:refundapply:norefundexcel">
+																<button id="excel1" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+															</div>
+															<div class="col-sm-12">
+															<label style="color: #2594dc;">
+															待退款笔数：<span id="total1">${(total1)!0}</span>&nbsp;(笔)&nbsp;&nbsp;
+															<i class="ace-icon fa fa-jpy"></i>
+															金额：<span id="sum1">${(sum1)!0}</span>&nbsp;(元)
+															</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table1"></table>
+																<div id="grid-pager1"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											
+											<@shiro.hasPermission name="finance:refundapply:getrefundgriddata">
+											<div id="refund" class="tab-pane fade" style="height:700px;">
+												<div class="row">
+													<div class="col-xs-12">
+														<div class="row">
+															<div class="col-sm-12">
+																<button id="query2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-search blue"></i> 搜索
+																</button>
+																<@shiro.hasPermission name="finance:refundapply:show">
+																<button id="view2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-reorder red"></i> 查看
+																</button>
+																</@shiro.hasPermission>
+																<@shiro.hasPermission name="finance:refundapply:haverefundexcel">
+																<button id="excel2" class="btn btn-white btn-default btn-round">
+																	<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+																</button>
+																</@shiro.hasPermission>
+															</div>
+															<div class="col-sm-12">
+															<label style="color: #2594dc;">
+															待退款笔数：<span id="total2">${(total2)!0}</span>&nbsp;(笔)&nbsp;&nbsp;
+															<i class="ace-icon fa fa-jpy"></i>
+															金额：<span id="refundAmount2">${(refundAmount2)!0}</span>&nbsp;(元)&nbsp;&nbsp;
+															<i class="ace-icon fa fa-jpy"></i>
+															手续费：<span id="feeRatio2">${(feeRatio2)!0}</span>&nbsp;(元)
+															</label>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-sm-12">
+																<table id="grid-table2"></table>
+																<div id="grid-pager2"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											</@shiro.hasPermission>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="condition1" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province1"> 选择省 </label>
+							
+							<div class="col-sm-9">
+								<select id="province1" name="province1" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city1">
+								</select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city1"> 市  </label>
+	
+							<div class="col-sm-9">
+								<select id="city1" name="city1" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="keyword1"> 搜索项 </label>
+							
+							<div class="col-sm-9">
+								<input type="text" id="keyword1" style="width: 300px;" placeholder="订单号/客户姓名/客户电话/优惠告知书编号">
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="packageType1"> 项目类型 </label>
+	
+							<div class="col-sm-9">
+								<select id="packageType1" name="packageType1" style="width: 120px;" data-placeholder="选择项目类型"  url="../../common/getpackagecombo">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="project1"> 项目 </label>
+	
+							<div class="col-sm-9">
+								<select id="project1" name="project1" style="width: 120px;" data-placeholder="选择项目"  url="../../common/getprojectcombo">
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="isToSrc1"> 原卡原退 </label>
+	
+							<div class="col-sm-9">
+								<select id="isToSrc1" name="isToSrc1" style="width: 120px;" data-placeholder="是否原卡原退"  url="../../common/getistosrccombo">
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="applyDate1"> 申请时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="applyDate1" readonly="readonly" placeholder="选择申请时间" />
+								<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="auditDate1"> 审核时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="auditDate1" readonly="readonly" placeholder="选择审核时间" />
+												<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div id="condition2" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+						<!-- #section:elements.form -->
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province2"> 选择省 </label>
+							
+							<div class="col-sm-9">
+								<select id="province2" name="province2" data-placeholder="选择所属省"  url="../../common/getprovincecombo" child="city2">
+								</select>
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city2"> 市  </label>
+	
+							<div class="col-sm-9">
+								<select id="city2" name="city2" data-placeholder="选择所属市"  url="../../common/getcitycombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="keyword2"> 搜索项 </label>
+							
+							<div class="col-sm-9">
+								<input type="text" id="keyword2" style="width: 300px;" placeholder="订单号/客户姓名/客户电话/优惠告知书编号">
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="packageType2"> 项目类型 </label>
+	
+							<div class="col-sm-9">
+								<select id="packageType2" name="packageType2" style="width: 120px;" data-placeholder="选择项目类型"  url="../../common/getpackagecombo">
+								</select>
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="project2"> 项目 </label>
+	
+							<div class="col-sm-9">
+								<select id="project2" name="project2" style="width: 120px;" data-placeholder="选择项目"  url="../../common/getprojectcombo">
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="isToSrc2"> 原卡原退 </label>
+	
+							<div class="col-sm-9">
+								<select id="isToSrc2" name="isToSrc2" style="width: 120px;" data-placeholder="是否原卡原退"  url="../../common/getistosrccombo">
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="applyDate2"> 申请时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="applyDate2" readonly="readonly" placeholder="选择申请时间" />
+								<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="auditDate2"> 审核时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="auditDate2" readonly="readonly" placeholder="选择审核时间" />
+												<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="paymentDate2"> 打款时间 </label>
+	
+							<div class="col-sm-9">
+								<input type="text" class="date-range-picker" name="date-range-picker" id="paymentDate2" readonly="readonly" placeholder="选择打款时间" />
+											<i class="ace-icon fa fa-calendar bigger-110"></i>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	
+</body>
+
+<script type="text/javascript" src="../../assets/module/finance/refundapply/index.js?${.now?long}"></script>
+</html>
+
+

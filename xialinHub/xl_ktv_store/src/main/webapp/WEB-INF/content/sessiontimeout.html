@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<#assign basePath=request.getContextPath()>
+<script type="text/javascript">
+try {
+	if (typeof window.parent.parent.sessionTimeout == "function") {
+		window.parent.parent.sessionTimeout("由于您太久没操作，会话已过期，请重新登录！！！");
+	} else {
+		window.parent.sessionTimeout("由于您太久没操作，会话已过期，请重新登录！");
+	}
+} catch (e) {
+	console.log("未登录情况下，输入任意url！");
+	location.href = "${basePath}/welcome";
+}
+</script>
+<body>
+
+</body>
+</html>

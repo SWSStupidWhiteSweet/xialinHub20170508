@@ -1,0 +1,146 @@
+<meta charset="utf-8">
+<div class="row">
+    <div class="col-sm-12">
+
+
+        <!--条件查询-->
+        <div id="passCondition" class="hide">
+            <div class="row">
+                <div class="col-xs-12">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passTimeFlag">
+                                <select id="passTimeFlag" name="timeFlag">
+                                    <option value="0">请选择</option>
+                                    <option value="1">创建日期</option>
+                                    <option value="2">到访日期</option>
+                                    <option value="3">认筹日期</option>
+                                    <option value="4">认购日期</option>
+                                    <option value="5">网签日期</option>
+                                </select>
+                            </label>
+                            <div class="col-sm-9" style="padding-top: 4px;">
+                                <input  type="text" readonly="readonly" style="width: 200px" name="startTime" id="passStartTime"
+                                        placeholder="请选择查询起止日期" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passOrderInfoCode">订单号</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;"  type="text" name="orderInfoCode" id="passOrderInfoCode" placeholder="订单号"
+                                       value="${(orderForQuery.orderInfoCode)!''}">
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="passChannelType">渠道类型</label>
+                            <div class="col-sm-4">
+                                <select id="passChannelType" name="channelType" readonly="readonly"
+                                        data-placeholder="选择渠道类型"
+                                        url="../../common/getchanneltypecombo" selectval="${(buildingProject.status)!''}">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passCustomName">客户姓名</label>
+                            <div class="col-sm-4">
+                                <input  style="width:200px;" type="text" name="customName" id="passCustomName" placeholder="客户姓名" value="">
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="passCustomTel">客户手机号</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="customTel" id="passCustomTel" placeholder="客户手机号" value="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passProvince">省</label>
+                            <div class="col-sm-4">
+                                <select id="passProvince" name="provinceId" data-placeholder="选择所属省"
+                                        url="../../common/getprovincecombo" child="passCity">
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="passCity">市</label>
+                            <div class="col-sm-4">
+                                <select id="passCity" name="cityId" data-placeholder="选择所属市(请先选择所属省)"
+                                        url="../../common/getcitycombo"
+                                        child="passBuildingProjectId"
+                                        cascade="cascade" >
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passBuildingProjectId">楼盘</label>
+                            <div class="col-sm-4">
+                                <select id="passBuildingProjectId" name="buildingProjectId" readonly="readonly"
+                                        data-placeholder="选择楼盘(请先选择所属市)"
+                                        url="../../common/getbuildingprojectcombo"  cascade="cascade"
+                                        child="passProjectInfoId">
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="passProjectInfoId">项目</label>
+                            <div class="col-sm-4">
+                                <select id="passProjectInfoId" name="projectInfoId" readonly="readonly"
+                                        data-placeholder="选择项目(请先选择所楼盘)"
+                                        url="../../common/getprojectinfocombo"  cascade="cascade">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passPackageType">项目类型</label>
+                            <div class="col-sm-4">
+                                <select id="passPackageType" name="packageType" readonly="readonly"
+                                        data-placeholder="选择醒目类型"
+                                        url="../../common/getpackagecombo" >
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 control-label no-padding-right" for="passOrderStatus">项目状态</label>
+                            <div class="col-sm-4">
+                                <select id="passOrderStatus" name="orderStatus" readonly="readonly"
+                                        data-placeholder="选择项目状态"
+                                        url="../../common/getisstartcombo">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="passBrokerTel">报备人手机</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="brokerTel" id="passBrokerTel" placeholder="报备人手机"
+                                       value="">
+                            </div>
+                            <label class="col-sm-2 control-label no-padding-right" for="passBrokerName">报备人</label>
+                            <div class="col-sm-4">
+                                <input style="width:200px;" type="text" name="brokerName" id="passBrokerName" placeholder="报备人" value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button id="searchPass" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-search blue"></i> 搜索
+        </button>
+        <@shiro.hasPermission name="order:auditvacation:passorfailexcel">
+            <button id="passExcel" class="btn btn-white btn-default btn-round">
+				<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+			</button>
+        </@shiro.hasPermission>
+</div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-sm-12 passAuditGrid">
+                <table id="passAuditGrid-table"></table>
+                <div id="passAuditGrid-pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../assets/module/order/auditVacation/passAuditVacation.js"></script>

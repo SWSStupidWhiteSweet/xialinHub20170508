@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>领用管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content" style="height:85%;">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+						<h1>
+							领用管理
+							<small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								<span style="color:green;">发票管理</span>--领用管理
+							</small>
+						</h1>
+					</div>
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="tabbable">
+							<ul class="nav nav-tabs" id="myTab">
+								<@shiro.hasPermission name="finance:invoice:getnotuseinvoicelist">
+								<li>
+									<a data-toggle="tab" href="#notUseInvoiceDiv" onclick="$('#notUseInvoiceInfo').attr('src', $('#notUseInvoiceInfo').attr('data-src'));">未领用列表 </a>
+								</li>
+							    </@shiro.hasPermission>
+								<@shiro.hasPermission name="finance:invoice:getusedinvoicelist">
+								<li>
+									<a data-toggle="tab" href="#usedInvoiceDiv" onclick="$('#usedInvoiceInfo').attr('src', $('#usedInvoiceInfo').attr('data-src'));">已领用列表 </a>
+								</li>
+								</@shiro.hasPermission>
+							</ul>
+
+							<div class="tab-content" style="height:710px;padding:0px 12px">
+							<@shiro.hasPermission name="finance:invoice:getnotuseinvoicelist">
+								<div id="notUseInvoiceDiv" class="tab-pane fade" style="height:708px;">
+									<iframe id="notUseInvoiceInfo" data-src="notuseinvoiceindex" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+							</@shiro.hasPermission>
+							<@shiro.hasPermission name="finance:invoice:getusedinvoicelist">
+								<div id="usedInvoiceDiv" class="tab-pane fade" style="height:708px;">
+									<iframe id="usedInvoiceInfo" data-src="usedinvoiceindex" scrolling="auto" frameborder=0 width="100%" height="100%"></iframe>
+								</div>
+							</@shiro.hasPermission>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(".nav-tabs").find("li:first").addClass("active");
+		$(".tab-content").find("iframe:first").attr("src",$(".tab-content").find("iframe:first").attr("data-src"));
+		$(".tab-content").find("div:first").addClass("in").addClass("active");
+	});
+</script>
+</html>

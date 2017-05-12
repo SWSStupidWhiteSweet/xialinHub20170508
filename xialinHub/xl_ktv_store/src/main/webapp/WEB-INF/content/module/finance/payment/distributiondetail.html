@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>开发商回款管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<style type="text/css">
+			.img-div{
+				width: 200px;
+				height: 300px;
+			}
+		</style>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								财务管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									回款分配详情
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+									<input id="devAccountDetailId" hidden="hidden" value="${money.devAccountDetailId}">
+									<label style="color: #2594dc;">
+									回款批次号：
+									${money.devAccountDetailId}&nbsp;&nbsp;&nbsp;
+									<i class="ace-icon fa fa-jpy"></i>
+									回款总金额：
+									${money.recvAmount}&nbsp;(元)&nbsp;&nbsp;&nbsp;
+									<i class="ace-icon fa fa-jpy"></i>
+									已分配总金额：${money.distributionAmount}&nbsp;(元)&nbsp;&nbsp;&nbsp;
+									<i class="ace-icon fa fa-jpy"></i>
+									未分配总金额：
+									<span id="notdis">${money.notDistributionAmount}&nbsp;</span>(元)
+									</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4">
+										 回款附件详情：
+									</div>
+									<div class="col-sm-8">
+										<img class="img-div" onclick="Common.ShowImage('${basePath}${pic.financeAttachmentUrl}')" src="${basePath}${pic.financeAttachmentUrl}">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/payment/distributiondetail.js?${.now?long}"></script>
+	<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+</html>

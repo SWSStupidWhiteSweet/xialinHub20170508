@@ -1,0 +1,22 @@
+<#assign basePath=request.getContextPath()>
+<!--[if !IE]> -->
+<script type="text/javascript">
+	window.jQuery || document.write("<script src='${basePath}/assets/js/jquery.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='${basePath}/assets/js/jquery1x.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+	if('ontouchstart' in document.documentElement) document.write("<script src='${basePath}/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script src="${basePath}/assets/js/jquery.gritter.min.js"></script>
+<script src="${basePath}/assets/js/bootbox.min.js"></script>
+<script src="${basePath}/assets/js/jquery.validate.js"></script>
+<script src="${basePath}/assets/js/chosen.jquery.min.js"></script>
+<script src="${basePath}/assets/js/ace/ace.searchbox-autocomplete.js"></script>

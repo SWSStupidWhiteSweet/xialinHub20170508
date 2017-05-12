@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>退房退款申请</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+        <#include "/common/include_head_css.html"/>
+        <#include "/common/include_jquery_core.html"/>
+        <#include "/common/include_bootstrap_core.html"/>
+        <#include "/common/include_ace_core.html"/>
+        <#include "/common/include_jqgrid_core.html"/>
+        <#include "/common/include_plugin.html"/>
+    </head>
+    <body class="no-skin">
+        <div class="main-container" id="main-container">
+            <div class="main-content">
+                <div class="page-content" style="padding-bottom:10px;">
+                    <div class="page-content-area">
+                        <div class="page-header">
+                            <h1>
+                                订单管理
+                                <small>
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                    退房审核
+                                </small>
+                            </h1>
+                        </div>
+                        <div class="row">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active">
+                                        <a data-toggle="tab" id="wait" href="#waitAudit">
+                                            <i class="green icon-home bigger-110"></i>
+                                            退房待审核
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" id="pass" href="#passAudit">
+                                            审核已通过
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" id="fail" href="#failAudit">
+                                            审核未通过
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="waitAudit" class="tab-pane in active">
+                                        <#include "waitAuditVacation.html"/>
+                                    </div>
+                                    <div id="passAudit" class="tab-pane">
+                                        <#include "passAuditVacation.html"/>
+                                    </div>
+                                    <div id="failAudit" class="tab-pane">
+                                        <#include "failAuditVacation.html"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+<script type="text/javascript">
+    var auditVacationPaths = "${basePath}";
+</script>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>操作员管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								系统管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									操作员管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-5">
+									</div>
+									<div class="col-sm-5">
+										<button id="searchBtn" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-search blue"></i>搜索
+										</button>
+										<@shiro.hasPermission name="system:operator:create">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 创建人员
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:operator:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改人员
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:operator:lock">
+										<button id="lock" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-lock orange"></i> 禁用人员
+										</button>
+										</@shiro.hasPermission>
+									</div>
+									<div class="col-sm-2">
+										<@shiro.hasPermission name="system:operator:saveoperatorrole">
+										<button id="save" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-save green"></i> 关联角色
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-5">
+										<div id="tree" style="height:595px"></div>
+									</div>
+									<div class="col-sm-5">
+										<table id="operatorGrid"></table>
+										<div id="operatorGridPager"></div>
+									</div>
+									<div class="col-sm-2">
+										<table id="roleGrid"></table>
+										<div id="roleGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form" id="searchForm">
+						<div class="space-4"></div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="sellerText">姓名：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="operatorName" style="width: 50%;" placeholder="姓名">
+							</div>
+						</div>
+						
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="province">手机号：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="operatorTel" style="width: 50%;" placeholder="手机号">
+							</div>
+						</div>
+	
+						<div class="space-4"></div>
+	
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="city">登录帐号：</label>
+	
+							<div class="col-sm-9">
+								<input type="text" id="operatorAccount" style="width: 50%;" placeholder="登录帐号">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/system/operator/operatorindex.js"></script>
+	<script type="text/javascript" src="../../assets/module/system/operator/operatorcompanytree.js"></script>
+</html>

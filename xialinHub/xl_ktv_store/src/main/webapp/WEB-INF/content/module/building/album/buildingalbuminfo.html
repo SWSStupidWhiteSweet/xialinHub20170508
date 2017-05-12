@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+		<#include "/common/include_photo_album.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+					
+						<input type="hidden" value="${buildingProjectId}" id = "buildingProjectId"></input>
+						<input type="hidden" value="${data.albums?size}" id = "size"></input>
+
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="tab-content no-border padding-5" style="padding:5px;">
+										<div id="faq-tab-1" class="tab-pane fade in active">
+											<div class="space-8"></div>
+											<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+												<!-- 开始遍相册类型 -->
+												<#list data.albums as album>
+													<div class="col-xs-12" >
+														<div class="panel-heading">
+															<a href="#faq-1-${album_index}" data-toggle="collapse"
+																class="accordion-toggle" aria-expanded="true"> <i
+																class="pull-right ace-icon fa fa-chevron-left"
+																data-icon-hide="ace-icon fa fa-chevron-down"
+																data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+																<i class="ace-icon fa fa-bookmark #6EAED1" style="margin-right: 10px;"></i>${album.albumName}
+															</a>
+														</div>
+														<div class="panel-collapse collapse in" id="faq-1-${album_index}" aria-expanded="false">
+															<div class="panel-body">
+																<div class="form-group">
+																	<!-- 控制上传图片权限 -->
+																	<@shiro.hasPermission name="buildingalbum:create">
+																		<!-- 不上传户型图和样板图的待审核信息 -->
+																		<#if ((album.albumId) != 11) && ((album.albumId) != 12) && (!type??)>
+																			<div style="float:left;">
+																				<button albumId="${album.albumId}" id="upload_${album.albumId}" 
+																					class="btn btn-white btn-default btn-round uploadFile" style="margin: 30px;"/>
+																			</div>
+																		</#if>
+																	</@shiro.hasPermission>
+																	<div class="row-fluid" style="margin-left:7%;">
+																		<ul class="ace-thumbnails" >
+																		
+																			<!-- 控制输入信息按钮 -->
+																			<@shiro.hasPermission name="buildingalbum:savepiccfg">
+																			<#if (!type??)>
+																			<li style="border:0px;height: 200px;width: 200px;">
+																				<textarea id="describe_${album.albumId}" name="biref" class="col-xs-10 col-sm-5" 
+																						style="width:100%;height:100%;" placeholder="描述...">${(data['descript_'+ album.albumId].descript)!''}</textarea>
+																				
+																				<div class="tools tools-bottom" style="bottom: 0px;height:20px;background-color:#ECECEC;">
+																					<input id="describe_url_${album.albumId}" type="text" style="height:20px;" 
+																						placeholder="填写描述附件地址" value="${(data['descript_'+ album.albumId].vedioUrl)!''}">
+																					</input>
+																				</div>
+																			</li>
+																			</#if>
+																			</@shiro.hasPermission>
+																			
+																			<!-- 遍历每个相册的图片数据 -->
+																			<#list data['pic_'+ album.albumId] as pic>
+																				<li style="border:0px;">
+																					<img title="${pic.albumPicName}" onclick="javascript:clickParentPic(this)" alt="${album.albumName}-(描述:${(pic.albumPicDescript)!'无'})" data-xx="hk" src="..${pic.albumPicUrl}" style="height: 200px;width: 200px;cursor:hand;"/>
+																					<#if (!type??)>
+																					<div class="tools tools-bottom" style="bottom: 0px;height:20px;background-color:#ECECEC;">
+																						
+																						<!-- 控制删除按钮 -->
+																						<@shiro.hasPermission name="buildingalbum:create">
+																							<div style="height:100%;width:15%;background:#d15b47;float:right;cursor: pointer;color:white;" 
+																									onclick="deletePic(${pic.albumPicId})">
+																								删除
+																							</div>
+																						</@shiro.hasPermission>
+																						
+																						<!-- 控制设置轮播和封面 -->
+																						<@shiro.hasPermission name="buildingalbum:savepiccfg">
+																							<span class="help-inline col-xs-12 col-sm-7" style="height:20px;line-height:20px;float:right;width:70px;">
+																								<label class="middle">
+																									<input class="ace" type="checkbox" name="check_carousel" value="${pic.albumPicUrl}" 
+																										${(((data.picCfg.playPicUrl)!'')?index_of(pic.albumPicUrl)!=-1)?string('checked','')}/>
+																										
+																									<span class="lbl" style="font-size:10px;">轮播</span>
+																								</label>
+																							</span>
+																							
+																							<span class="help-inline col-xs-12 col-sm-7" style="height:20px;line-height:20px;float:right;width:100px;">
+																								<label class="middle">
+																									<input class="ace" type="radio" name="radio_cover" value="${pic.albumPicUrl}" 
+																										${(((data.picCfg.colPicUrl)!'')?index_of(pic.albumPicUrl)!=-1)?string('checked','')}/>
+																										
+																									<span class="lbl" style="font-size:10px;">设为封面</span>
+																								</label>
+																							</span>
+																						</@shiro.hasPermission>
+																					</div>
+																					</#if>
+																				</li>
+																			</#list>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</#list>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- 控制保存按钮 -->
+						<@shiro.hasPermission name="buildingalbum:savepiccfg">
+						<#if (!type??)>
+							<div class="clearfix form-actions">
+								<div class="col-md-offset-3 col-md-9">
+									<button id="saveBtn" class="btn btn-info" type="button">
+										<i class="ace-icon fa fa-check bigger-110"></i>
+										保存
+									</button>
+								</div>
+							</div>
+						</#if>
+						</@shiro.hasPermission>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/album/buildingalbuminfo.js"></script>
+</html>

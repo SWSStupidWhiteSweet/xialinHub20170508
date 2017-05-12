@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body class="no-skin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row">
+				<div class="col-sm-12">
+							<button id="projectpackageloglist_options" class="btn btn-white btn-default btn-round">
+								<span class="ace-icon fa fa-search blue"></span>&nbsp; 搜索
+							</button>
+							<@shiro.hasPermission name="project:package:look">
+							<button id="projectpackageloglist_view" class="btn btn-white btn-default btn-round">
+								<i class="ace-icon fa fa-reorder red"></i> 查看
+							</button>
+							</@shiro.hasPermission>
+						<@shiro.hasPermission name="project:package:auditpass">
+							<button id="projectpackageloglist_locklog" class="btn btn-white btn-default btn-round">
+								<i class="ace-icon fa fa-check green"></i>审核通过
+							</button>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="project:package:auditnopass"> 	
+						    <button id="projectpackageloglist_lockNolog" class="btn btn-white btn-default btn-round">
+		       					<i class="ace-icon fa fa-times red"></i>审核不通过
+		     				</button>
+		     			</@shiro.hasPermission> 	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<table id="packageloglist_grid-table"></table>
+					<div id="packageloglist_grid-pager"></div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div id="projectpackageloglist_condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectpackageloglistislogstart"> 上架状态： </label>
+						<select id="projectpackageloglistislogstart" class="col-xs-10 col-sm-7" name="projectpackageloglistislogstart" data-placeholder="请选择上架状态"  url="../../common/getstandcombo"> 
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectpackageloglistpackage"> 套餐类型： </label>
+						<select id="projectpackageloglistpackage" class="col-xs-10 col-sm-7" name="projectpackageloglistpackage" data-placeholder="请选择套餐类型"  url="../../common/getpackagecombo" > 
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectpackageloglistauditflag"> 审核状态： </label>
+						<select id="projectpackageloglistauditflag" class="col-xs-10 col-sm-7" name="projectpackageloglistauditflag" data-placeholder="请选审核状态"  url="../../common/getbuildingprojectlogauditflag" > 
+						</select>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectpackagelogliststartDate">开始日期 </label>
+						<div class="col-sm-9">
+							<input class="date-picker" style="width: 140px;" name="projectpackagelogliststartDate" id="projectpackagelogliststartDate" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="开始日期"  title="开始日期"/>
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="projectpackageloglistendDate"> 结束日期 </label>
+						<div class="col-sm-9">
+							<input class="date-picker" style="width: 140px;" name="projectpackageloglistendDate" id="projectpackageloglistendDate" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="结束日期"  title="结束日期"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>	
+<script type="text/javascript">
+	$('.date-picker').datepicker({autoclose:true});
+	</script>
+<script type="text/javascript"
+	src="../../assets/module/project/js/projectpackagelog.js"></script>
+</html>	

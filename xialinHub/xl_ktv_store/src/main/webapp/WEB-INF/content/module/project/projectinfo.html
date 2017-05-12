@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	
+<#include "/common/include_head_css.html"/> 
+<#include "/common/include_jquery_core.html"/> 
+<#include "/common/include_bootstrap_core.html"/> 
+<#include "/common/include_ace_core.html"/> 
+<#include "/common/include_jqgrid_core.html"/> 
+<#include "/common/include_plugin.html"/>
+<link rel="stylesheet" href="../../assets/module/project/css/project.css" />
+</head>
+<body class="no-skin">
+	<div class="main-container" id="info_container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							<a href="index">项目管理 <a></a><small> <i class="ace-icon fa fa-angle-double-right"></i>
+							       项目详情
+							</small>
+						</h1>
+					</div>
+					<input type="hidden" id="tabId" value="${(tabId)!''}">
+					<input type="hidden" id="actionType" value="${(actionType)!''}">
+					<input type="hidden" id="projectInfoId" value="${(projectBase.projectInfo.projectInfoId)!''}" />
+					<div class="row">
+						<div class="col-xs-12">
+							<form id="projectForm" class="form-horizontal" role="form">
+								<div class="tab-content no-border padding-5">
+									<div id="faq-tab-1" class="tab-pane fade in active">
+										<div id="faq-list-1"
+											class="panel-group accordion-style1 accordion-style2">
+											<!-- 楼盘基本信息 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-1" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="true"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														楼盘基本信息
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-1" aria-expanded="false">
+													<div class="panel-body">
+														<div style="width:70%;float:left;">
+															<!-- 省份选择区 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="info_province"> 所属省： </label>
+																<div class="col-sm-5">
+																	<div class="clearfix">
+																		<select id="info_province" name="info_province"
+																			data-placeholder="选择所属省"<#if (actionType ==
+																			"modify" || actionType =="view")>disabled="disabled"</#if>
+																			url="../../common/getprovincecombo" child="info_city" 
+																			selectval="${(projectBase.projectInfo.provinceId)!''}">
+																		</select><span class="required-star">*</span>
+																	</div>
+																</div>
+															</div>
+															<!-- 城市选择区 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="info_city"> 所属市： </label>
+																<div class="col-sm-9">
+																	<div class="clearfix">
+																		<select id="info_city" name="info_city"
+																			data-placeholder="选择所属市"<#if (actionType ==
+																			"modify" || actionType =="view")>disabled="disabled"</#if>
+																			url="../../common/getcitycombo" child="info_buildingProject" selectval="${(projectBase.projectInfo.cityId)!''}">
+																		</select><span class="required-star">*</span>
+																	</div>
+																</div>
+															</div>
+															<!-- 楼盘选择区 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="info_buildingProject"> 选择楼盘： </label>
+																<div class="col-sm-5">
+																	<div class="clearfix">
+																		<select id="info_buildingProject" name="info_buildingProject"
+																			data-placeholder="选择楼盘"<#if (actionType ==
+																			"modify" || actionType =="view")>disabled="disabled"</#if>
+																			url="../../common/getbuildingprojectcombo"
+																			cascade="cascade" selectval="${(projectBase.projectInfo.buildingProjectId)!''}">
+																		</select><span class="required-star">*</span>
+																	</div>
+																</div>
+															</div>
+															<!-- 开发商 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="merchantName"> 开发商： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<input type="hidden" id="info_merchantId" name="info_merchantId" value="${(projectBase.buildingProjectBaseEntity.merchantId)!''}">
+																		<input readonly="readonly" type="text" id="info_merchantName"
+																			name="info_merchantName" class="col-xs-10 col-sm-10"
+																			value="${(projectBase.buildingProjectBaseEntity.merchantName)!''}" />
+																	</div>
+																</div>
+															</div>
+															<!-- 地址 -->
+															<div class="form-group">
+																<label class="col-sm-2 control-label no-padding-right"
+																	for="address"> 地址： </label>
+																<div class="col-sm-7">
+																	<div class="clearfix">
+																		<input readonly="readonly" type="text" id="info_address"
+																			name="info_address" class="col-xs-10 col-sm-10" value="${(projectBase.buildingProjectBaseEntity.address)!''}" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div style="width:30%;float:right;">
+															<div class="tab-pane">
+																<ul class="ace-thumbnails">
+																	<li style="border:0px;">
+																		<a href="javascript:void();" data-rel="colorbox">
+																			<img class="building_house_img" id="buildingMainImg"
+																			src="../../${(projectBase.buildingProjectBaseEntity.colPicUrl)!'/assets/img/default_building.png'}">
+																		</a>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 项目合作信息 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-2" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														项目合作信息
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-2" aria-expanded="false">
+													<div class="panel-body">
+													<div style="width:70%;float:left;">
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="projectInfoName"> 项目名称： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_projectInfoName"
+																		name="info_projectInfoName" class="col-xs-10 col-sm-5"
+																		value="${(projectBase.projectInfo.projectInfoName)!''}"/><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_cooperationStart"> 项目合作开始日期： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_cooperationStart"
+																		name="info_cooperationStart" class="col-xs-10 col-sm-5 date-picker"
+																		value="${(projectBase.projectInfo.cooperationStart)!''}" readonly="readonly" data-date-format="yyyy-mm-dd" placeholder="选择项目合作开始日期"/><span
+																		class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_cooperationEnd"> 项目合作结束日期： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_cooperationEnd"
+																		name="info_cooperationEnd" class="col-xs-10 col-sm-5 date-picker"
+																		value="${(projectBase.projectInfo.cooperationEnd)!''}" readonly="readonly" data-date-format="yyyy-mm-dd" placeholder="选择项目合作结束日期"/><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_saleEndDate"> 认购截止日期： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_saleEndDate" name="info_saleEndDate"
+																		class="col-xs-10 col-sm-5 date-picker" value="${(projectBase.projectInfo.saleEndDate)!''}" readonly="readonly" data-date-format="yyyy-mm-dd" placeholder="选择认购截止日期"/><span
+																		class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_projectManager"> 项目经理： </label>
+															<div class="col-sm-7">
+																<div class="clearfix" id="managerDiv">
+																	<#if (projectBase.managerList)??>
+																		<#list projectBase.managerList as operator>
+																			<label class="middle radio-padding">
+																				<input class="ace" id="projectManager" value="${(operator.operatorId)!''}" type="radio" <#if (projectBase.projectInfo.projectManager)?? && ((projectBase.projectInfo.projectManager) == (operator.operatorId)) >checked="checked"</#if> name="info_projectManager">
+																				<span class="lbl">${operator.operatorName}</span>
+																			</label>
+																		</#list>
+																	</#if>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_projectManagerAssistant"> 项目文员： </label>
+															<div class="col-sm-7">
+																<div class="clearfix" id="assistantDiv">
+																	<#if (projectBase.managerList)??>
+																		<#list projectBase.managerList as operator>
+																			<label class="middle radio-padding">
+																				<input class="ace" id="projectClerk" value="${(operator.operatorId)!''}" type="checkbox"
+																					<#if (projectBase.assistantList)??>
+																						<#list projectBase.assistantList as assistant>
+																						 	<#if assistant=='${operator.operatorId}'>checked="checked"</#if>
+																						</#list>
+																					</#if>	 
+																				name="info_projectManagerAssistant">
+																				<span class="lbl">${operator.operatorName}</span>
+																				</label>
+																		</#list>
+																	</#if>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_contacts"> 现场对接人： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_contacts" name="info_contacts"
+																		class="col-xs-10 col-sm-5" value="${(projectBase.projectInfo.contacts)!''}" />
+																		<span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_contactsTel"> 联系方式： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_contactsTel" name="info_contactsTel"
+																		class="col-xs-10 col-sm-5" value="${(projectBase.projectInfo.contactsTel)!''}" maxlength="11"/>
+																		<span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_developerName2"> 合作开发商： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_developerName2"
+																		name="info_developerName2" class="col-xs-10 col-sm-5"
+																		value="${(projectBase.buildingProjectBaseEntity.merchantName)!''}" disabled="disabled" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_contractAttachmentId"> 开发商合同： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="hidden" id="info_contractAttachmentId"
+																		name="info_contractAttachmentId" value="${(projectBase.projectInfo.contractAttachmentId)!''}" class="col-xs-10 col-sm-5" />
+																	<input type="text" id="info_contractAttachmentName" readonly="readonly"
+																		name="info_contractAttachmentName" class="col-xs-10 col-sm-5" value="${(projectBase.attchment.attachmentName)!''}">
+																	<button id="uploadBtn" class="btn btn-white btn-default btn-round uploadFile"/>
+																</div>
+															</div>
+														</div>						
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_projectDevEmpUnion"> 开发商对接人： </label>
+															<div class="col-sm-7">
+																<div class="clearfix" id="projectDevEmpUnionDiv">
+																	<#if (projectBase.systemOperatorList)??>
+																		<#list projectBase.systemOperatorList as operator>
+																			<label class="middle radio-padding">
+																				<input class="ace" id="DevelopersToAccess" value="${(operator.operatorId)!''}" 
+																				<#if (projectBase.projectDevEmpUnionList)??>
+																					<#list projectBase.projectDevEmpUnionList as devEmpUnion>
+																						<#if operator.operatorId == devEmpUnion.devEmpId>checked="checked"</#if>
+																					</#list>
+																				</#if>
+																				type="checkbox" name="info_projectDevEmpUnion">
+																				<span class="lbl">${operator.operatorName}</span>
+																				</label>
+																		</#list>
+																	</#if>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_startCode"> 购房优惠告知书编号(起)： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_startCode" name="info_startCode"
+																		class="col-xs-10 col-sm-5" value="${(projectBase.projectInfo.startCode)!''}" /><span
+																		class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_endCode"> 购房优惠告知书编号(止)： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_endCode" name="info_endCode"
+																		class="col-xs-10 col-sm-5" value="${(projectBase.projectInfo.endCode)!''}" /><span
+																		class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<!-- <div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="buildingProjectId"> 推广城市： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="popCityId" name="popCityId"
+																		class="col-xs-10 col-sm-5" value="" />
+																</div>
+															</div>
+														</div> -->
+	
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_disp"> 显示范围： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="info_disp" name="info_disp" data-placeholder="请选择"<#if
+																		(actionType == "modify" || actionType =="view")>disabled="disabled"</#if>
+																		url="../../common/getprojectdispcombo" selectval="${(projectBase.projectInfo.disp)!''}">
+																	</select><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+												<div style="width: 30%;float: right;"></div>
+											</div>
+											<!-- 项目属性配置 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-3" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														项目属性配置
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-3"
+													aria-expanded="false">
+													<div class="panel-body">
+														<div style="width:70%;float:left;">
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_developerRule"> 开发商界定规则： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_developerRule"
+																		name="info_developerRule" class="col-xs-10 col-sm-5"
+																		value="${(projectBase.projectInfo.developerRule)!''}" /><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_commissionRule"> 帮客佣金规则： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_commissionRule"
+																		name="info_commissionRule" class="col-xs-10 col-sm-5"
+																		value="${(projectBase.projectInfo.commissionRule)!''}" /><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_settlementHours"> 帮客结佣周期(小时)： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_settlementHours"
+																		name="info_settlementHours" class="col-xs-10 col-sm-5"
+																		value="${(projectBase.projectInfo.settlementHours)!''}" /><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div style="width: 30%;float: right;"></div>
+												</div>
+												</div>
+											</div>
+											<!-- 楼盘卖点 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-4" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														楼盘卖点
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-4"
+													aria-expanded="false">
+													<div class="panel-body">
+														<div style="width:70%;float:left;">
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptPrice"> 价格优势： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptPrice"
+																		name="info_descriptPrice" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptPrice)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptHouse"> 户型面积： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptHouse"
+																		name="info_descriptHouse" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptHouse)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptSupporting"> 生活配套： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptSupporting"
+																		name="info_descriptSupporting" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptSupporting)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptTraffic"> 交通出行： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptTraffic"
+																		name="info_descriptTraffic" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptTraffic)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptEdu"> 学区配套： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptEdu" name="info_descriptEdu"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.descriptEdu)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptPlanning"> 区域发展： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptPlanning"
+																		name="info_descriptPlanning" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptPlanning)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptCharacteristic"> 项目特色： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptCharacteristic"
+																		name="info_descriptCharacteristic"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.descriptCharacteristic)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptProperty"> 物业管理： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptProperty"
+																		name="info_descriptProperty" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptProperty)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptBrand"> 品牌优势： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptBrand"
+																		name="info_descriptBrand" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptBrand)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptContrast"> 竞争对比： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptContrast"
+																		name="info_descriptContrast" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptContrast)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_descriptOther"> 其他： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_descriptOther"
+																		name="info_descriptOther" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.descriptOther)!''}" />
+																</div>
+															</div>
+														</div>
+													</div>
+													<div style="width: 30%;float: right;"></div>
+												</div>
+												</div>
+											</div>
+											<!-- 目标客户 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-5" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														目标客户
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-5"
+													aria-expanded="false">
+													<div class="panel-body">
+													<div style="width:70%;float:left;">
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customAge"> 客户年龄： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customAge" name="info_customAge"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customAge)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customIntent"> 购房目的： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customIntent" name="info_customIntent"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customIntent)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customBudget"> 购房预算： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customBudget" name="info_customBudget"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customBudget)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customProfession"> 客户职业： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customProfession"
+																		name="info_customProfession" class="col-xs-10 col-sm-10"
+																		value="${(projectBase.projectInfo.customProfession)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customWork"> 工作区域： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customWork" name="info_customWork"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customWork)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customLive"> 居住区域： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customLive" name="info_customLive"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customLive)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customOther"> 客户其他： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customOther" name="info_customOther"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customOther)!''}" />
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="info_customSkill"> 拓客技巧： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="text" id="info_customSkill" name="info_customSkill"
+																		class="col-xs-10 col-sm-10" value="${(projectBase.projectInfo.customSkill)!''}" />
+																</div>
+															</div>
+														</div>
+													</div>
+													</div>
+													<div style="width: 30%; float: right;"></div>
+												</div>
+											</div>
+											<!-- 楼盘全部户型 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-6" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														楼盘全部户型
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-6"
+													aria-expanded="false">
+													<div class="panel-body">
+													<div style="width:70%;float:left;">
+														<div id="houseContent" class="tab-pane">
+															<ul class="ace-thumbnails" id="buildingHouseImg">
+																<#if (projectBase.buildingHouseList)??>
+																	<#list projectBase.buildingHouseList as buildingHouse>
+																		<li>
+																			<a href="javascript:void();" data-rel="colorbox">
+																				<img id="img${buildingHouse.houseId}" class="building_house_img" src="../../${(buildingHouse.houseMainImg)!'/assets/img/unit_all1.png'}">
+																			</a>
+																			<div class="favourable">
+																				<input class="ace all_hose_check" type="checkbox" value="${(buildingHouse.houseId)!''}" id="chkHouse${buildingHouse.houseId}"
+																					<#if (projectBase.projectHouseUnionList)??>
+																						<#list projectBase.projectHouseUnionList as unionHouse>
+																							<#if (unionHouse.houseId == buildingHouse.houseId)>checked</#if>
+																						</#list>
+																					</#if>	
+																				/>
+																				<span class="lbl" id="content${buildingHouse.houseId}">${buildingHouse.houseId}[${buildingHouse.col1}]${buildingHouse.floorArea}平</span>
+																			</div>
+																		</li>
+																	</#list>
+																</#if>			 
+															</ul>
+														</div>
+													</div>
+													</div>
+													<div style="width: 30%;float: right;"></div>
+												</div>
+											</div>
+											<!-- 项目合作户型 -->
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-7" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="false"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														项目合作户型
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-7"
+													aria-expanded="false">
+													<div class="panel-body">
+													<div style="width:70%;float:left;">
+														<div id="houseUnionContent" class="tab-pane">
+															<ul class="ace-thumbnails" id="projectHouseUnionImg">
+																<#if (projectBase.projectHouseUnionList)??>
+																	<#list projectBase.projectHouseUnionList as unionHouse>
+																		<li id="li${unionHouse.houseId}">
+																			<a href="javascript:void();" data-rel="colorbox">
+																				<img class="building_house_img" src="../../${(unionHouse.houseMainImg)!'/assets/img/unit_all1.png'}">
+																			</a>
+																			<div class="hose-des">
+																				<p class="lbl">${unionHouse.houseId}[${unionHouse.houseStr}]${unionHouse.floorArea}平</p>
+																			</div>
+																			<div class="pro-recommend">
+																				<input type="checkbox" name="isNominate" id="chkUnionHouse${unionHouse.houseId}" <#if unionHouse.isCommend==1>checked</#if> />是否推荐
+																			</div>
+																			<div class="favourable">
+																				<p>房源数量</p>
+																				<p><input type="text" id="houseNum${unionHouse.houseId}" maxlen="5" value="${(unionHouse.houseCount)!''}" style="padding: 0 5px;text-align:center;"></p>
+																				<p class="favourable-num">此数量为参考数量，非实际数量</p>
+																			</div>
+																		</li>
+																	</#list>
+																</#if>
+															</ul>
+														</div>
+													</div>
+													</div>
+													<div style="width: 30%;float: right;"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 按钮区 -->
+								<div class="clearfix form-actions">
+									<div class="col-md-offset-3 col-md-9">
+										<@shiro.hasPermission name="project:info:save">
+										<#if actionType != "view">
+											<button id="info_saveBtn" class="btn btn-info" type="button">保存</button>&nbsp; &nbsp; &nbsp;											
+										</#if>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="project:info:cancel">
+											<button id="info_backBtn" class="btn" type="reset">取消</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>	
+	<script type="text/javascript">
+		$('.date-picker').datepicker({
+			autoclose : true
+		});
+	</script>
+	<script type="text/javascript" src="../../assets/module/project/js/projectinfo.js?${.now?long}"></script>
+</html>
+

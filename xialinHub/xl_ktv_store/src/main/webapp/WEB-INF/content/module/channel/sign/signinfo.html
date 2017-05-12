@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>门店项目合作关系管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<#include "/common/include_head_css.html"/> 
+<#include "/common/include_jquery_core.html"/> 
+<#include "/common/include_bootstrap_core.html"/> 
+<#include "/common/include_ace_core.html"/> 
+<#include "/common/include_jqgrid_core.html"/> 
+<#include "/common/include_plugin.html"/>
+<style type="text/css">
+	.required-star{
+	    background-color: #FFF;
+	    color: #ff5555;
+	    width: 16px !important;
+	    font-size: 16px;
+	    margin-left: 5px;
+	    padding-left: 10px;
+	}
+</style>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							<a href="index">公司/项目合作</a>
+							<small> 
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								<#if actionType=='add'> 新增项目签约经纪公司 <#elseif actionType=="modify"> 修改项目签约经纪公司  <#else>查看项目签约经纪公司  </#if>
+							</small>
+						</h1>
+					</div>
+					<input type="hidden" id="actionType" value="${actionType!''}">
+					<input type="hidden" id="signId" value="${(channelSign.signId)!''}">
+					<input type="hidden" id="fingerprint" value="${(channelSign.fingerprint)!''}">
+					<div class="row">
+						<div class="col-xs-12">
+							<form id="signForm" class="form-horizontal" role="form">
+								<div class="tab-content no-border padding-5">
+									<div id="faq-tab-1" class="tab-pane fade in active">
+										<div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-1" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="true"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														项目信息
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-1" aria-expanded="false">
+													<div class="panel-body">
+														<!-- 省份选择区 -->
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="projectProvince"> 所属省： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="projectProvince" name="projectProvince"
+																		data-placeholder="选择所属省"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getprovincecombo" child="projectCity" 
+																		selectval="${(channelSign.projectProvinceId)!''}">
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="projectCity"> 所属市： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="projectCity" name="projectCity"
+																		data-placeholder="选择所属市"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getcitycombo" child="projectInfoId" 
+																		selectval="${(channelSign.projectCityId)!''}">
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="projectInfoId"> 项目名称： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="projectInfoId" name="projectInfoId"
+																		data-placeholder="选择项目" cascade="cascade"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getprojectbycitycombo" 
+																		selectval="${(channelSign.projectInfoId)!''}">
+																	</select><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#faq-1-2" data-toggle="collapse"
+														class="accordion-toggle" aria-expanded="true"> <i
+														class="pull-right ace-icon fa fa-chevron-left"
+														data-icon-hide="ace-icon fa fa-chevron-down"
+														data-icon-show="ace-icon fa fa-chevron-left"></i> &nbsp;
+														合作项目
+													</a>
+												</div>
+												<div class="panel-collapse collapse in" id="faq-1-2" aria-expanded="false">
+													<div class="panel-body">
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="brokerCompanyId"> 经纪公司： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="brokerCompanyProvince" name="brokerCompanyProvince"
+																		data-placeholder="选择所属省"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getprovincecombo" child="brokerCompanyCity" 
+																		selectval="${(channelSign.companyProvinceId)!''}">
+																	</select>
+																	<select id="brokerCompanyCity" name="brokerCompanyCity"
+																		data-placeholder="选择所属市"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getcitycombo" child="brokerCompanyId" 
+																		selectval="${(channelSign.companyCityId)!''}">
+																	</select>
+																	<select id="brokerCompanyId" name="brokerCompanyId"
+																		data-placeholder="选择经纪公司" cascade="cascade"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getbrokercompanycombobycityid" 
+																		selectval="${(channelSign.brokerCompanyId)!''}">
+																	</select><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="agentId"> 联代方： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<select id="agentId" name="agentId"
+																		data-placeholder="选择联代方"
+																		<#if (actionType == "modify" || actionType == "view")>disabled="disabled"</#if>
+																		url="../../common/getchannelunion" 
+																		selectval="${(channelSign.agentId)!''}">
+																	</select><span class="required-star">*</span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="signName"> 签约名称： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<input type="text" id="signName"
+																		name="signName" class="col-xs-10 col-sm-5"
+																		value="${(channelSign.signName)!''}" />
+																	<span class="required-star">*</span>	
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="signTime"> 签约时间： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<input type="text" id="signTime" readonly="readonly"
+																		name="signTime" class="col-xs-10 col-sm-5 date-picker"
+																		data-date-format="yyyy-mm-dd" placeholder="选择签约时间"
+																		value="${(channelSign.signTime)!''}" />
+																	<span class="required-star">*</span>	
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="cooperationStart"> 合作开始日期： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<input type="text" id="cooperationStart" readonly="readonly"
+																		name="cooperationStart" class="col-xs-10 col-sm-5 date-picker"
+																		data-date-format="yyyy-mm-dd" placeholder="选择合作开始日期"
+																		value="${(channelSign.cooperationStart)!''}" />
+																	<span class="required-star">*</span>	
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right" for="cooperationEnd"> 合作结束日期： </label>
+															<div class="col-sm-5">
+																<div class="clearfix">
+																	<input type="text" id="cooperationEnd" readonly="readonly"
+																		name="cooperationEnd" class="col-xs-10 col-sm-5 date-picker"
+																		data-date-format="yyyy-mm-dd" placeholder="选择项合作结束日期"
+																		value="${(channelSign.cooperationEnd)!''}" />
+																	<span class="required-star">*</span>	
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="contractAttachmentId"> 合同呈批件： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="hidden" id="contractAttachmentId"
+																		name="contractAttachmentId" value="${(channelSign.contractAttachmentId)!''}" class="col-xs-10 col-sm-5" />
+																	<input type="text" id="contractAttachmentName" readonly="readonly"
+																		name="contractAttachmentName" value="${(channelSign.contractAttachmentName)!''}" class="col-xs-10 col-sm-5">
+																	<button id="contract_uploadBtn" class="btn btn-white btn-default btn-round uploadFile"/>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label no-padding-right"
+																for="agreementAttachmentId"> 场外非电商协议附件： </label>
+															<div class="col-sm-7">
+																<div class="clearfix">
+																	<input type="hidden" id="agreementAttachmentId"
+																		name="agreementAttachmentId" value="${(channelSign.agreementAttachmentId)!''}" class="col-xs-10 col-sm-5" />
+																	<input type="text" id="agreementAttachmentName" readonly="readonly"
+																		name="agreementAttachmentName" value="${(channelSign.agreementAttachmentName)!''}" class="col-xs-10 col-sm-5">
+																	<button id="agreement_uploadBtn" class="btn btn-white btn-default btn-round uploadFile"/>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>	
+									</div>
+								</div>
+								<div class="clearfix form-actions">
+									<div class="col-md-offset-3 col-md-9">
+										<#if actionType != "view">
+											<button id="saveBtn" class="btn btn-info" type="button">保存</button>&nbsp; &nbsp; &nbsp;										
+										</#if>
+										<button id="backBtn" class="btn" type="reset">取消</button>
+									</div>
+								</div>
+							</form>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('.date-picker').datepicker({
+		autoclose : true
+	});
+</script>
+<script type="text/javascript" src="../../assets/module/channel/sign/signinfo.js"></script>
+</html>

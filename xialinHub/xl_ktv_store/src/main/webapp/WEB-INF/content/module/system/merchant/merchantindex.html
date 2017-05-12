@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>角色管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								系统管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									商户管理
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-7">
+										<@shiro.hasPermission name="system:merchant:create">
+										<button id="add" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-plus green"></i> 创建商户
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:merchant:update">
+										<button id="edit" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-pencil blue"></i> 修改商户
+										</button>
+										</@shiro.hasPermission>
+										<@shiro.hasPermission name="system:merchant:lock">
+										<button id="lock" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-lock orange"></i> 禁用/启用商户
+										</button>
+										</@shiro.hasPermission>
+									</div>
+									<div class="col-sm-5">
+										<@shiro.hasPermission name="system:merchant:savemerchantpermission">
+										<button id="save" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-save green"></i> 保存权限
+										</button>
+										</@shiro.hasPermission>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-7">
+										<table id="grid-table"></table>
+										<div id="grid-pager"></div>
+									</div>
+									<div class="col-sm-5">
+										<div id="tree" style="height:595px"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/system/merchant/merchantindex.js"></script>
+	<script type="text/javascript" src="../../assets/module/system/merchant/merchantpermissiontree.js"></script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>查看用户信息</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<#include "/common/include_head_css.html"/> <#include
+"/common/include_jquery_core.html"/> <#include
+"/common/include_bootstrap_core.html"/> <#include
+"/common/include_ace_core.html"/> <#include
+"/common/include_jqgrid_core.html"/> <#include
+"/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							保护客户管理 <small> <i
+								class="ace-icon fa fa-angle-double-right"></i> 查看用户信息
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right"
+									for="oldPwd"> 客户姓名 </label>
+
+								<div class="col-sm-9">
+									<div class="col-sm-9">
+										<input readonly="" type="text" class="col-xs-10 col-sm-5"
+											id="form-input-readonly" value="${(customName)!''}">
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right"
+									for="oldPwd"> 客户电话 </label>
+
+								<div class="col-sm-9">
+									<div class="col-sm-9">
+										<input readonly="" type="text" class="col-xs-10 col-sm-5"
+											id="form-input-readonly" value="${(customTel)!''}">
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right"
+									for="newPwd"> 身份证 </label>
+
+								<div class="col-sm-9">
+									<div class="col-sm-9">
+										<input readonly="" type="text" class="col-xs-10 col-sm-5"
+											id="form-input-readonly" value="${(customIdcode)!''}">
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right"
+									for="confirmPwd">意向楼盘</label>
+
+								<div class="col-sm-9">
+									<div class="col-sm-9">
+										<input readonly="" type="text" class="col-xs-10 col-sm-5"
+											id="form-input-readonly" value="${(buildingProjectName)!''}">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix form-actions">
+						<div class="col-md-offset-3 col-md-9">
+							<button id="view_backBtn" class="btn btn-info" type="button">返回</button>&nbsp; &nbsp; &nbsp;
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../assets/module/project/custom/protect/customprotectview.js"></script>
+</html>

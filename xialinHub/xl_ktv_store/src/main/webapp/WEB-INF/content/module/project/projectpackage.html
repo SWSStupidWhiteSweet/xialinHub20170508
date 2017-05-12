@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>电商项目管理</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<#include "/common/include_head_css.html"/> 
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/> 
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/> 
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content" style="padding-top: 5px;padding-bottom: 5px;">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1><a href="index">项目管理</a>
+							<small> <i class="ace-icon fa fa-angle-double-right"></i>
+								套餐项目管理
+							</small>
+						</h1>
+					</div>
+					<input type="hidden" id="tabId" value="${(tabId)!''}">
+					<input type="hidden" id="actionType" value="${actionType}">
+					<input type="hidden" id="projectInfoId" value="${(projectBase.projectInfo.projectInfoId)!''}" />
+					<div class="tabbable">
+						<ul class="nav nav-tabs" id="myTab6">
+						<@shiro.hasPermission name="project:package:packagelist">
+							<li>
+								<a data-toggle="tab" href="#projectpackagelist" aria-expanded="true">项目套餐列表</a>
+							</li>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="project:package:packageloglist">		
+							<li>
+								<a data-toggle="tab" href="#projectpackageloglist" aria-expanded="false">项目套餐审核列表</a>
+							</li>
+						</@shiro.hasPermission>	
+						</ul>
+						<div class="tab-content" id="myContent6" style="overflow: hidden;">
+						<@shiro.hasPermission name="project:package:packagelist">
+							<div id="projectpackagelist" class="tab-pane">
+								<#include "projectpackagelist.html"/>
+							</div>
+						</@shiro.hasPermission>
+						<@shiro.hasPermission name="project:package:packageloglist">	
+							<div id="projectpackageloglist" class="tab-pane">
+								<#include "projectpackageloglist.html"/>
+							</div>
+						</@shiro.hasPermission>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$("#myTab6 li:first").addClass("active");
+	$("#myContent6 div:first").addClass("active");
+</script>
+</html>	

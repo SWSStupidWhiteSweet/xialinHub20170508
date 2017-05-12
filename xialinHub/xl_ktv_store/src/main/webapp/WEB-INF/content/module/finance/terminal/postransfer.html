@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>修改密码</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								POS终端管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									POS机调动
+								</small>
+							</h1>
+						</div>
+						
+						<input id="posIds" type="hidden" value="${posIds}" />
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="clearfix">
+											POS终端编号： 
+											<input id="condition" type="text" value="" />
+											<button id="search" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-search blue"></i> 搜索
+											</button>
+											<button id="choose" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-plus green"></i> 选择
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="selectingGrid"></table>
+										<div id="selectingGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br/>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="clearfix">
+											已选择POS机： 
+											<button id="delete" class="btn btn-white btn-default btn-round">
+												<i class="ace-icon fa fa-trash-o orange"></i> 删除
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="selectedGrid"></table>
+										<div id="selectedGridPager"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-12">
+								<br/>
+								<label>目标项目相关:</label>
+								<form id="posTransferForm" class="form-horizontal" role="form">
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="provinceName"> 选择省</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="provinceName" name="provinceName" data-placeholder="选择省" child="cityName" url="../../common/getprovincecombo" >
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cityName"> 选择市</label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="cityName" name="cityName" data-placeholder="选择市" child="buildingProjectName" url="../../common/getcitycombo" >
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="buildingProjectName"> 楼盘 </label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="buildingProjectName" name="buildingProjectName" data-placeholder="选择楼盘" child="projectInfoId" url="../../common/getbuildingprojectbycitycombo" >
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="projectInfoId"> 项目 </label>
+										<div class="col-sm-5">
+											<div class="clearfix">
+												<select id="projectInfoId" name="projectInfoId" data-placeholder="选择项目" url="../../common/getprojectinfocombo" >
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="useDate">使用时间</label>
+										<div class="col-sm-9">
+											<input class="col-xs-10 col-sm-3" type="text" id="useDate" placeholder="请选择起止日期" />
+										</div>
+									</div>
+									
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												确认
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/terminal/postransfer.js?${.now?long}"></script>
+</html>

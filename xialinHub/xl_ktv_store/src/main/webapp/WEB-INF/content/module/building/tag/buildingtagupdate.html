@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>标签管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</script>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header">
+							<h1>
+								标签管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									修改标签信息
+								</small>
+							</h1>
+						</div>
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="tagCreateForm" class="form-horizontal" role="form">
+									
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tagName">标签名称：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="fingerprint" name="fingerprint" type="hidden" class="col-xs-10 col-sm-2" value="${buildingTag.fingerprint!''}">
+												<input id="tagId" name="tagId" type="hidden" class="col-xs-10 col-sm-2" value="${buildingTag.tagId!''}">
+												<input id="tagName" name="tagName" type="text" class="col-xs-10 col-sm-2" value="${buildingTag.tagName!''}">
+											</div>
+										</div>
+									 </div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tagCategory"> 标签类型： </label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="tagCategory" name="tagCategory" selectval="${(buildingTag.tagCategory)!''}" url="../../common/gettagtypecombo" child="tagSubCategory">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="tagSubCategory">子标签类型：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<select id="tagSubCategory" name="tagSubCategory"  selectval="${(buildingTag.tagSubCategory)!''}"  url="../../common/gettagsubtypecombo">
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="clearfix">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/building/tag/tagupdate.js"></script>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>订单管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="row">
+												<div class="col-sm-12">
+													<button id="search" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-search blue"></i> 搜索
+													</button>
+													
+													<@shiro.hasPermission name="orderinfo:grid:add">
+													<button id="add" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-plus green"></i> 添加
+													</button>
+													</@shiro.hasPermission>
+													<@shiro.hasPermission name="orderinfo:grid:update">
+													<button id="edit" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-pencil blue"></i> 修改
+													</button>
+													</@shiro.hasPermission>
+													<@shiro.hasPermission name="orderinfo:grid:look">
+													<button id="lookInfo" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-reorder red"></i> 查看
+													</button>
+													</@shiro.hasPermission>
+													<@shiro.hasPermission name="orderinfo:grid:receipt">
+													<button id="batchReceipt" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-check green"></i> 批量收款
+													</button>
+													</@shiro.hasPermission>
+													<@shiro.hasPermission name="orderinfo:grid:lock">
+													<button id="lock" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon glyphicon glyphicon-remove red"></i> 作废订单
+													</button>
+													</@shiro.hasPermission>
+													<@shiro.hasPermission name="orderinfo:grid:export">
+													<button id="importOut" class="btn btn-white btn-default btn-round">
+														<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+													</button>
+													</@shiro.hasPermission>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="row">
+												<div class="col-sm-12">
+													<table id="grid-table"></table>
+													<div id="grid-pager"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 查询框 -->
+		<div id="condition" class="hide">
+			<div class="row">
+				<div class="col-xs-12">
+					<form class="form-horizontal" role="form">
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="timeType">
+								<select id="timeType" style="height:34px">
+									<option value="1" selected="selected">创建日期</option>
+									<option value="2">到访日期</option>
+									<option value="3">认筹日期</option>
+									<option value="4">认购日期</option>
+									<option value="5">网签日期</option>
+								</select>
+							</label>
+							<div class="col-sm-4" style="padding-top: 4px;">
+								<input style="width:200px;" type="text" id="queryDate" readonly="readonly" placeholder="请选择查询起止日期" />
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="orderStatus">订单状态</label>
+							<div class="col-sm-4">
+								<select type="text" id="orderStatus" placeholder="选择订单状态" url="../common/getorderstatuscombo">
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="orderInfoCode">订单号</label>
+							<div class="col-sm-4">
+								<input style="width:200px;" type="text" id="orderInfoCode" />
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="cheapCode">优惠告知书</label>
+							<div class="col-sm-4">
+								<input style="width:200px;" type="text" id="cheapCode" placeholder="请输入完整编号" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="customName">客户姓名</label>
+							<div class="col-sm-4">
+								<input style="width:200px;" type="text" id="customName" />
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="customTel">客户手机</label>
+							<div class="col-sm-4">
+								<input style="width:200px;" type="text" id="customTel" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="province">省</label>
+							<div class="col-sm-4">
+								<select  id="province" name="province" data-placeholder="选择所属省" child="city" url="../common/getprovincecombo" >
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="city">市</label>
+							<div class="col-sm-4">
+								<select  id="city" name="city" data-placeholder="选择所属市(请先选择所属省)"  cascade="cascade" child="buildingProject" url="../common/getcitycombo" >
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="buildingProject">楼盘</label>
+							<div class="col-sm-4">
+								<select type="text" id="buildingProject" placeholder="选择楼盘(请先选择所属市)" cascade="cascade" child="projectInfo" url="../common/getbuildingprojectcombo">
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="projectInfo">项目</label>
+							<div class="col-sm-4">
+								<select type="text" id="projectInfo" placeholder="选择项目(请先选择所属楼盘)" cascade="cascade" url="../common/getprojectinfocombo">
+								</select>
+							</div>
+						</div>
+						
+					<!-- 	<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="buildingInfo">楼盘期数</label>
+							<div class="col-sm-4">
+								<select type="text" id="buildingInfo" placeholder="选择期数(请先选择所属楼盘)" cascade="cascade" url="../common/getbuildinginfocombo" >
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="orderStatus">订单状态</label>
+							<div class="col-sm-4">
+								<select type="text" id="orderStatus" placeholder="选择订单状态" url="../common/getorderstatuscombo">
+								</select>
+							</div>
+						</div>
+					 -->
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="company">所属经纪公司</label>
+							<div class="col-sm-4">
+								<select type="text" id="company" placeholder="选择公司" url="../common/getallbrokercompanycombo" child="store" >
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="store">所属经纪门店</label>
+							<div class="col-sm-4">
+								<select type="text" id="store" placeholder="选择门店(请先选择经纪公司)" url="../common/getallbrokerstorecombo" cascade="cascade" >
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="channelType">渠道类型</label>
+							<div class="col-sm-4">
+								<select type="text" id="channelType" placeholder="选择类型" url="../common/getchanneltypecombo" >
+								</select>
+							</div>
+							
+							<label class="col-sm-2 control-label no-padding-right" for="brokerName">报备人</label>
+							<div class="col-sm-4">
+								<input style="width:200px;" type="text" id="brokerName" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/order/orderInfo/orderGrid.js"></script>
+</html>

@@ -1,0 +1,1222 @@
+html {
+	overflow-x: hidden;
+	scrolling: hidden;
+}
+
+body {
+	font-family: 微软雅黑;
+}
+.poly-house-head{
+	height: 80px;
+	line-height: 35px;
+	margin-bottom: 5px;
+}
+
+.blpc-grid-head { /*float: left;*/
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	margin-top: -0.5em;
+	background: url("../../img/title-ico.png") no-repeat left center;
+	padding-left: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head span {
+	margin-left: 10px;
+}
+
+.content_first {
+	width: 95%;
+	margin: 80px 0 0 20px;
+	height: auto;
+}
+
+.blpc-grid-head-left {
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	/* margin-top: -0.5em; */
+	background: url("../../img/title-ico.png") no-repeat left center;
+	margin-top:10px;
+	padding-left: 5px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-ser {
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	/*margin-top: -0.5em;*/
+	background: url("../../img/title-ico.png") no-repeat left center;
+	margin-top: 18px;
+	padding-left: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-ser span {
+	margin-left: 10px;
+	color: #333333;
+	font-weight: normal;
+	font-size: 20px;
+}
+.blpc-grid-head-sec {
+	float: left;
+	position: relative;
+	top: -30px;
+	left: 0;
+	margin-top: -6;
+	margin-left: 10px;
+	border-left: 5px solid #00BA9F;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-sec span {
+	margin-left: 10px;
+}
+
+.blpc-grid-head-three {
+	float: left;
+	position: relative;
+	top: -50px;
+	left: 0;
+	margin-top: -6;
+	margin-left: -2px;
+	border-left: 5px solid #00BA9F;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-three span {
+	margin-left: 10px;
+}
+.blpc-grid-head-four {
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	/*margin-top: -0.5em;*/
+	background: url("../../img/title-ico.png") no-repeat left center;
+	margin-top: -20px;
+	padding-left: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-four span {
+	margin-left: 10px;
+	color: #333333;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+.blpc-grid-head-five {
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	/*margin-top: -0.5em;*/
+	background: url("../../img/title-ico.png") no-repeat left center;
+	margin-top: 14px;
+	padding-left: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-five span {
+	margin-left: 10px;
+	color: #333333;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+.blpc-grid-head-six {
+	float: left;
+	position: relative;
+	top: 50%;
+	left: 0;
+	/*margin-top: -0.5em;*/
+	background: url("../../img/title-ico.png") no-repeat left center;
+	margin-top: -11px;
+	padding-left: 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.blpc-grid-head-six span {
+	margin-left: 10px;
+	color: #333333;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+.content_sec {
+	width: 95%;
+	margin: 20px 0 0 20px;
+	height: auto;
+}
+
+.blpc-big-border-left {
+	width: 90px;
+	margin-left: -50px;
+}
+
+.blpc-t {
+	margin-left: -125px;
+}
+
+.blpc-view-content {
+	padding-top: 30px;
+	margin-left: 80px;
+	color: #666666;
+	line-height: 30px;
+}
+
+.blpc-view-content p {
+	display: inline-block;
+	margin-left: 8px;
+}
+
+.blpc-view-content .blpc-t1 {
+	margin-left: -125px;
+	color: #333333;
+}
+
+.blpc-view-content-dynamic{
+	padding-top: 30px;
+	margin-left: 80px;
+	color: #666666;
+	line-height: 30px;
+}
+
+.blpc-view-content-dynamic span{
+	display: inline-block;
+    min-width:120px;
+    max-width:600px;
+    margin: 12px 0;
+}
+
+.blpc-view-content-dynamic .blpc-t1 {
+	margin-left: -125px;
+	color: #333333;
+}
+	
+.blpc-sp-img{
+	vertical-align: top;
+}
+
+.house_message {
+	display: block;
+	float: left;
+	white-space: nowrap;
+}
+
+.house_message_title {
+	margin-left:-30px;
+	display: block;
+	float: left;
+	white-space: nowrap;
+}
+.house_message_L {
+	display: block;
+	float: left;
+	white-space: nowrap;
+}
+
+.house_message_S {
+	margin-left: 40px;
+	width: 100px;
+	display: block;
+	float: left;
+	white-space: nowrap;
+}
+
+.word_size {
+	font-size: 14px;
+	margin-left: 10px
+}
+
+.content_text {
+	margin-left: 40px;
+	width: 45%;
+	min-height: 180px;
+}
+
+.message {
+	margin: 25px 0 0 155px;
+	height: 30px;
+}
+
+.message span{
+	width: 100px;
+}
+
+.message input{
+	margin-left: 40px;
+}
+
+.message-serch-content{
+	border:1px solid #C0C0C0;
+	width:300px;
+	height:auto;
+	z-index:100;
+	display:none;
+}
+.message-label {
+	vertical-align: top;
+}
+.message-add-label{
+	margin: 0px;
+	vertical-align: top;
+}
+
+.blpc-mes-length {
+	margin-top: -20px;
+}
+.message-content-house{
+	margin: 25px 0 0 155px;
+	min-height: 100px;
+}
+
+.message-house-label{
+	vertical-align: top;
+}
+
+.edit-house-label{
+	display:inline-block;
+	margin-left:40px;
+	line-height:30px;
+	width:600px;
+}
+.message-F {
+	padding-top: 60px;
+	margin-left: -50px;
+}
+
+.one {
+	margin-left: -29px;
+}
+
+.message-fir {
+	margin-top: 40px;
+}
+
+.message-low {
+	margin: 20px 0 0 141px;
+}
+
+.message-low input{
+	margin-left: 40px;
+}
+
+.message-company{
+	width: 100%;
+	height: 40px;
+	margin:-20px 0 0  155px;
+}
+
+.content-marLeft {
+	margin-left: 41px;
+	width: 110px;
+	height: 30px;
+	line-height: 30px;
+}
+
+.content-marLeft:hover {
+	border: 1px solid #00ba9f;
+}
+
+.message-label-firest {
+	margin-left: 6%;
+	width: 60%;
+	height: auto;
+}
+
+.message-label-second {
+	margin: 20px 0 0 6%;
+	width: 60%;
+	height: auto;
+}
+
+.dot_color {
+	color: red;
+}
+
+.longitude {
+	margin-left: 40px;
+	width: 110px;
+	line-height: 25px;
+}
+
+.longitude:hover {
+	border: 1px solid #00ba9f;
+}
+
+.remark {
+	margin-left: 23px;
+}
+
+.developer-deve {
+	margin-left: 40px;
+	white-space: nowrap;
+	width: 300px;
+}
+
+.developer-deve:hover {
+	border: 1px solid #00ba9f;
+}
+
+.remark_K {
+	margin-left: 5px;
+}
+
+.remark_input {
+	margin-left: 40px;
+}
+
+.dot_color_span {
+	margin-left: 8px;
+}
+
+.house_loper {
+	width: 357px;
+	color:#333333;
+	font-size:14px;
+	line-height: 30px;
+}
+
+.house_loper:hover {
+	border: 1px solid #00ba9f;
+}
+
+.message-button-firest {
+	width: 60px;
+	height: 28px;
+	line-height: 28px;
+	solid-color: none;
+	background-color: #dddddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	order-radius: 6px;
+	margin: 10px 0 0 15px;
+	outline: none;
+}
+
+.message-button-seccond {
+	width: 80px;
+	height: 28px;
+	line-height: 28px;
+	solid-color: none;
+	background-color: #dddddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	order-radius: 6px;
+	margin: 10px 0 0 15px;
+	outline: none;
+}
+
+.but_check {
+	margin-left: 40px;
+	height: 25px;
+}
+
+.message-button-three {
+	width: 100px;
+	height: 28px;
+	line-height: 28px;
+	solid-color: none;
+	background-color: #dddddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	order-radius: 6px;
+	margin: 10px 0 0 15px;
+	outline: none;
+}
+
+.message-button-four {
+	width: 110px;
+	height: 28px;
+	line-height: 28px;
+	solid-color: none;
+	background-color: #dddddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	order-radius: 6px;
+	margin: 10px 0 0 15px;
+	outline: none;
+}
+
+.message-button-five {
+	width: 170px;
+	height: 28px;
+	line-height: 28px;
+	solid-color: none;
+	background-color: #dddddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	order-radius: 6px;
+	margin: 10px 0 0 15px;
+	outline: none;
+}
+
+.developer {
+	width: 300px;
+	line-height: 25px;
+	margin-left: 40px;
+}
+
+.developer:hover {
+	border: 1px solid #00ba9f;
+}
+
+.developer_span {
+	margin-left: 30px
+}
+
+/*物业类型管理-----楼盘动态管理 样式*/
+.content {
+	width: 90%;
+	height: auto;
+	margin: 20px 0 0 140px;
+}
+
+.all {
+	width: 25%;
+	float: left;
+}
+
+.first_div {
+	width: 10%;
+	height: auto;
+	float: left;
+	margin-top: 60px;
+	font-size: 16px;
+	line-height: 42px;
+}
+
+.first_div_span {
+	float: right;
+	line-height: 28px;
+	margin-top: 8px;
+	display: block;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.sec_div {
+	display: block;
+	float: left;
+	white-space: nowrap;
+	width: 32%;
+	margin: 60px 0 0 30px;
+	line-height: 42px;
+}
+
+.sec-div-content{
+	max-width:600px;
+}
+
+.sec_div_selO {
+	width: 99%;
+	line-height: 30px;
+}
+
+.sec_div_selT {
+	width: 99%;
+	margin-top: 6px;
+	line-height: 30px;
+	outline: none;
+}
+
+.sec_div_selT option {
+	outline: none;
+}
+
+.sec_div_selTT {
+	width: 99%;
+	margin-top: 5px;
+	line-height: 30px;
+	outline: none;
+}
+/*查看楼盘CSS样式*/
+.check_houseall {
+	width: 60%;
+	height: auto;
+	display: block;
+	white-space: nowrap;
+	float: left;
+}
+
+.check_tit {
+	width: 10%;
+	font-size: 16px;
+	margin: 60px 0 0 10px;
+}
+
+.check_house {
+	width: 20%;
+	font-size: 14px;
+	margin-left: 15%;
+	margin-top: -30px;
+	display: block;
+	white-space: nowrap;
+	float: left;
+	line-height: 40px;
+}
+
+.check_house_l {
+	display: block;
+	white-space: nowrap;
+	float: right;
+}
+
+.check_information {
+	max-width:600px;
+	/* width: 200px; */
+	line-height: 40px;
+	margin-top: -30px;
+	margin-left: 30px;
+	display: block;
+	white-space: nowrap;
+	float: left;
+}
+
+.check_information span{
+	float: left;
+	line-height: 30px;
+	height: auto;
+}
+
+.blpc-house-map {
+	width: 100%;
+	height: 140px;
+}
+
+.blpc-house-map-content{
+	width: 400px;
+	height: 260px;;
+	margin-left: 56%;
+	margin-top: -150px;
+}
+
+.message-serch {
+	line-height:30px;
+	height: 30px;
+}
+
+.blpc-house-small-map {
+	width: 398px;
+	margin-top:18px;
+	height: 210px;
+	border: #ccc solid 1px;
+}
+
+.blpc-house-developers {
+	margin-left: 38px;
+	white-space: nowrap;
+	width: 300px;
+	height: 30px;
+	line-height: 30px;
+}
+
+/* .check_information_l {
+	display: block;
+	white-space: nowrap;
+	float: left;
+} */
+/*新增户型CSS样式*/
+.sub-pro {
+	margin-left: 20px;
+}
+
+.sub-pro input {
+	margin: 0 6px;
+}
+
+.pre,.awa {
+	width: 55px;
+	margin: 0 auto;
+	border-radius: 5px;
+	border: none;
+}
+
+.pre {
+	background: #00BA9F;
+	color: white;
+	margin-left: 20px;
+}
+
+.awa {
+	background: gainsboro;
+	color: black;
+	float: left;
+}
+
+.user_m {
+	width: 80%;
+	height: auto;
+	margin: 60px 0 0 60px;
+}
+
+.user_m_T {
+	margin-top: 15px;
+}
+
+.user_m_F {
+	border: 1px solid #dddddd;
+	Border-bottom-style: none;
+	width: 100%;
+	height: 240px;
+	margin-top: 15px;
+}
+
+.user_m_s {
+	border: 1px solid #dddddd;
+	width: 100%;
+	height: 80px;
+	margin-top: 15px;
+}
+
+.user_img {
+	margin: 20px;
+	width: 150px;
+	height: 100px;
+}
+
+.user_inp {
+	width: 150px;
+	height: 40px;
+	line-height: 15px;
+	margin-left: 20px;
+	border: none;
+}
+
+.user_span_one {
+	margin-left: -40px;
+}
+/*相册信息管理CSS*/
+.album-content {
+	width: 60%;
+	height: auto;
+	margin: 60px 0 0 60px;
+}
+
+.album-div-size {
+	font-size: 18px;
+}
+
+.album-div-size-firest {
+	font-size: 18px;
+}
+/*户型信息管理CSS样式*/
+.awa {
+	background: gainsboro;
+	color: black;
+}
+
+.user_m_T {
+	margin: 25px;
+}
+
+.user_span {
+	margin-left: 25px;
+}
+
+.user_m_FT {
+	border: 1px solid #dddddd;
+	Border-bottom-style: none;
+	width: 100%;
+	min-height: 0px;
+	display: table;
+	margin: 15px 0 0 25px;
+}
+
+.user_m_S {
+	border: 1px solid #dddddd;
+	width: 100%;
+	height: 80px;
+	margin-top: 15px;
+}
+
+.user_L {
+	float: left;
+}
+/*配套信息管理CSS样式*/
+.dynamic_btn {
+	width: 100%;
+	height: 80px;
+	outline: none;
+	margin-top: 10px;
+	line-height: 40px;
+}
+
+.matting_btn_1 {
+	background-color: #dddddd;
+	border: none;
+	height: 24px;
+	width: 72px;
+	line-height: 23px;
+	margin-top: 10px;
+}
+
+.matting_btn_2 {
+	background-color: #00ba9f;
+	border: none;
+	height: 24px;
+	width: 72px;
+	line-height: 23px;
+	margin-top: 10px;
+}
+
+.matting-tab {
+	width: 60%;
+	height: auto;
+	margin: 60px 0 0 60px;
+}
+
+.matting-top-length {
+	margin-top: 15px
+}
+
+.matting-top-font-size {
+	font-size: 18px;
+	margin-top: 20px;
+}
+
+.matting-dive {
+	width: 85%;
+	min-height: 0px;
+	display: table;
+	border: 1px solid #dddddd;
+	line-height: 40px;
+	padding-bottom: 10px;
+}
+
+.matting-dive img.pic {
+	width: 150px;
+	height: 120px;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+.matting-dive .matting-di-closeimg {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+.matting-di-checkbox-txt {
+	margin-left: 30px;
+	margin-top: -30px;
+	color: #FFFFFF;
+}
+
+.matting-dive .matting-di-closeimg {
+	background: url("../../img/icon-close2.png" ) no-repeat center;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+}
+
+.matting-dive .matting-di-cover {
+	float: left;
+	position: absolute;
+	bottom: 10px;
+	left: 20px;
+	width: 150px;
+	background: #000;
+	height: 30px;
+	line-height: 30px;
+	filter: alpha(opacity =   70);
+	-moz-opacity: 0.7;
+	-khtml-opacity: 0.7;
+	opacity: 0.7;
+}
+
+.matting-dive input {
+	width: 102px;
+	height: 25px;
+}
+
+.matting-input-span {
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+.matting-img {
+	width: 180px;
+	height: 180px;
+/* 	margin-top: 8px;
+	margin-left: 15px; */
+}
+.matting-addDynamic {
+	width: 300px;
+	min-height: 0px;
+	margin-top: 10px;
+	display: table;
+	position: relative;
+	padding-bottom: 10px;
+}
+.matting-img-addDynamic{
+	width: 300px;
+	height: 180px;
+}
+/* 查看相册图片 */
+.check-matting-img{
+	width: 150px;
+	height: 120px;
+	margin-top: 8px;
+	margin-left: 15px;
+}
+/*button样式*/
+.btn-project {
+	width: 40%;
+	height: 40px;
+	line-height: 40px;
+	margin: 50px auto;
+	padding-top: 50px;
+	clear: both;
+	cursor: pointer;
+}
+
+.btn-project input {
+	margin: 0 15px;
+}
+
+.preserv,.awayl {
+	width: 120px;
+	margin: 0 auto;
+	border-radius: 5px;
+	border: none;
+}
+
+.preserv {
+	background: #00BA9F;
+	color: white;
+}
+
+.awayl {
+	background: gainsboro;
+	color: black;
+}
+
+.iw_poi_title {
+	color: #CC5522;
+	font-size: 14px;
+	font-weight: bold;
+	overflow: hidden;
+	padding-right: 13px;
+	white-space: nowrap
+}
+
+.iw_poi_content {
+	font: 12px arial, sans-serif;
+	overflow: visible;
+	padding-top: 4px;
+	white-space: -moz-pre-wrap;
+	word-wrap: break-word
+}
+/*新增by陈诚*/
+.blpc-house-width {
+	margin-left: 30px;
+}
+
+.blpc-view-list-item div.message {
+	margin-top: 20px;
+	margin-bottom: 0;
+}
+
+.blpc-view-list-item div.blpc-marg0 {
+	margin-top: 0;
+}
+
+.blpc-houseadd-label {
+	height: 28px;
+	background: #f3f3f3;
+	border: 1px solid #d7d7d7;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: #616568;
+}
+
+.blpc-houseadd-label:hover {
+	background: #01a89e;
+	border: 1px solid #7fd4cd;
+	color: #fff;
+}
+
+.blpc-houseadd-label-click {
+	height: 28px;
+	background: #01a89e;
+	border: 1px solid #7fd4cd;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+.blpc-houseadd-label1 {
+	height: 28px;
+	background: #f3f3f3;
+	border: 1px solid #d7d7d7;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: #616568;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 10px 15px auto auto
+}
+
+.blpc-houseadd-label1:hover {
+	background: #01a89e;
+	border: 1px solid #7fd4cd;
+	color: #fff;
+}
+
+.blpc-houseadd-label1-click {
+	height: 28px;
+	background: #01a89e;
+	border: 1px solid #7fd4cd;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 10px 15px auto auto
+}
+
+.dot_col_box {
+	position: relative;
+	display: inline-block;
+}
+
+.dot_col_box .dot_color {
+	position: absolute;
+	top: 5px;
+	left: -20px;
+}
+
+.blpc-house-select {
+	width: 60px;
+	height:30px;
+	line-height: 30px;
+}
+
+.blpc-house-select:hover {
+	border: 1px solid #00ba9f;
+}
+
+.blpc-house-select1 {
+	width: 110px;
+}
+
+.blpc-house-select1:hover {
+	border: 1px solid #00ba9f;
+}
+
+p.blpc-house {
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 15px;
+}
+
+.blpc-view-content span.remark {
+	margin-left: 10px;
+}
+
+.blpc-house-select-width {
+	width: 300px;
+	height: 30px;
+	line-height: 30px;
+}
+
+.blpc-house-checkbox-txt {
+	margin-left: 3px;
+	margin-right: 15px;
+}
+
+.blpc-house-textarea {
+	width: 300px;
+	height: 100px;
+	margin-top: 20px;
+}
+
+.fl {
+	float: left;
+	vertical-align: top;
+	margin-top: -20px;
+}
+
+.blpc-house-btn {
+	color: #3d3d3d;
+	width: 65px;
+	height: 20px;
+	line-height: 20px;
+	background: #fff;
+	border: 1px solid #b2b2b2;
+	display: inline-block;
+	text-align: center;
+	font-size: 12px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+a.blpc-house-btn:hover {
+	color: #00ba9f;
+}
+
+.blpc-house-btn-click {
+	width: 65px;
+	height: 20px;
+	line-height: 20px;
+	background: #01a89e;
+	border: 1px solid #7fd4cd;
+	color: #fff;
+	display: inline-block;
+	text-align: center;
+	font-size: 12px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px
+}
+
+.blpc-house-table {
+	display: inline-block;
+}
+
+.blpc-house-table span {
+	color: #999999;
+	font-size: 12px;
+	margin-left: 4px;
+	display: inline-block;
+}
+
+.blpc-house-table textarea {
+	width: 250px;
+	height: 100px;
+	margin-top: 10px;
+}
+
+.blpc-view-list-item div.blpc-housetype,.blpc-view-list-item div.blpc-house-closeimg
+	{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.blpc-housetype {
+	border: 1px solid #d7d7d7;
+	background: #fff;
+	width: 204px;
+	height: 204px;
+	position: relative;
+	float: left;
+	margin-right: 8px;
+}
+
+.blpc-housetype img.pic {
+	width: 200px;
+	height: 200px;
+	margin-top: 2px;
+	margin-left: 2px;
+}
+
+.blpc-housetype .blpc-house-closeimg {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+.blpc-housetype .blpc-house-closeimg a {
+	background: url("../../img/icon-close2.png" ) no-repeat center;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+}
+
+.blpc-housetype .blpc-house-cover {
+	float: left;
+	margin-left: 16%;
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	width: 136px;
+	background: #000;
+	height: 30px;
+	line-height: 30px;
+	filter: alpha(opacity =   70);
+	-moz-opacity: 0.7;
+	-khtml-opacity: 0.7;
+	opacity: 0.7;
+	text-align: center;
+}
+
+.blpc-house-cover .blpc-house-checkbox-txt {
+	font-size: 12px;
+	color: #fff;
+	float: left;
+}
+
+.blpc-view-list-item .blpc-house-cover div.icheckbox-blpc {
+	float: left;
+	margin: 8px 5px auto 10px;
+}
+
+.blpc-btn-updatefile {
+	width: 500px;
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.blpc-chkboxtxt {
+	margin-left: 5px;
+	margin-right: 15px;
+}
+
+.clear-float {
+	clear: both;
+}
+/*houseinfoMgr按钮样式开始  */
+.blpc-select-middle{
+	width:220px;
+}
+
+.fl {
+	float: left;
+	vertical-align: top;
+}
+
+.clear {
+	clear: both;
+}
+
+.blpc-houseinfo-textarea {
+	width: 300px;
+	height: 150px;
+	line-height: 26px;
+	color: #666666;
+	margin-top: 20px;
+}
+
+.blpc-houseinfo-labeltxt {
+	float: left;
+	margin:-20px 0 0 120px;
+	display: inline-block;
+	width: 500px;
+	min-height: 50px;
+}
+.blpc-houseinfo-pull-down{
+	margin: -40px;
+	margin-left: 60px;
+}
+/*houseinfoMgr按钮样式结束  */

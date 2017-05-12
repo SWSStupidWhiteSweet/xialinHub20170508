@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>客户报备</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<#include "/common/include_head_css.html"/>
+<#include "/common/include_jquery_core.html"/>
+<#include "/common/include_bootstrap_core.html"/>
+<#include "/common/include_ace_core.html"/>
+<#include "/common/include_jqgrid_core.html"/>
+<#include "/common/include_plugin.html"/>
+</head>
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<div class="main-content">
+			<div class="page-content" style="padding-top:10px; padding-bottom:10px;">
+				<div class="page-content-area">
+					<div class="page-header">
+						<h1>
+							订单管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+								客户报备
+							</small>
+						</h1>
+					</div>
+
+					<!-- 以上div层必写 -->
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="row">
+								<div id="waitCondition" class="hide">
+									<div class="row">
+										<div class="col-xs-12">
+											<form class="form-horizontal" role="form">
+												<div class="form-group">
+													<label class="col-sm-2 control-label no-padding-right"
+														for="province"> 所属省份 </label>
+													<div class="col-sm-4">
+														<select id="province" name="province"
+															data-placeholder="选择所属省"
+															url="../../common/getprovincecombo" child="city">
+															<option>==请选择==</option>
+														</select>
+													</div>
+
+
+													<label class="col-sm-2 control-label no-padding-right">
+														所属城市 </label>
+													<div class="col-sm-4">
+														<select id="city" name="city" data-placeholder="选择所属市"
+															child="project" url="../../common/getcitycombo">
+															<option>==请选择==</option>
+														</select>
+													</div>
+												</div>
+
+												<div class="form-group">
+
+													<label class="col-sm-2 control-label no-padding-right">所属项目</label>
+
+													<div class="col-sm-4">
+														<select style="width: 120px" id="project" name="project"
+															data-placeholder="选择" url="../../order/rc/getProjectInfo"
+															cascade="cascade">
+														</select>
+													</div>
+
+													<label class="col-sm-2 control-label no-padding-right">
+														状态</label>
+
+													<div class="col-sm-4">
+														<select style="width: 120px" id="stuts" name="stuts"
+															data-placeholder="请选择"
+															url="../../order/rc/getOrderStatus">
+														</select>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-2 control-label no-padding-right"
+														for="merchantName"> 客户姓名 </label>
+
+													<div class="col-sm-4">
+														<input id="cusname" style="width: 200px;" name="cusname"
+															type="text" placeholder="请输入客户姓名">
+													</div>
+													<label class="col-sm-2 control-label no-padding-right"
+														for="merchantName"> 客户号码 </label>
+
+													<div class="col-sm-4">
+														<input id="custel" style="width: 200px;" name="custel"
+															type="text" placeholder="请输入客户号码"
+															value="${(customTel)!''}">
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="col-sm-2 control-label no-padding-right"
+														for="waitBuildingProjectId">经纪公司/门店/经纪人</label>
+													<div class="col-sm-4">
+														<input id="all" name="all" type="text"
+															placeholder="经纪公司/门店/经纪人" style="width: 200px;">
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								<!-- 新确认框 -->
+								<div id="dialog-message" class="hide">
+									<div class="row">
+										<div class="col-xs-12">
+
+											<div class="form-group">
+												<label class="col-sm-4 control-label no-padding-right"
+													style="text-align: right;"> 状态 </label>
+												<div class="col-sm-8">
+													<select id="order_stuts">
+														<option value="3">报备有效</option>
+														<option value="2">报备无效</option>
+													</select>
+												</div>
+											</div>
+											<br>
+											<div class="form-group">
+												<label class="col-sm-4 control-label no-padding-right"
+													style="text-align: right;"> 备注</label>
+												<div class="col-sm-8">
+													<textarea class="form-control" id="remark"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="col-xs-12" align="left">
+									<button id="serch" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-search blue"></i> 搜索
+									</button>
+									<@shiro.hasPermission name="order:rc:qr">
+									<button id="lock" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-check green"></i> 报备确认
+									</button>
+									</@shiro.hasPermission> <@shiro.hasPermission
+									name="order:rc:export">
+										<button id="export" class="btn btn-white btn-default btn-round">
+											<i class="ace-icon fa fa-file-excel-o green"></i> 导出
+										</button>
+									</@shiro.hasPermission>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<table id="grid-table-order"></table>
+									<div id="grid-pager"></div>
+								</div>
+
+							</div>
+							<!-- 报备确认框 -->
+							<!-- 							<div id="dialog-message" class="hide"> -->
+							<!-- 								<div align="center" class="col-xs-6"> -->
+							<!-- 									<label class=" control-label no-padding-right" -->
+							<!-- 										for="merchantName">状态: </label> -->
+							<!-- 								</div> -->
+							<!-- 								<div class="col-xs-6" align="left"> -->
+							<!-- 									<select id="order_stuts"> -->
+							<!-- 										<option value="3">报备有效</option> -->
+							<!-- 										<option value="2">报备无效</option> -->
+							<!-- 									</select> -->
+							<!-- 								</div> -->
+
+
+							<!-- 								<div align="center" class="col-xs-6"> -->
+							<!-- 									<label class=" control-label no-padding-right" -->
+							<!-- 										for="merchantName">备注: </label> -->
+							<!-- 								</div> -->
+							<!-- 								<div align="left" class="col-xs-6"> -->
+							<!-- 									<textarea rows="5" cols="10" id="remark"></textarea> -->
+							<!-- 								</div> -->
+
+							<!-- 							</div> -->
+
+
+
+							<!-- #dialog-message -->
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+<script type="text/javascript"
+	src="../../assets/module/order/rc/orderrcindex.js"></script>
+
+
+</html>

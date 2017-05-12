@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>楼盘联代方销售团队管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content" style="padding-bottom: 0px;">
+					<div class="page-content-area">
+						
+						<!-- 以上div层必写 -->
+						
+						<div class="row">
+							<div class="col-xs-12">
+							<#if merchantType=="开发商">
+								<div class="clearfix" style="margin-bottom:4px;">
+									<select id="agentId" name="agentId" data-placeholder="选择联代方" url="../common/getagentcombobyprojectid?pValue=${(buildingProjectInfo.buildingProjectId)!''}">
+									</select>
+								</div>
+							</#if>
+							<div class="row">
+								<div class="col-sm-3">
+									<input type="hidden" id="buildingProjectId" value="${(buildingProjectInfo.buildingProjectId)!''}">
+									<input type="hidden" id="merchantType" value="${(merchantType)!''}">
+									<input type="hidden" id="agentGroupId" value="">
+
+									<@shiro.hasPermission name="buildingproject:insertagentgroup">
+									<button id="saveBtn" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-plus green"></i>
+										添加团队
+									</button>
+									</@shiro.hasPermission> <@shiro.hasPermission name="buildingproject:updateagentgroup">
+									<button id="updateBtn" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-pencil green"></i>
+										修改团队
+									</button>
+									</@shiro.hasPermission> <@shiro.hasPermission name="buildingproject:delgroup">
+									<button id="deleteBtn" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-trash-o orange"></i>
+										删除团队
+									</button>
+									</@shiro.hasPermission>
+
+								</div>
+								<div class="col-sm-5">
+									<@shiro.hasPermission name="buildingproject:deleteagent">
+									<button id="delete" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-trash-o orange"></i>
+										删除人员
+									</button>
+									</@shiro.hasPermission> <@shiro.hasPermission name="buildingproject:QRMgr">
+									<button id="createQrcode" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-exchange orange"></i>
+										生成二维码
+									</button>
+									</@shiro.hasPermission> <@shiro.hasPermission name="buildingproject:updatepermessiontype">
+									<button id="permission" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-exchange orange"></i>
+										角色授权
+									</button>
+									</@shiro.hasPermission>
+								</div>
+								<div class="col-sm-4">
+									<input type="text" id="selname" placeholder="未添加人员手机号/姓名">
+									<button id="search" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-search blue"></i>
+										搜索
+									</button>
+									<@shiro.hasPermission name="buildingproject:saveagentoperator">
+									<button id="add" class="btn btn-white btn-default btn-round">
+										<i class="ace-icon fa fa-plus green"></i>
+										添加人员
+									</button>
+									</@shiro.hasPermission>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-sm-3">
+											<table id="groupGrid"></table>
+											<div id="groupGridPager"></div>
+										</div>
+										<div class="col-sm-5">
+											<table id="bindOperatorGrid"></table>
+											<div id="bindOperatorGridPager"></div>
+										</div>
+										<div class="col-sm-4">
+											<table id="noBindOperatorGrid"></table>
+											<div id="noBindOperatorGridPager"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="condition" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="orderInfoCode">角色授权： </label>
+						<div class="col-sm-9">
+							<select id="perType" name="permessionType" data-placeholder="选择权限类型" url="../common/getpermissioncombo"></select>			
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="salegroup" class="hide">
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal" role="form">
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="orderInfoCode">团队名称： </label>
+						<div class="col-sm-9">
+							<input id="agentGroupName" name="agentGroupName" type="text" placeholder="团队名称" value="">		
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script type="text/javascript" src="../assets/module/building/buildinggroup/buildinggroupindex.js?${.now?long}"></script>
+</html>

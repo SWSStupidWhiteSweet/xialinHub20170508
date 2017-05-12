@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>回收发票</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+		<#include "/common/include_head_css.html"/>
+		<#include "/common/include_jquery_core.html"/>
+		<#include "/common/include_bootstrap_core.html"/>
+		<#include "/common/include_ace_core.html"/>
+		<#include "/common/include_jqgrid_core.html"/>
+		<#include "/common/include_plugin.html"/>
+	</head>
+	<body class="no-skin">
+		<div class="main-container" id="main-container">
+			<div class="main-content">
+				<div class="page-content">
+					<div class="page-content-area">
+						<div class="page-header" style="padding-bottom:8px;margin-top: -10px;">
+							<h1>
+								发票管理
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									<span style="color:green;">开票管理</span>--回收发票
+								</small>
+							</h1>
+							<input type="hidden" value = "${position!''}" id = "position"></input> 
+						</div>
+						<!-- 以上div层必写 -->
+						<div class="row">
+							<div class="col-xs-12">
+								<form id="scarletCreateForm" class="form-horizontal" role="form">
+									
+									<!-- #section:elements.form -->
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="orderInfoCode">订单编号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="fingerprint" type="hidden" value="${financeInvoice.fingerprint!''}"/>
+												<input id="invoiceId" type="hidden" value="${financeInvoice.invoiceId!''}"/>
+												<input id="orderInfoCode" name="orderInfoCode" readonly="readonly" value="${financeInvoice.orderInfoCode!''}" type="text" class="col-xs-10 col-sm-2">
+											</div>
+										</div>
+									 </div>
+									 
+									 <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="groupFee">认筹金额：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceAmount" name="groupFee" type="text" class="col-xs-10 col-sm-2" readonly="readonly" value="${(financeInvoice.groupFee)!0}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceNumber">发票票号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceNumber" name="invoiceNumber" type="text" class="col-xs-10 col-sm-2" readonly="readonly"  value="${financeInvoice.invoiceNumber!''}">
+											</div>
+										</div>
+									</div>
+									 
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="customName">关联客户姓名：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="customName" name="customName" type="text" readonly="readonly" class="col-xs-10 col-sm-2" readonly="readonly"  value="${financeInvoice.customName!''}">
+											</div>
+										</div>
+									</div>	 
+										
+									 <div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cheapCode">优惠告知书编号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+													<input id="cheapCode" name="cheapCode" type="text" readonly="readonly" class="col-xs-10 col-sm-2" value="${financeInvoice.cheapCode!''}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="invoiceAmount">发票金额：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="invoiceAmount" name="invoiceAmount" type="text" class="col-xs-10 col-sm-2" readonly="readonly"  value="${financeInvoice.invoiceAmount!0}">
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cancelInvoiceNumber">发票票号：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input style="width: 140px;" name="cancelInvoiceNumber" id="cancelInvoiceNumber" value="" type="text"/>
+												<font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="cancelInvoiceCode">发票代码：</label>
+										<div class="col-sm-9">
+											<div class="clearfix">
+												<input id="cancelInvoiceCode" name="cancelInvoiceCode" type="text" class="col-xs-10 col-sm-2" value="">
+												<font color="red">*</font>
+											</div>
+										</div>
+									</div>
+									 
+									<div class="clearfix">
+										<div class="col-md-offset-3 col-md-9">
+											<button id="saveBtn" class="btn btn-info" type="button">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												保存
+											</button>
+											&nbsp; &nbsp; &nbsp;
+											<button id="backBtn" class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												返回
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../assets/module/finance/invoice/receiveinvoice/receiveregain.js"></script>
+</html>
