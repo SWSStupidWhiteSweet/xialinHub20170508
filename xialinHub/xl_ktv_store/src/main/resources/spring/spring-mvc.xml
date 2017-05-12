@@ -28,11 +28,11 @@
 	<mvc:resources mapping="/uploads/**" location="/uploads/" />
 
 	<!--配置拦截器, 多个拦截器,顺序执行 -->
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<mvc:interceptor>
-			<!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
+			匹配的是url路径， 如果不配置或/**,将拦截所有的Controller
 			<mvc:mapping path="/**" />
-			<!-- 需排除拦截的地址 -->
+			需排除拦截的地址
 			<mvc:exclude-mapping path="/assets/**" />
 			<mvc:exclude-mapping path="/welcome" />
 			<mvc:exclude-mapping path="/timeout" />
@@ -42,8 +42,8 @@
 			<mvc:exclude-mapping path="/uploads/**" />
 			<bean class="com.ruiyun.module.platform.interceptor.GlobalInterceptor" />
 		</mvc:interceptor>
-		<!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->
-	</mvc:interceptors>
+		当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法
+	</mvc:interceptors> -->
 
 	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
 	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -64,8 +64,8 @@
 	</bean>
 
 	<!-- freemarker的配置 -->
-	<bean id="freemarkerConfigurer" class="com.ruiyun.shiro.freemarkertags.ShiroTagFreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/WEB-INF/content/" /><!-- 此处影响页面include路径和controller返回的模板路径 -->
+	<!-- <bean id="freemarkerConfigurer" class="com.ruiyun.shiro.freemarkertags.ShiroTagFreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/content/" />此处影响页面include路径和controller返回的模板路径
 		<property name="defaultEncoding" value="utf-8" />
 		<property name="freemarkerSettings">
 			<props>
@@ -76,7 +76,7 @@
 				<prop key="number_format">#.##</prop>
 			</props>
 		</property>
-	</bean>
+	</bean> -->
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />

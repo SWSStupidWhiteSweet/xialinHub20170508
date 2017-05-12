@@ -52,12 +52,12 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
 		<!-- mapper扫描 -->
-		<property name="mapperLocations" value="classpath*:com/ruiyun/**/mapper/**/*Mapper.xml"></property>
+		<property name="mapperLocations" value="classpath*:xialinHub/com/**/mapper/**/*Mapper.xml"></property>
 	</bean>
 
 	<!-- 配置扫描器，将Mapper由spring动态代理为接口类实现  -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ruiyun.module.**.proxy" />
+        <property name="basePackage" value="xialinHub.com.module.**.proxy" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 	
