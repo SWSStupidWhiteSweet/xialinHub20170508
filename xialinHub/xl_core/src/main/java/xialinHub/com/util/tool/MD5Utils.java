@@ -1,4 +1,4 @@
-package xialinHub.com.util;
+package xialinHub.com.util.tool;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

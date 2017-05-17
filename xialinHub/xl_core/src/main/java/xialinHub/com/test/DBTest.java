@@ -3,7 +3,7 @@ package xialinHub.com.test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import xialinHub.com.util.DBHelper;
+import xialinHub.com.util.tool.DBHelper;
 
 /*
  *作者:xialin

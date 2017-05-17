@@ -1,4 +1,4 @@
-package com.ruiyun.wechat.test;
+package xialinHub.com.module.test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;  

@@ -1,4 +1,4 @@
-package com.ruiyun.wechat.test.util;
+package xialinHub.com.util.tool;
 
 import java.io.IOException;
 import java.io.PrintWriter;

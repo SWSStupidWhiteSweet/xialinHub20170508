@@ -1,4 +1,4 @@
-package com.ruiyun.wechat.test;
+package xialinHub.com.util.http;
 
 import java.io.BufferedReader;
 import java.io.File;

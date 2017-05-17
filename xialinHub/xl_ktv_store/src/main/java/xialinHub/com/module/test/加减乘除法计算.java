@@ -1,4 +1,4 @@
-package com.ruiyun.wechat.test;
+package xialinHub.com.module.test;
 
 public class 加减乘除法计算 {
 	

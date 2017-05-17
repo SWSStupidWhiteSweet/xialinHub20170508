@@ -1,4 +1,4 @@
-package xialinHub.com.util;
+package xialinHub.com.util.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
