@@ -8,6 +8,6 @@ import xialinHub.com.platform.controller.BaseController;
  *日期:2017年5月8日
  *时间:下午4:22:14
  **/
-public class LoginController extends BaseController{
+public class LoginController extends BaseController {
 
 }
