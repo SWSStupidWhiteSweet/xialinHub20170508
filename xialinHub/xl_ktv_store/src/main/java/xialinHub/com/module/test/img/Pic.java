@@ -29,6 +29,7 @@ public class Pic {
 
 	/**
 	 * 导入本地图片到缓冲区
+	 * imgName 本地图片地址
 	 */
 	public BufferedImage loadImageLocal(String imgName) {
 		try {
@@ -41,6 +42,7 @@ public class Pic {
 
 	/**
 	 * 导入网络图片到缓冲区
+	 * imgName 网络图片地址
 	 */
 	public BufferedImage loadImageUrl(String imgName) {
 		try {
@@ -180,6 +182,12 @@ public class Pic {
 		return img;
 	}
 
+	/**
+	 * 
+	 * @param b 迁入图片
+	 * @param d 源图片（背景图片）
+	 * @return
+	 */
 	public BufferedImage modifyImagetogeter(BufferedImage b, BufferedImage d) {
 
 		try {
