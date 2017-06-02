@@ -1,6 +1,7 @@
 package xialinHub.com.module.test.img;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -71,13 +72,45 @@ public class ImgTest {
         * @param args
         * @throws IOException
         */
-       public static void main(String[] args) throws IOException {
+       /*public static void main(String[] args) throws IOException {
            String sourceFilePath = "E://backgroud.jpg";
            String waterFilePath = "E://lufei.jpg";
-           String saveFilePath = "E://new.png";
+           String saveFilePath = "E://new.jpg";
            // 构建叠加层
-           BufferedImage buffImg = watermark(new File(sourceFilePath), new File(waterFilePath), 300, 100, .5f);
+           BufferedImage buffImg = watermark(new File(sourceFilePath), new File(waterFilePath), 0, 0, .5f);
            // 输出水印图片
            generateWaterFile(buffImg, saveFilePath);
+       }*/
+       
+       
+       
+       public static void main(String[] args) {  
+           try{  
+               StringBuffer sb = new StringBuffer();  
+               sb.append("中华人民共和国\n");  
+               sb.append("中华人民共和国\n");  
+                 
+               FileImageCreator creator = new FileImageCreator(new SimpleDrawer(), "e:\\img.jpg");  
+               creator.setWidth(500); //图片宽度  
+               creator.setHeight(200); //图片高度  
+               creator.setLineNum(0); //干扰线条数  
+               creator.setFontSize(18); //字体大小  
+               creator.setFontName("黑体");  
+                 
+               //文字旋转  
+//               creator.setRadian(30.0); //旋转弧度  
+//               creator.setRotateX(creator.getWidth()/5);  
+//               creator.setRotateY(creator.getHeight()*5/10);  
+               creator.setBgColor(Color.WHITE);//设置背景色
+               creator.setFontColor(Color.BLACK);
+               
+               creator.generateImage(sb.toString());  
+                 
+               System.out.println("ok");  
+                 
+           }catch(IOException ex){  
+               ex.printStackTrace();  
+           }  
        }
+       
 }
