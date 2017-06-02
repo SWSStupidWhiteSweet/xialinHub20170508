@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import freemarker.template.utility.DateUtil;
+
 /*
  *作者:xialin
  *日期:2017年6月1日
@@ -72,7 +74,7 @@ public class ImgTest {
         * @param args
         * @throws IOException
         */
-       /*public static void main(String[] args) throws IOException {
+       public static void main(String[] args) throws IOException {
            String sourceFilePath = "E://backgroud.jpg";
            String waterFilePath = "E://lufei.jpg";
            String saveFilePath = "E://new.jpg";
@@ -80,15 +82,16 @@ public class ImgTest {
            BufferedImage buffImg = watermark(new File(sourceFilePath), new File(waterFilePath), 0, 0, .5f);
            // 输出水印图片
            generateWaterFile(buffImg, saveFilePath);
-       }*/
+       }
        
        
        
-       public static void main(String[] args) {  
-           try{  
+       public static void main1(String[] args) {  
+           try{
+        	   System.out.println(xialinHub.com.util.tool.DateUtil.getCurrentTime());
                StringBuffer sb = new StringBuffer();  
-               sb.append("中华人民共和国\n");  
-               sb.append("中华人民共和国\n");  
+               sb.append("中华人民第三方斯蒂芬第三方共和国gdgsdgdfa\n");  
+               sb.append("中华sfdsfsffdsfs人民共和国\n");  
                  
                FileImageCreator creator = new FileImageCreator(new SimpleDrawer(), "e:\\img.jpg");  
                creator.setWidth(500); //图片宽度  
@@ -107,7 +110,7 @@ public class ImgTest {
                creator.generateImage(sb.toString());  
                  
                System.out.println("ok");  
-                 
+               System.out.println(xialinHub.com.util.tool.DateUtil.getCurrentTime()); 
            }catch(IOException ex){  
                ex.printStackTrace();  
            }  

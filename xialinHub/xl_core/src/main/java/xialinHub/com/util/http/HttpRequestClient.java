@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -360,8 +361,8 @@ public class HttpRequestClient {
 		
 		if (status) {
 			// 获取文件的后辍名，微信返回的http头为：Content-disposition: attachment; filename="MEDIA_ID.jpg"
-			Header[] headers = response.getHeaders("Content-disposition");
-			String suffix = headers[0].getValue().replaceAll("\"", "").split("\\.")[1]; // 去掉双引号，再用“.”分割取索引为1的
+//			Header[] headers = response.getHeaders("Content-disposition");
+//			String suffix = headers[0].getValue().replaceAll("\"", "").split("\\.")[1]; // 去掉双引号，再用“.”分割取索引为1的
 			
 			// 检查文件夹是否存在
 			File path = new File(filePath);
@@ -371,8 +372,7 @@ public class HttpRequestClient {
 			}
 			
 			// 得到最后的fileName
-			fileName = filePath + (filePath.endsWith(File.separator) ? "" : File.separator) + new Date().getTime() + "_" + random() + "." + suffix;
-
+			fileName = filePath + (filePath.endsWith(File.separator) ? "" : File.separator) + new Date().getTime() + "_" + random() /*+ "." + "jpg"*/;
 			HttpEntity entity = response.getEntity();
 			if (null != entity) {
 				InputStream in = entity.getContent();
@@ -501,9 +501,12 @@ public class HttpRequestClient {
 
 	public static void main(String[] args) throws Exception {
 		HttpRequestClient client = new HttpRequestClient();
-		client.setHttpPostUrl("http://wap.yj.cn.com/wechat/brochure/getcityhavebuilding");
-		client.execute();
-		System.out.println(client.responseText);
+		String ticket = URLEncoder.encode("gQGu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMkx4bHhtaVljZjQxMDAwME0wN1kAAgSsf-RYAwQAAAAA","utf-8");
+		client.setHttpPostUrl("http://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+ticket);
+//		client.setStringEntity("gQGu8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyMkx4bHhtaVljZjQxMDAwME0wN1kAAgSsf-RYAwQAAAAA", CHARSET_UTF8);
+		client.download("e:\\code", null, null);
+//		client.execute();
+//		System.out.println(client.responseText);
 	}
 	
 	public static String getResponse(String requestUrl,Map<String,String> map) throws Exception{
